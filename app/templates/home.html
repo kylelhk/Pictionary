@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block title %} Home {% endblock %} {% block styles
+%}
+<link rel="stylesheet" href="../static/css/home.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+/>
+{% endblock %} {% block content %}
+<div>
+  <p>Hello World!</p>
+</div>
+
+{% if not current_user.is_authenticated %}
+<div>
+  <h3>
+    <i class="fas fa-sign-in-alt"></i>
+    <a href="/login">Log In / Sign Up</a>
+  </h3>
+</div>
+{% endif %} {% endblock %}
