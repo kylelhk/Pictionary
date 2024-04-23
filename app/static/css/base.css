@@ -1,0 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 10px;
+}
+
+header {
+  height: 80px;
+  background-color: #1e90ff;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+footer {
+  text-align: right;
+  /* bottom: 0; */
+}
+
+.logo {
+  width: 60px;
+  height: auto;
+}
+
+.navbar-nav .nav-link {
+  margin-right: 20px; /* Adds spacing between nav links */
+  color: white;
+  font-size: 1.4em;
+}
+
+#game-name {
+  font: 1.8em cursive;
+  margin-right: 80px;
+}
+
+.navbar-toggler {
+  /* TODO: Fix position issue */
+}
+
+.active {
+  text-decoration: underline;
+}
+
+/* TODO: Media query for screens with a minimum width of 768px
+@media (min-width: 768px) {
+  .logo {
+    width: 2vw;
+  }
+} */
