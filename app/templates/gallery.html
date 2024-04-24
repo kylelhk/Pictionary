@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block title %} Guessing Gallery {% endblock %} {%
+block styles %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/gallery.css') }}"
+/>
+{% endblock %} {% block content %}
+<div>
+  <p>Guessing Gallery</p>
+</div>
+
+{% if not current_user.is_authenticated %}
+<div>
+  <h3>Testing</h3>
+</div>
+{% endif %} {% endblock %}
