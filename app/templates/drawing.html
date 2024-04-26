@@ -1,12 +1,68 @@
 {% extends "base.html" %} {% block title %} Create Drawing {% endblock %} {%
 block styles %} {{ super() }}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/drawing.css') }}"
-/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/drawing.css') }}" />
 {% endblock %} {% block content %}
-<div>
-  <p>Create Drawing</p>
+<div class="container-fluid" id="drawing-container">
+  <div class="row">
+    <div class="col-md-3" id="drawing-controls">
+      <div id="timer-and-word">
+        <div id="timer">
+          <p>Time remaining</p>
+        </div>
+        <div id="word-to-draw">
+          <p>Banana</p>
+        </div>
+      </div>
+      <div id="tools">
+        <div id="brush-sizes" class="d-flex justify-content-center">
+          <fieldset>
+            <legend>Brush Size</legend>
+            <input type="radio" id="brush-size-small" name="brush-size" value="small" class="hidden-radio">
+            <label for="brush-size-small" class="brush-size-label small"></label>
+            <input type="radio" id="brush-size-medium" name="brush-size" value="medium" class="hidden-radio" checked>
+            <label for="brush-size-medium" class="brush-size-label medium"></label>
+            <input type="radio" id="brush-size-large" name="brush-size" value="large" class="hidden-radio">
+            <label for="brush-size-large" class="brush-size-label large"></label>
+          </fieldset>
+        </div>
+        <div id="brush-colours" class="d-flex justify-content-center">
+          <fieldset>
+            <legend>Colour</legend>
+            <input type="radio" id="brush-colour-black" name="brush-colour" value="black" class="hidden-radio" checked>
+            <label for="brush-colour-black" class="brush-colour-label black"></label>
+            <input type="radio" id="brush-colour-red" name="brush-colour" value="red" class="hidden-radio">
+            <label for="brush-colour-red" class="brush-colour-label red"></label>
+            <input type="radio" id="brush-colour-orange" name="brush-colour" value="orange" class="hidden-radio">
+            <label for="brush-colour-orange" class="brush-colour-label orange"></label>
+            <input type="radio" id="brush-colour-yellow" name="brush-colour" value="yellow" class="hidden-radio">
+            <label for="brush-colour-yellow" class="brush-colour-label yellow"></label>
+            <br>
+            <input type="radio" id="brush-colour-green" name="brush-colour" value="green" class="hidden-radio">
+            <label for="brush-colour-green" class="brush-colour-label green"></label>
+            <input type="radio" id="brush-colour-blue" name="brush-colour" value="blue" class="hidden-radio">
+            <label for="brush-colour-blue" class="brush-colour-label blue"></label>
+            <input type="radio" id="brush-colour-purple" name="brush-colour" value="purple" class="hidden-radio">
+            <label for="brush-colour-purple" class="brush-colour-label purple"></label>
+            <input type="radio" id="brush-colour-white" name="brush-colour" value="white" class="hidden-radio">
+            <label for="brush-colour-white" class="brush-colour-label white"></label>
+          </fieldset>
+        </div>
+        <div id="erasers" class="d-flex justify-content-center">
+          <fieldset>
+            <legend>Eraser</legend>
+            <button id="eraser"><img src="{{ url_for('static', filename='images/eraser.png') }}" alt="eraser"
+                class="eraser"></button>
+            <button id="clear-all">Clear All</button>
+          </fieldset>
+        </div>
+      </div>
+      <button id="submit-drawing">SUBMIT</button>
+    </div>
+    <div class="col-md-9" id="drawing-area">
+      <button id="quit-drawing">QUIT</button>
+      <canvas id="drawing-canvas"></canvas>
+    </div>
+  </div>
 </div>
 
 {% if not current_user.is_authenticated %}
