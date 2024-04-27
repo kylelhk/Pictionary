@@ -4,28 +4,32 @@ block styles %} {{ super() }}
 {% endblock %} {% block content %}
 <div class="container-fluid" id="drawing-container">
   <div class="row">
-    <div class="col-md-3" id="drawing-controls">
+    <div class="col-md-2 d-flex flex-column justify-content-center align-items-center" id="drawing-controls">
       <div id="timer-and-word">
         <div id="timer">
-          <p>Time remaining</p>
+          <h3>Time remaining</h3>
+          <!-- Remaining time label -->
         </div>
         <div id="word-to-draw">
-          <p>Banana</p>
+          <h3>Word to draw</h3>
+          <!-- Word to draw label -->
         </div>
       </div>
       <div id="tools">
-        <div id="brush-sizes" class="d-flex justify-content-center">
-          <fieldset>
+        <div id="brush-sizes">
+          <fieldset class="d-flex flex-column align-items-center">
             <legend>Brush Size</legend>
-            <input type="radio" id="brush-size-small" name="brush-size" value="small" class="hidden-radio">
-            <label for="brush-size-small" class="brush-size-label small"></label>
-            <input type="radio" id="brush-size-medium" name="brush-size" value="medium" class="hidden-radio" checked>
-            <label for="brush-size-medium" class="brush-size-label medium"></label>
-            <input type="radio" id="brush-size-large" name="brush-size" value="large" class="hidden-radio">
-            <label for="brush-size-large" class="brush-size-label large"></label>
+            <div class="d-flex align-items-center">
+              <input type="radio" id="brush-size-small" name="brush-size" value="small" class="hidden-radio">
+              <label for="brush-size-small" class="brush-size-label small"></label>
+              <input type="radio" id="brush-size-medium" name="brush-size" value="medium" class="hidden-radio" checked>
+              <label for="brush-size-medium" class="brush-size-label medium"></label>
+              <input type="radio" id="brush-size-large" name="brush-size" value="large" class="hidden-radio">
+              <label for="brush-size-large" class="brush-size-label large"></label>
+            </div>
           </fieldset>
         </div>
-        <div id="brush-colours" class="d-flex justify-content-center">
+        <div id="brush-colours">
           <fieldset>
             <legend>Colour</legend>
             <input type="radio" id="brush-colour-black" name="brush-colour" value="black" class="hidden-radio" checked>
@@ -47,19 +51,25 @@ block styles %} {{ super() }}
             <label for="brush-colour-white" class="brush-colour-label white"></label>
           </fieldset>
         </div>
-        <div id="erasers" class="d-flex justify-content-center">
-          <fieldset>
+        <div id="erasers">
+          <fieldset class="d-flex flex-column align-items-center">
             <legend>Eraser</legend>
-            <button id="eraser"><img src="{{ url_for('static', filename='images/eraser.png') }}" alt="eraser"
-                class="eraser"></button>
-            <button id="clear-all">Clear All</button>
+            <div class="d-flex align-items-center">
+              <input type="checkbox" id="eraser" name="eraser" value="eraser" class="hidden-checkbox">
+              <label for="eraser" class="eraser-label">
+                <img src="{{ url_for('static', filename='images/eraser.png') }}" alt="eraser" class="eraser-img">
+              </label>
+              <button id="clear-all">Clear All</button>
+            </div>
           </fieldset>
         </div>
       </div>
       <button id="submit-drawing">SUBMIT</button>
     </div>
-    <div class="col-md-9" id="drawing-area">
-      <button id="quit-drawing">QUIT</button>
+    <div class="col-md-10" id="drawing-area">
+      <div class="text-end">
+        <button id="quit-drawing">QUIT</button>
+      </div>
       <canvas id="drawing-canvas"></canvas>
     </div>
   </div>
