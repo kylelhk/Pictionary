@@ -2,8 +2,8 @@ from app import db
 
 class Guess (db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    drawing_id = db.Column(db.Integer, db.ForeignKey('drawing.id'))
-    guesser_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    drawing_id = db.Column(db.Integer, db.ForeignKey('drawing.id'), index=True)
+    guesser_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
     is_correct = db.Column(db.Boolean)
     points_for_creator = db.Column(db.Integer, default=0)
     points_for_guesser = db.Column(db.Integer, default=0)

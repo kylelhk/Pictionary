@@ -2,8 +2,8 @@ from app import db
 
 class Drawing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    word_id = db.Column(db.Integer, db.ForeignKey('word.id'))
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    word_id = db.Column(db.Integer, db.ForeignKey('word.id'), index=True)
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
     drawing_data = db.Column(db.LargeBinary) # TODO: decide whether to store drawings as BLOB or path to file stored on server
     created_at = db.Column(db.DateTime)
 
