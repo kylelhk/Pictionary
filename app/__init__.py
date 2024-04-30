@@ -13,5 +13,6 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view='login'
 
-from app import routes, models, forms
+from app import routes, forms
+from app.models import Drawing, Guess, User, Word
 # fmt: on
