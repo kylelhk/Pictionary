@@ -1,0 +1,166 @@
+/* Tool Container Styles */
+#tools {
+    background-color: #e0e0e0;
+    margin: 10px;
+    width: 200px;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Brush Size and Colour Label Styles */
+
+/* Hide default radio buttons for brush tools so styling can apply to their labels */
+.hidden-radio,
+.hidden-checkbox {
+    display: none;
+}
+
+/* Base style for brush size and colour labels */
+.brush-size-label,
+.brush-colour-label {
+    display: inline-block;
+    cursor: pointer;
+    border: 0;
+    border-radius: 50%;
+}
+
+.brush-size-label {
+    margin: 5px 20px;
+    background-color: black;
+}
+
+.brush-colour-label {
+    margin: 8px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Specific brush size modifiers */
+.brush-size-label.small {
+    width: 6px;
+    height: 6px;
+}
+
+.brush-size-label.medium {
+    width: 10px;
+    height: 10px;
+}
+
+.brush-size-label.large {
+    width: 20px;
+    height: 20px;
+}
+
+/* When the radio button is checked */
+.hidden-radio:checked+.brush-size-label,
+.hidden-radio:checked+.brush-colour-label {
+    box-shadow: 0 0 0 4px #e0e0e0, 0 0 0 6px #7c7c7c;
+}
+
+/* Specific brush colour modifiers */
+.brush-colour-label.black {
+    background-color: black;
+}
+
+.brush-colour-label.red {
+    background-color: red;
+}
+
+.brush-colour-label.orange {
+    background-color: orange;
+}
+
+.brush-colour-label.yellow {
+    background-color: yellow;
+}
+
+.brush-colour-label.green {
+    background-color: green;
+}
+
+.brush-colour-label.blue {
+    background-color: blue;
+}
+
+.brush-colour-label.purple {
+    background-color: purple;
+}
+
+.brush-colour-label.white {
+    background-color: white;
+}
+
+/* Eraser Styles */
+.eraser-label {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.eraser-img {
+    display: block;
+    width: 35px;
+    height: auto;
+    background-color: #e0e0e0;
+    margin: 0 10px;
+}
+
+.hidden-checkbox:checked + .eraser-label {
+    border: 3px solid #7c7c7c;
+    border-radius: 5px;
+}
+/* Button Styles*/
+button {
+    border: 3px solid;
+    border-radius: 10px;
+}
+
+#clear-all {
+    background-color: white;
+    border-color: #F22E2E;
+    width: 90px;
+    margin: 10px;
+}
+
+#clear-all:hover {
+    background-color: #F22E2E;
+    color: white;
+}
+
+#submit-drawing {
+    background-color: #0E6D95;
+    color: white;
+    border-color: #0E6D95;
+    width: 130px;
+}
+
+#quit-drawing {
+    background-color: #F22E2E;
+    color: white;
+    border-color: #F22E2E;
+    width: 130px;
+    margin: 20px 0;
+}
+
+#submit-drawing:hover,
+#quit-drawing:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Drawing Area Styles */
+#drawing-area {
+    max-width: 1000px;
+}
+
+/* TODO: Make the canvas size adaptable depending on screen size? */
+#drawing-canvas {
+    max-width: 1000px;
+    max-height: 600px;
+    width: 75vw;
+    height: 50vh;
+    border: 2px solid #868686;
+    border-radius: 10px;
+}
