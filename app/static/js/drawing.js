@@ -4,8 +4,8 @@ const context = canvas.getContext("2d");
 let isDrawing = false;
 
 // Set the internal resolution of the canvas
-canvas.width = 1200;
-canvas.height = 1200;
+canvas.width = 1000;
+canvas.height = 600;
 
 // Function to initiate drawing
 function startDrawing(event) {
@@ -36,10 +36,47 @@ canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
 
-// Brush size selector
+// Change brush size upon selection
+function updateBrushSize() {
+    let selectedSize = document.querySelector('input[name="brush-size"]:checked').value;
+    context.lineWidth = selectedSize;
+};
 
-// Colour selector
+updateBrushSize(); // set initial brush size
 
-// Eraser
+const brushSizes = document.querySelectorAll('input[name="brush-size"]');
+brushSizes.forEach((size) => {
+    size.addEventListener("change", updateBrushSize);
+});
 
-// Clear all
+// Change brush colour upon selection
+function updateBrushColour() {
+    let selectedColour = document.querySelector('input[name="brush-colour"]:checked').value;
+    context.strokeStyle = selectedColour;
+};
+
+const brushColours = document.querySelectorAll('input[name="brush-colour"]');
+brushColours.forEach((colour) => {
+    colour.addEventListener("change", updateBrushColour);
+});
+
+// Toggle eraser on and off
+const eraserToggle = document.getElementById('eraser');
+
+eraserToggle.addEventListener('change', () => {
+    if (eraserToggle.checked) {
+        context.globalCompositeOperation = 'destination-out';
+        context.lineWidth = 20;
+    } else {
+        context.globalCompositeOperation = 'source-over'; 
+        updateBrushSize();
+        updateBrushColour();
+    }
+});
+
+// Clear the canvas
+const clearButton = document.getElementById("clear-all")
+clearButton.addEventListener("click", () => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+});
+
