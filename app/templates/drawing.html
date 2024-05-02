@@ -20,9 +20,9 @@ block styles %} {{ super() }}
           <fieldset class="d-flex flex-column align-items-center">
             <legend>Brush Size</legend>
             <div class="d-flex align-items-center">
-              <input type="radio" id="brush-size-small" name="brush-size" value="small" class="hidden-radio">
+              <input type="radio" id="brush-size-small" name="brush-size" value="small" class="hidden-radio" checked>
               <label for="brush-size-small" class="brush-size-label small"></label>
-              <input type="radio" id="brush-size-medium" name="brush-size" value="medium" class="hidden-radio" checked>
+              <input type="radio" id="brush-size-medium" name="brush-size" value="medium" class="hidden-radio">
               <label for="brush-size-medium" class="brush-size-label medium"></label>
               <input type="radio" id="brush-size-large" name="brush-size" value="large" class="hidden-radio">
               <label for="brush-size-large" class="brush-size-label large"></label>
@@ -79,4 +79,6 @@ block styles %} {{ super() }}
 <div>
   <h3>Testing</h3>
 </div>
-{% endif %} {% endblock %}
+{% endif %} 
+<script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
+{% endblock %}

@@ -81,6 +81,8 @@ def gallery():
 
 @app.route('/drawing')
 def drawing():
+    # consider using @login_required decorator from Flask-Login to label routes that require a login
+    # instead of the code commented out below
     """ if not current_user.is_authenticated:
         flash('You must be logged in to access the Create Drawing page.', 'error')
         return redirect(url_for('login_signup')) """
