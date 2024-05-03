@@ -1,5 +1,5 @@
 // Display modal when window loads
-window.onload = () => {
+window.addEventListener('load', () => {
     let wordCatModal = new bootstrap.Modal('#word-category-modal');
     wordCatModal.show();
     document.querySelectorAll('.category-btn').forEach(button => {
@@ -8,7 +8,7 @@ window.onload = () => {
             fetchWord(category, wordCatModal);
         });
     });
-};
+});
 
 // Fetch a random word from the chosen category
 function fetchWord(category, modal) {
