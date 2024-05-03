@@ -81,4 +81,5 @@ block styles %} {{ super() }}
 </div>
 {% endif %}
 <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
+<script> var homeUrl = "{{ url_for('home') }}"; </script>
 {% endblock %}

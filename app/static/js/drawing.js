@@ -80,3 +80,35 @@ clearButton.addEventListener("click", () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 });
 
+// Submit drawing
+function saveDrawing() {
+    const drawingData = canvas.toDataURL();
+    fetch('/submit-drawing', {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json',
+        },
+        body: JSON.stringify({
+            drawingData: drawingData,
+            wordId: 1, // TODO: Add variable for word to draw
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Success: ' + data.message)
+        window.location.href = homeUrl;
+    })
+    .catch((error) => console.error('Error:', error));
+};
+
+const submitButton = document.getElementById("submit-drawing");
+submitButton.addEventListener("click", saveDrawing);
+
+// TODO: Automatically save canvas when time runs out
+
+// Redirect to Home screen when quit button clicked
+document.getElementById("quit-drawing").addEventListener("click", function() {
+    if (confirm("Are you sure you want to quit drawing?")) {
+        window.location.href = homeUrl;
+    }
+});
