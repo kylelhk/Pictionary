@@ -90,6 +90,52 @@ def drawing():
         return redirect(url_for('login_signup')) """
     return render_template('drawing.html', title='Create Drawing')
 
+@app.route('/submit-drawing', methods=['POST'])
+# @login_required
+def submit_drawing():
+    if not request.json:
+        return jsonify({'error': 'No JSON in request'}), HTTPStatus.BAD_REQUEST
+    
+    word_id = request.json.get('wordId')
+    creator_id = current_user.id if current_user.is_authenticated else None # TODO: remove else None once users implemented
+    drawing_data = request.json.get('drawingData')
+
+    if not word_id or not drawing_data:
+        return jsonify({'error': 'Missing necessary data'}), HTTPStatus.BAD_REQUEST
+
+    new_drawing = Drawing(
+        word_id=word_id,
+        creator_id=creator_id,
+        drawing_data=drawing_data,
+        created_at=now # TODO: Using `now` defined above, but it's not saving the correct date and time?
+    )
+
+    db.session.add(new_drawing)
+    db.session.commit()
+
+    flash('Your drawing has been successfully submitted')
+    
+    return jsonify({'message': 'Drawing saved successfully!'}), HTTPStatus.CREATED
+
+@app.route('/get-random-word', methods=['GET'])
+# @login_required
+def get_random_word():
+    # Get category from request parameters
+    category = request.args.get('category')
+    # If no category given, return an error
+    if not category:
+        return jsonify({'error': 'Category is required'}), HTTPStatus.BAD_REQUEST
+
+    # Query database to get a random word from the given category
+    if category == 'all':
+        random_word = Word.query.order_by(func.random()).first()
+    else:
+        random_word = Word.query.filter_by(category=category).order_by(func.random()).first()
+    # If no word found, return an error
+    if not random_word:
+        return jsonify({'error': 'No words found in the given category'}), HTTPStatus.NOT_FOUND
+
+    return jsonify({'word_id': random_word.id, 'word': random_word.text}), HTTPStatus.OK
 
 @app.route('/profile')
 def profile():
