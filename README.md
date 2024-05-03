@@ -64,6 +64,11 @@ flask db upgrade
 
 [To set a database "test.db" in the repository. In that case, the above steps can be skipped.]
 
+Run this command to add words to draw and guess to the app's database
+```bash
+flask load-data
+```
+
 4. Run the app
 
 ```bash
