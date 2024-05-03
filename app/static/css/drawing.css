@@ -172,7 +172,7 @@ legend {
     margin: 0 10px;
 }
 
-.hidden-checkbox:checked + .eraser-label {
+.hidden-checkbox:checked+.eraser-label {
     border: 3px solid #7c7c7c;
     border-radius: 5px;
 }
@@ -231,7 +231,7 @@ legend {
     max-width: 1000px;
     max-height: 600px;
     width: 75vw;
-    height: 50vh;
+    height: 75vh;
     border: 2px solid #868686;
     border-radius: 10px;
 }
