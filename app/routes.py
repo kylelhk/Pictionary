@@ -10,9 +10,7 @@ from werkzeug.urls import url_parse
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
 
-# Combined route for login and signup pages
-
-
+# Login and Signup Page
 @app.route('/login', methods=['GET', 'POST'])
 def login_signup():
     if current_user.is_authenticated:
@@ -50,18 +48,13 @@ def login_signup():
 
     return render_template('login.html', login_form=login_form, signup_form=signup_form, title='Log In / Sign Up')
 
-# Decorator for Log out
-
-
 @app.route('/logout')
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
-
-# Decorator for Home page
-
+# Home Page
 @app.route('/')
 @app.route('/home')
 def home():
@@ -70,7 +63,7 @@ def home():
         return redirect(url_for('login_signup')) """
     return render_template('home.html', title='Home')
 
-
+# Guessing Gallery Page
 @app.route('/gallery')
 def gallery():
     """ if not current_user.is_authenticated:
@@ -78,22 +71,13 @@ def gallery():
         return redirect(url_for('login_signup')) """
     return render_template('gallery.html', title='Guessing Gallery')
 
-
+# Create Drawing Page
 @app.route('/drawing')
 def drawing():
     """ if not current_user.is_authenticated:
         flash('You must be logged in to access the Create Drawing page.', 'error')
         return redirect(url_for('login_signup')) """
     return render_template('drawing.html', title='Create Drawing')
-
-
-@app.route('/profile')
-def profile():
-    """ if not current_user.is_authenticated:
-        flash('You must be logged in to view your profile.', 'error')
-        return redirect(url_for('login_signup')) """
-    return render_template('profile.html', title='Profile')
-
 
 if __name__ == '__main__':
     app.run(debug=True)

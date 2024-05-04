@@ -1,43 +1,155 @@
+/* Page layout */
 body {
   font-family: Arial, sans-serif;
-  margin: 10px;
+  margin: 0.5vw;
+  display: flex;
+  flex-direction: column;
+  min-height: 97.9vh;
 }
 
 header {
   height: 80px;
   background-color: #1e90ff;
-  padding: 20px;
-  display: flex;
-  align-items: center;
+  border-radius: 0.5em;
+}
+
+main {
+  flex-grow: 1;
 }
 
 footer {
   text-align: right;
-  /* bottom: 0; */
+  background-color: transparent;
 }
 
+/* Responsive navigation bar */
+.navbar {
+  align-items: stretch;
+  height: 100%;
+  padding: 0;
+  margin-right: 0.5vw;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+/* Game logo */
 .logo {
-  width: 60px;
-  height: auto;
+  width: 50px;
+  rotate: -12deg;
+  margin: -10px -10px 0 18px;
 }
 
-.navbar-nav .nav-link {
-  margin-right: 20px; /* Adds spacing between nav links */
-  color: white;
-  font-size: 1.4em;
-}
-
+/* Game name */
+/* Font style reference: https://fonts.google.com/?preview.text=Guess%20that%20Drawing&classification=Handwriting */
 #game-name {
-  font: 1.8em cursive;
-  margin-right: 80px;
+  display: flex;
+  align-items: center;
+  font: bold 2.3em "Sedgwick Ave", cursive; /* Font family alternatives: Rock Salt, Indie Flower, Bangers */
+  background: linear-gradient(
+    20deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet
+  );
+  background-size: 350% 350%; /* Size of the gradient */
+  animation: flowingColors 8s ease infinite;
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+@keyframes flowingColors {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Nav link */
+.nav-link {
+  color: white;
+  font-size: 1.4vw;
+  padding: 0 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  transition: background-color 0.3s ease;
+  border-radius: 0.3em;
+}
+
+.navbar-nav {
+  flex-grow: 1;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  margin-right: 10vw;
+  margin-left: 8vw;
+}
+
+.logout-button {
+  width: 15%;
+  display: flex;
+  justify-content: flex-end;
+  height: 80%;
+}
+
+/* Nav link hover effects */
+.nav-link:not(.active):hover {
+  background-color: white;
+  font-family: "Sedgwick Ave", cursive;
+  font-weight: bold;
+}
+
+.home-link:not(.active):hover {
+  color: green;
+}
+
+.gallery-link:not(.active):hover {
+  color: blue;
+}
+
+.drawing-link:not(.active):hover {
+  color: orange;
+}
+
+/* Nav link effects for active page */
+.active {
+  font-family: "Sedgwick Ave", cursive;
+  background-image: url("../images/stroke.png");
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-home .active {
+  color: green !important;
+}
+
+.page-gallery .active {
+  color: blue !important;
+}
+
+.page-drawing .active {
+  color: orange !important;
+}
+
+/* Hamburger button */
 .navbar-toggler {
   /* TODO: Fix position issue */
-}
-
-.active {
-  text-decoration: underline;
 }
 
 /* TODO: Media query for screens with a minimum width of 768px

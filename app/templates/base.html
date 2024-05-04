@@ -13,9 +13,16 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/base.css') }}"
     />
+    <!-- For the font style of the game name in the header -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave&display=swap"
+    />
     {% endblock %}
   </head>
-  <body>
+  <body
+    class="{% if request.path == '/home' %}page-home{% elif request.path == '/gallery' %}page-gallery{% elif request.path == '/drawing' %}page-drawing{% endif %}"
+  >
     <header>
       <!-- Navigation Bar -->
       <!-- Reference: https://getbootstrap.com/docs/4.0/components/navbar/ -->
@@ -29,56 +36,48 @@
             class="logo"
         /></a>
         <span id="game-name">Guess That Drawing</span>
-        <!-- Responsive hambuger button for smaller screen -->
+        <!-- Responsive hamburger button for smaller screen -->
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Navigation Links -->
-        <!-- Assign conditional active class to each nav link for adding active page effects in base.css -->
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <!-- Assign conditional active class to each nav link for applying the active page effects in base.css -->
+        <div class="collapse navbar-collapse" id="navbarContent">
           <div class="navbar-nav">
             <!-- TODO: Conditional rendering of nav links based on user authentication -->
             <a
-              class="nav-link {{ 'active' if request.path == '/home' else '' }}"
+              class="nav-link home-link {% if request.path == '/home' %}active{% endif %}"
               href="/home"
               >Home</a
             >
             <a
-              class="nav-link {{ 'active' if request.path == '/gallery' else '' }}"
+              class="nav-link gallery-link {% if request.path == '/gallery' %}active{% endif %}"
               href="/gallery"
               >Guessing Gallery</a
             >
             <a
-              class="nav-link {{ 'active' if request.path == '/drawing' else '' }}"
+              class="nav-link drawing-link {% if request.path == '/drawing' %}active{% endif %}"
               href="/drawing"
               >Create Drawing</a
             >
-            <a
-              class="nav-link {{ 'active' if request.path == '/profile' else '' }}"
-              href="/profile"
-              >Profile</a
-            >
+          </div>
+          <div class="logout-button">
             <a class="nav-link" href="/login">Logout</a>
           </div>
         </div>
       </nav>
     </header>
-    {% block content %}
     <!-- Main content -->
-    {% endblock %} {% block scripts %}
-    <!-- JavaScript files (or separate files?) -->
-    {% endblock %}
-    <footer>
-      <p>CITS5505 Agile Web Development, 2024 Sem 1 &copy; UWA</p>
-    </footer>
+    <main>{% block content %} {% endblock %}</main>
+    <footer>CITS5505 Agile Web Development, 2024 Sem 1 &copy; UWA</footer>
     <!-- Bootstrap JS files -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
