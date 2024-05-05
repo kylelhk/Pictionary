@@ -13,20 +13,21 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/base.css') }}"
     />
-    <!-- For the font style of the game name in the header -->
+    <!-- Font style used in navbar -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave&display=swap"
     />
     {% endblock %}
   </head>
+
+  <!-- Dynamic classes for active page nav link effect -->
   <body
     class="{% if request.path == '/home' %}page-home{% elif request.path == '/gallery' %}page-gallery{% elif request.path == '/drawing' %}page-drawing{% endif %}"
   >
-    <header>
-      <!-- Navigation Bar -->
-      <!-- Reference: https://getbootstrap.com/docs/4.0/components/navbar/ -->
-      <nav class="navbar navbar-expand-lg">
+    <!-- Horizontal navbar (for screen width >= 768px) -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="fixed-nav">
         <!-- Logo -->
         <!-- Source: https://www.istockphoto.com/vector/pencil-vector-icon-back-to-school-vector-illustration-gm1072508470-287016128 -->
         <a class="navbar-brand" href="/home">
@@ -34,51 +35,139 @@
             src="{{ url_for('static', filename='images/logo.png') }}"
             alt="Logo"
             class="logo"
-        /></a>
+          />
+          <!-- Line drawing -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 60 10"
+            width="60"
+            height="7"
+            class="logo-line"
+          >
+            <polyline
+              class="draw-logo"
+              points="0,6 10,2 20,7 30,2 43,8 50,7 60,5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </a>
+
+        <!-- Game name -->
         <span id="game-name">Guess That Drawing</span>
-        <!-- Responsive hamburger button for smaller screen -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarContent"
-          aria-controls="navbarContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Navigation Links -->
-        <!-- Assign conditional active class to each nav link for applying the active page effects in base.css -->
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <div class="navbar-nav">
-            <!-- TODO: Conditional rendering of nav links based on user authentication -->
-            <a
-              class="nav-link home-link {% if request.path == '/home' %}active{% endif %}"
-              href="/home"
-              >Home</a
+      </div>
+
+      <!-- Nav links for horizontal navbar-->
+      <div class="horizontal-nav">
+        <div class="main-nav">
+          <!-- Assign conditional "active" class to nav link for applying active page effect -->
+          <a
+            class="nav-link home-link {% if request.path == '/home' %}active{% endif %}"
+            href="/home"
+            >Home
+            <!-- Line drawing -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 10"
+              width="100"
+              height="10"
+              class="wavy-line"
             >
-            <a
-              class="nav-link gallery-link {% if request.path == '/gallery' %}active{% endif %}"
-              href="/gallery"
-              >Guessing Gallery</a
+              <polyline
+                class="draw"
+                points="0,8 12,4 23,7 29,6 37,4 46,3 55,7 68,4 80,7 90,5 100,2"
+              />
+            </svg>
+          </a>
+          <a
+            class="nav-link gallery-link {% if request.path == '/gallery' %}active{% endif %}"
+            href="/gallery"
+            >Guessing Gallery
+            <!-- Line drawing -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 10"
+              width="100"
+              height="10"
+              class="wavy-line"
             >
-            <a
-              class="nav-link drawing-link {% if request.path == '/drawing' %}active{% endif %}"
-              href="/drawing"
-              >Create Drawing</a
+              <polyline
+                class="draw"
+                points="0,8 12,4 23,7 29,6 37,4 46,3 55,7 68,4 80,7 90,5 100,2"
+              />
+            </svg>
+          </a>
+          <a
+            class="nav-link drawing-link {% if request.path == '/drawing' %}active{% endif %}"
+            href="/drawing"
+            >Create Drawing
+            <!-- Line drawing -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 10"
+              width="100"
+              height="10"
+              class="wavy-line"
             >
-          </div>
-          <div class="logout-button">
-            <a class="nav-link" href="/login">Logout</a>
-          </div>
+              <polyline
+                class="draw"
+                points="0,8 12,4 23,7 29,6 37,4 46,3 55,7 68,4 80,7 90,5 100,2"
+              />
+            </svg>
+          </a>
         </div>
-      </nav>
-    </header>
+
+        <!-- Logout button for horizontal navbar -->
+        <div class="logout-btn">
+          <a class="nav-link" href="/login">Logout</a>
+        </div>
+      </div>
+
+      <!-- Hamburger / toggle button (for screen width < 768px) -->
+      <button id="hamburger-btn" class="hamburger">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+
+    <!-- Sidebar (for screen width < 768px) -->
+    <aside id="sidebar" class="sidebar">
+      <!-- Close button for sidebar -->
+      <button id="sidebar-close-btn" class="sidebar-close-btn">&times;</button>
+
+      <!-- Sidebar Content -->
+      <div class="sidebar-panel">
+        <!-- Nav links for sidebar -->
+        <nav class="sidebar-nav">
+          <a
+            class="sidebar-nav-link nav-link home-link {% if request.path == '/home' %}active{% endif %}"
+            href="/home"
+            >Home</a
+          >
+          <a
+            class="sidebar-nav-link nav-link gallery-link {% if request.path == '/gallery' %}active{% endif %}"
+            href="/gallery"
+            >Guessing Gallery</a
+          >
+          <a
+            class="sidebar-nav-link nav-link drawing-link {% if request.path == '/drawing' %}active{% endif %}"
+            href="/drawing"
+            >Create Drawing</a
+          >
+        </nav>
+
+        <!-- Logout button for sidebar -->
+        <div class="sidebar-logout">
+          <a class="sidebar-nav-link nav-link logout" href="/login">Logout</a>
+        </div>
+      </div>
+    </aside>
+
     <!-- Main content -->
     <main>{% block content %} {% endblock %}</main>
+
+    <!-- Footer -->
     <footer>CITS5505 Agile Web Development, 2024 Sem 1 &copy; UWA</footer>
-    <!-- Bootstrap JS files -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS file -->
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
   </body>
 </html>
