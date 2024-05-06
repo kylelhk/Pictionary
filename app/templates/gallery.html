@@ -1,16 +1,59 @@
-{% extends "base.html" %} {% block title %} Guessing Gallery {% endblock %} {%
-block styles %} {{ super() }}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/gallery.css') }}"
-/>
-{% endblock %} {% block content %}
-<div>
-  <p>Guessing Gallery</p>
-</div>
+{% extends "base.html" %}
 
+{% block title %}
+Guessing Gallery
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+{% endblock %}
+
+{% block content %}
+<h2>Guessing Gallery</h2>
+<div class="mb-3">
+    <input type="text" class="form-control" placeholder="Search">
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Creator</th>
+            <th scope="col">Category</th>
+            <th scope="col">Status</th>
+            <th scope="col">Date Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>User</td>
+            <td>Person/Place/Animal</td>
+            <td>New</td>
+            <td>Date and Time</td>
+        </tr>
+        <tr>
+            <td>User</td>
+            <td>Object</td>
+            <td>In Progress</td>
+            <td>Date and Time</td>
+        </tr>
+        <!-- Repeat as needed for more entries -->
+    </tbody>
+</table>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</nav>
 {% if not current_user.is_authenticated %}
 <div>
-  <h3>Testing</h3>
+    <h3>Testing</h3>
 </div>
-{% endif %} {% endblock %}
+{% endif %}
+{% endblock %}
+
+
+
