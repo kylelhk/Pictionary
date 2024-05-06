@@ -1,11 +1,12 @@
 from app import app, db
 import pytz
 from datetime import datetime
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import current_user, login_user, logout_user
-from app.models import User
+from app.models import User, Drawing
 from app.forms import LoginForm, SignupForm
 from werkzeug.urls import url_parse
+from http import HTTPStatus
 
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
@@ -74,10 +75,39 @@ def gallery():
 # Create Drawing Page
 @app.route('/drawing')
 def drawing():
+    # consider using @login_required decorator from Flask-Login to label routes that require a login
+    # instead of the code commented out below
     """ if not current_user.is_authenticated:
         flash('You must be logged in to access the Create Drawing page.', 'error')
         return redirect(url_for('login_signup')) """
     return render_template('drawing.html', title='Create Drawing')
+
+@app.route('/submit-drawing', methods=['POST'])
+# @login_required
+def submit_drawing():
+    if not request.json:
+        return jsonify({'error': 'No JSON in request'}), HTTPStatus.BAD_REQUEST
+    
+    word_id = request.json.get('wordId')
+    creator_id = current_user.id if current_user.is_authenticated else None # TODO: remove else None once users implemented
+    drawing_data = request.json.get('drawingData')
+
+    if not word_id or not drawing_data:
+        return jsonify({'error': 'Missing necessary data'}), HTTPStatus.BAD_REQUEST
+
+    new_drawing = Drawing(
+        word_id=word_id,
+        creator_id=creator_id,
+        drawing_data=drawing_data,
+        created_at=now # TODO: Using `now` defined above, but it's not saving the correct date and time?
+    )
+
+    db.session.add(new_drawing)
+    db.session.commit()
+
+    flash('Your drawing has been successfully submitted')
+    
+    return jsonify({'message': 'Drawing saved successfully!'}), HTTPStatus.CREATED
 
 if __name__ == '__main__':
     app.run(debug=True)
