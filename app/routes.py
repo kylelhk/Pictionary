@@ -12,9 +12,7 @@ from sqlalchemy.sql.expression import func
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
 
-# Combined route for login and signup pages
-
-
+# Login and Signup Page
 @app.route('/login', methods=['GET', 'POST'])
 def login_signup():
     if current_user.is_authenticated:
@@ -52,18 +50,13 @@ def login_signup():
 
     return render_template('login.html', login_form=login_form, signup_form=signup_form, title='Log In / Sign Up')
 
-# Decorator for Log out
-
-
 @app.route('/logout')
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
-
-# Decorator for Home page
-
+# Home Page
 @app.route('/')
 @app.route('/home')
 def home():
@@ -72,7 +65,7 @@ def home():
         return redirect(url_for('login_signup')) """
     return render_template('home.html', title='Home')
 
-
+# Guessing Gallery Page
 @app.route('/gallery')
 def gallery():
     """ if not current_user.is_authenticated:
@@ -80,7 +73,7 @@ def gallery():
         return redirect(url_for('login_signup')) """
     return render_template('gallery.html', title='Guessing Gallery')
 
-
+# Create Drawing Page
 @app.route('/drawing')
 def drawing():
     # consider using @login_required decorator from Flask-Login to label routes that require a login
@@ -90,6 +83,7 @@ def drawing():
         return redirect(url_for('login_signup')) """
     return render_template('drawing.html', title='Create Drawing')
 
+# Save a drawing in the database
 @app.route('/submit-drawing', methods=['POST'])
 # @login_required
 def submit_drawing():
@@ -117,6 +111,7 @@ def submit_drawing():
     
     return jsonify({'message': 'Drawing saved successfully!'}), HTTPStatus.CREATED
 
+# Retrieve a random word to draw
 @app.route('/get-random-word', methods=['GET'])
 # @login_required
 def get_random_word():
@@ -136,14 +131,6 @@ def get_random_word():
         return jsonify({'error': 'No words found in the given category'}), HTTPStatus.NOT_FOUND
 
     return jsonify({'word_id': random_word.id, 'word': random_word.text}), HTTPStatus.OK
-
-@app.route('/profile')
-def profile():
-    """ if not current_user.is_authenticated:
-        flash('You must be logged in to view your profile.', 'error')
-        return redirect(url_for('login_signup')) """
-    return render_template('profile.html', title='Profile')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
