@@ -2,17 +2,42 @@
 block styles %} {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/drawing.css') }}" />
 {% endblock %} {% block content %}
+<!-- Modal to select category of word to draw -->
+<div class="modal" id="word-category-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select a category to draw</h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="category-btn" data-category="all" id="all-play-btn">ALL PLAY</button>
+        <button type="button" class="category-btn" data-category="Difficult" id="difficult-btn">DIFFICULT</button>
+        <button type="button" class="category-btn" data-category="Action" id="action-btn">ACTION</button>
+        <button type="button" class="category-btn" data-category="Person/Place/Animal"
+          id="person-btn">PERSON/PLACE/ANIMAL</button>
+        <button type="button" class="category-btn" data-category="Object" id="object-btn">OBJECT</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-bs-dismiss="modal" id="exit-modal">EXIT</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main page -->
 <div class="container-fluid" id="drawing-container">
   <div class="row">
     <div class="col-md-2 d-flex flex-column justify-content-center align-items-center" id="drawing-controls">
       <div id="timer-and-word">
+        <!-- Timer -->
         <div id="timer">
-          <h3>Time remaining</h3>
-          <!-- Remaining time label -->
+          <h4>Time remaining</h4>
+          <!-- TODO: Remaining time label -->
         </div>
-        <div id="word-to-draw">
-          <h3>Word to draw</h3>
-          <!-- Word to draw label -->
+        <!-- Word to draw -->
+        <div id="word-to-draw-section">
+          <h4>Word to draw:</h4>
+          <p id="word-to-draw"></p>
         </div>
       </div>
       <div id="tools">
@@ -59,16 +84,16 @@ block styles %} {{ super() }}
               <label for="eraser" class="eraser-label">
                 <img src="{{ url_for('static', filename='images/eraser.png') }}" alt="eraser" class="eraser-img">
               </label>
-              <button id="clear-all">Clear All</button>
+              <button type="reset" id="clear-all">Clear All</button>
             </div>
           </fieldset>
         </div>
       </div>
-      <button id="submit-drawing">SUBMIT</button>
+      <button type="submit" id="submit-drawing">SUBMIT</button>
     </div>
     <div class="col-md-10" id="drawing-area">
       <div class="text-end">
-        <button id="quit-drawing">QUIT</button>
+        <button type="button" id="quit-drawing">QUIT</button>
       </div>
       <canvas id="drawing-canvas"></canvas>
     </div>
@@ -80,6 +105,7 @@ block styles %} {{ super() }}
   <h3>Testing</h3>
 </div>
 {% endif %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
 <script> var homeUrl = "{{ url_for('home') }}"; </script>
 {% endblock %}
