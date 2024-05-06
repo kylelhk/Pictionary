@@ -1,3 +1,64 @@
+/* Modal Styles */
+.category-btn {
+    width: 300px;
+    margin: 3px 0;
+    color: white;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+}
+
+button {
+    border: 3px solid;
+    border-radius: 10px;
+}
+
+#all-play-btn {
+    background-color: #8503D5;
+    border-color: #8503D5;
+}
+
+#difficult-btn {
+    background-color: #5BC209;
+    border-color: #5BC209;
+}
+
+#action-btn {
+    background-color: #E98607;
+    border-color: #E98607;
+}
+
+#person-btn {
+    background-color: #0CB1F2;
+    border-color: #0CB1F2;
+}
+
+#object-btn {
+    background-color: #f7c200;
+    border-color: #f7c200;
+}
+
+/* Timer Styles */
+
+/* Word to Draw Styles */
+#word-to-draw-section h4 {
+    font-size: larger;
+}
+
+#word-to-draw-section p {
+    font-weight: bold;
+    border: 1px solid #0E6D95;
+    border-radius: 10px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Tool Container Styles */
 #tools {
     background-color: #e0e0e0;
@@ -6,6 +67,10 @@
     padding: 20px;
     border: none;
     border-radius: 10px;
+}
+
+legend {
+    font-size: large;
 }
 
 /* Brush Size and Colour Label Styles */
@@ -107,25 +172,22 @@
     margin: 0 10px;
 }
 
-.hidden-checkbox:checked + .eraser-label {
+.hidden-checkbox:checked+.eraser-label {
     border: 3px solid #7c7c7c;
     border-radius: 5px;
 }
-/* Button Styles*/
-button {
-    border: 3px solid;
-    border-radius: 10px;
-}
 
+/* Button Styles*/
 #clear-all {
     background-color: white;
-    border-color: #F22E2E;
+    border-color: #f86767;
     width: 90px;
     margin: 10px;
 }
 
 #clear-all:hover {
-    background-color: #F22E2E;
+    background-color: #f86767;
+    border-color: #f86767;
     color: white;
 }
 
@@ -136,18 +198,27 @@ button {
     width: 130px;
 }
 
-#quit-drawing {
+#quit-drawing, 
+#exit-modal {
     background-color: #F22E2E;
     color: white;
     border-color: #F22E2E;
-    width: 130px;
+    width: 130px;   
+}
+
+#quit-drawing{
     margin: 20px 0;
 }
 
-#submit-drawing:hover,
-#quit-drawing:hover {
-    background-color: white;
-    color: black;
+#submit-drawing:hover {
+    background-color: #0a4964;
+    border-color: #0a4964;
+}
+
+#quit-drawing:hover, 
+#exit-modal:hover {
+    background-color: #c72a2a;
+    border-color: #c72a2a;
 }
 
 /* Drawing Area Styles */
@@ -160,7 +231,7 @@ button {
     max-width: 1000px;
     max-height: 600px;
     width: 75vw;
-    height: 50vh;
+    height: 75vh;
     border: 2px solid #868686;
     border-radius: 10px;
 }
