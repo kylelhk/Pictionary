@@ -1,3 +1,151 @@
+/* .background {
+  background: url(backgroun3.jpg) no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: blur(10px);
+} */
+
+/* Dynamic typing effect for preamble */
+/* Used in login.js - dynamicTypingEffect() function */
+.typing-cursor {
+  opacity: 1;
+  animation: blink-cursor 0.8s infinite;
+}
+
+@keyframes blink-cursor {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "poppins", sans-serif;
+} */
+
+/* Preamble */
+.preamble {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  /* color: DarkBlue; */
+  /* font-size: 2.5vh; */
+}
+
+.preamble-1 {
+  font-size: 2.8vh;
+}
+
+.preamble-2 {
+  font-size: 2vh;
+}
+
+/* Hide part of the preamble for line-by-line typing effect */
+.hidden {
+  display: none;
+}
+
+/* Login and signup form container */
+.container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* Center the container */
+  width: 977px; /* = width of the video background */
+  height: 550px; /* = height of the video background */
+  margin-top: 4vh;
+  border-radius: 20px;
+  overflow: hidden; /* Hide the signup form */
+}
+
+.video-background {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* GitHub icon */
+.github-icon {
+  position: absolute;
+  bottom: 6px;
+  right: 20px;
+  z-index: 616;
+}
+
+.github-icon i {
+  color: Black;
+  font-size: 50px;
+  transition: 0.5s ease;
+}
+
+.github-icon:hover i {
+  color: #1e90ff;
+}
+
+/* Login and signup forms */
+.form {
+  position: absolute;
+  top: 15%;
+  right: 2vw;
+  width: 42%;
+  height: 70%;
+  color: White;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 139, 0.3); /* Midnight Blue with 30% opacity */
+  border-radius: 10px;
+}
+
+.form .form-box {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.form .form-box.login {
+  transform: translateX(0px);
+  transition: transform 0.6s ease;
+  transition-delay: 0.7s;
+}
+
+.form.active .form-box.login {
+  transform: translateX(430px);
+  transition-delay: 0s;
+}
+
+.form-title {
+  font-weight: bold;
+  text-align: left;
+  font-size: 3vh;
+}
+
+.input-box {
+  width: 340px;
+  height: 50px;
+  border-bottom: 2px solid#fff;
+  margin: 30px 0;
+  position: relative;
+}
+
+/* .input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding-right: 28px;
+}
+ */
+
 .login-signup-input {
   width: 100%;
   padding: 10px;
@@ -7,17 +155,123 @@
   box-sizing: border-box;
 }
 
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
 .login-signup-btn {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+  width: 40%;
+  height: 42px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
   background-color: #1e90ff;
   color: white;
+  font-size: 20px;
+  animation: pulse 2.8s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.login-signup-btn:hover {
+  background-color: White;
+  color: #1e90ff;
+  font-weight: bold;
 }
 
 .error-msg {
   color: red;
+}
+
+.input-box input.login-signup-input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding-right: 28px;
+  /* border-bottom: 1px solid #ccc; */
+  /* padding: 10px; */
+}
+
+.input-box label {
+  position: absolute;
+  top: 42%;
+  left: 2%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  font-weight: 600px;
+  pointer-events: none;
+  transition: 0.5s ease;
+}
+
+.input-box .icon {
+  position: absolute;
+  top: 13px;
+  right: 0;
+  font-size: 19px;
+}
+
+.input-box input:hover ~ label {
+  top: -5px;
+}
+
+.visibility-toggle {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 53%;
+  right: 18px;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+.remember-password {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 16px;
+  margin: -25px 0 15px;
+}
+
+.remember-me-tickbox {
+  margin-right: 3px;
+}
+
+.create-account {
+  font-size: 14.5px;
+  text-align: center;
+  margin: 25px;
+}
+
+.create-account p a {
+  color: #fff;
+  font-weight: 600px;
+  text-decoration: none;
+}
+
+.create-account p a:hover {
+  text-decoration: underline;
+}
+
+/* Sign up form */
+.form .form-box.signup {
+  transform: translateX(430px);
+  transition: transform 0.6s ease;
+  transition-delay: 0s;
+}
+
+.form.active .form-box.signup {
+  transform: translateX(0px);
+  transition-delay: 0.7s;
 }
