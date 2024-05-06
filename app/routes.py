@@ -3,10 +3,11 @@ import pytz
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import current_user, login_user, logout_user
-from app.models import User, Drawing
+from app.models import User, Word, Drawing
 from app.forms import LoginForm, SignupForm
 from werkzeug.urls import url_parse
 from http import HTTPStatus
+from sqlalchemy.sql.expression import func
 
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
@@ -82,6 +83,7 @@ def drawing():
         return redirect(url_for('login_signup')) """
     return render_template('drawing.html', title='Create Drawing')
 
+# Save a drawing in the database
 @app.route('/submit-drawing', methods=['POST'])
 # @login_required
 def submit_drawing():
@@ -108,6 +110,27 @@ def submit_drawing():
     flash('Your drawing has been successfully submitted')
     
     return jsonify({'message': 'Drawing saved successfully!'}), HTTPStatus.CREATED
+
+# Retrieve a random word to draw
+@app.route('/get-random-word', methods=['GET'])
+# @login_required
+def get_random_word():
+    # Get category from request parameters
+    category = request.args.get('category')
+    # If no category given, return an error
+    if not category:
+        return jsonify({'error': 'Category is required'}), HTTPStatus.BAD_REQUEST
+
+    # Query database to get a random word from the given category
+    if category == 'all':
+        random_word = Word.query.order_by(func.random()).first()
+    else:
+        random_word = Word.query.filter_by(category=category).order_by(func.random()).first()
+    # If no word found, return an error
+    if not random_word:
+        return jsonify({'error': 'No words found in the given category'}), HTTPStatus.NOT_FOUND
+
+    return jsonify({'word_id': random_word.id, 'word': random_word.text}), HTTPStatus.OK
 
 if __name__ == '__main__':
     app.run(debug=True)

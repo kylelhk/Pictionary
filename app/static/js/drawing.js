@@ -1,3 +1,36 @@
+// Display modal when window loads
+window.addEventListener('load', () => {
+    let wordCatModal = new bootstrap.Modal('#word-category-modal');
+    wordCatModal.show();
+    document.querySelectorAll('.category-btn').forEach(button => {
+        button.addEventListener("click", () => {
+            const category = button.getAttribute('data-category');
+            fetchWord(category, wordCatModal);
+        });
+    });
+});
+
+// Fetch a random word from the chosen category
+function fetchWord(category, modal) {
+    const url = '/get-random-word?' + new URLSearchParams({ category: category }).toString()
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const wordContainer = document.getElementById('word-to-draw')
+            wordContainer.innerHTML = data.word; // Display the word
+            wordContainer.setAttribute('data-word-id', data.word_id); // Store word_id in data attribute
+            modal.hide(); // Close the modal
+        })
+        .catch(error => console.error("Error fetching word:", error));
+}
+
+// Redirect to the Home screen when the exit button is clicked
+document.getElementById("exit-modal").addEventListener("click", function () {
+    if (confirm("Are you sure you want to quit drawing?")) {
+        window.location.href = homeUrl;
+    }
+})
+
 // Get canvas element and its context
 const canvas = document.getElementById("drawing-canvas");
 const context = canvas.getContext("2d");
@@ -83,6 +116,7 @@ clearButton.addEventListener("click", () => {
 // Submit drawing
 function saveDrawing() {
     const drawingData = canvas.toDataURL();
+    const wordId = document.getElementById('word-to-draw').getAttribute('data-word-id');
     fetch('/submit-drawing', {
         method: 'POST',
         headers: {
@@ -90,7 +124,7 @@ function saveDrawing() {
         },
         body: JSON.stringify({
             drawingData: drawingData,
-            wordId: 1, // TODO: Add variable for word to draw
+            wordId: wordId, // TODO: Add variable for word to draw
         })
     })
     .then(response => response.json())
