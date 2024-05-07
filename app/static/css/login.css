@@ -3,7 +3,7 @@
   position: absolute;
   top: 16%;
   left: 53%;
-  width: 1100px;
+  width: 1120px;
   transform: translate(-50%, -50%);
   text-align: left;
 }
@@ -45,6 +45,73 @@
 /* Hide part of the preamble for line-by-line typing effect */
 .hidden {
   display: none;
+}
+
+/* Preamble responsiveness */
+@media (max-width: 1120px) {
+  .preamble {
+    width: 800px;
+  }
+  .preamble-1 {
+    font-size: 22px;
+  }
+  .preamble-2 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 830px) {
+  .preamble {
+    width: 700px;
+  }
+  .preamble-1 {
+    font-size: 21px;
+  }
+  .preamble-2 {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 767px) {
+  .preamble {
+    width: 600px;
+  }
+  .preamble-1 {
+    font-size: 18px;
+  }
+  .preamble-2 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 622px) {
+  .preamble {
+    width: 500px;
+  }
+  .preamble-1 {
+    font-size: 15px;
+  }
+  .preamble-2 {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 525px) {
+  .preamble-2 {
+    display: none;
+  }
+}
+
+@media (max-height: 885px) {
+  .preamble-2 {
+    display: none;
+  }
+}
+
+@media (max-height: 800px) {
+  .preamble {
+    display: none;
+  }
 }
 
 /* Login and signup form container */
@@ -96,6 +163,34 @@
   backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 139, 0.3); /* MidnightBlue with 30% opacity */
   border-radius: 10px;
+}
+
+/* Container and form responsiveness */
+@media (max-width: 991px) {
+  .form {
+    width: 52%;
+  }
+}
+
+@media (max-width: 767px) {
+  .form {
+    width: 68%;
+  }
+}
+
+@media (max-width: 575px) {
+  .container {
+    width: 90%;
+  }
+  .form {
+    width: 84%;
+  }
+}
+
+@media (max-height: 680px) {
+  .video-background {
+    display: none;
+  }
 }
 
 .form .form-box {
