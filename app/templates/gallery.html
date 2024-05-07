@@ -11,15 +11,14 @@ Guessing Gallery
 {% endblock %}
 
 {% block content %}
-<h2>Guessing Gallery</h2>
-<div class="mb-3">
-  <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-          <i class="bi bi-search"></i>  <!-- Bootstrap 5 search icon -->
-      </button>
+<div class="mb-3 d-flex justify-content-start" style="margin-top: 20px;">
+    <div class="input-group" style="width: 250px;">
+        <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+            <i class="bi bi-search"></i>  <!-- Bootstrap 5 search icon -->
+        </button>
+    </div>
   </div>
-</div>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -102,21 +101,21 @@ Guessing Gallery
     </tbody>
 
 </table>
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
-</nav>
+<div class="d-flex justify-content-end">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div>
 {% if not current_user.is_authenticated %}
 <div>
     <h3>Testing</h3>
 </div>
 {% endif %}
 {% endblock %}
-
-
 
