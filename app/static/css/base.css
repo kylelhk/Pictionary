@@ -204,7 +204,7 @@ footer {
 /* Nav link hover effects */
 .nav-link:not(.active):hover {
   background: linear-gradient(90deg, White, #afeeee);
-  font-family: Sedgwick Ave;
+  font-family: Sedgwick Ave, serif;
   font-weight: bold;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); // Glow effect
   transition: background-color 0.3s ease, box-shadow 0.3s ease;

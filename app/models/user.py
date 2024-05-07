@@ -7,6 +7,7 @@ from flask_login import UserMixin
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -30,6 +31,7 @@ class User(UserMixin, db.Model):
     # Check password hash
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
 
 # User loader function for flask-login
 

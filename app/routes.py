@@ -12,6 +12,7 @@ from sqlalchemy.sql.expression import func
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
 
+
 # Login and Signup Page
 @app.route('/login', methods=['GET', 'POST'])
 def login_signup():
@@ -50,11 +51,13 @@ def login_signup():
 
     return render_template('login.html', login_form=login_form, signup_form=signup_form, title='Log In / Sign Up')
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
+
 
 # Home Page
 @app.route('/')
@@ -65,6 +68,7 @@ def home():
         return redirect(url_for('login_signup')) """
     return render_template('home.html', title='Home')
 
+
 # Guessing Gallery Page
 @app.route('/gallery')
 def gallery():
@@ -72,6 +76,7 @@ def gallery():
         flash('You must be logged in to access the Guessing Gallery page.', 'error')
         return redirect(url_for('login_signup')) """
     return render_template('gallery.html', title='Guessing Gallery')
+
 
 # Create Drawing Page
 @app.route('/drawing')
@@ -83,15 +88,16 @@ def drawing():
         return redirect(url_for('login_signup')) """
     return render_template('drawing.html', title='Create Drawing')
 
+
 # Save a drawing in the database
 @app.route('/submit-drawing', methods=['POST'])
 # @login_required
 def submit_drawing():
     if not request.json:
         return jsonify({'error': 'No JSON in request'}), HTTPStatus.BAD_REQUEST
-    
+
     word_id = request.json.get('wordId')
-    creator_id = current_user.id if current_user.is_authenticated else None # TODO: remove else None once users implemented
+    creator_id = current_user.id if current_user.is_authenticated else None  # TODO: remove else None once users implemented
     drawing_data = request.json.get('drawingData')
 
     if not word_id or not drawing_data:
@@ -101,15 +107,16 @@ def submit_drawing():
         word_id=word_id,
         creator_id=creator_id,
         drawing_data=drawing_data,
-        created_at=now # TODO: Using `now` defined above, but it's not saving the correct date and time?
+        created_at=now  # TODO: Using `now` defined above, but it's not saving the correct date and time?
     )
 
     db.session.add(new_drawing)
     db.session.commit()
 
     flash('Your drawing has been successfully submitted')
-    
+
     return jsonify({'message': 'Drawing saved successfully!'}), HTTPStatus.CREATED
+
 
 # Retrieve a random word to draw
 @app.route('/get-random-word', methods=['GET'])
@@ -131,6 +138,7 @@ def get_random_word():
         return jsonify({'error': 'No words found in the given category'}), HTTPStatus.NOT_FOUND
 
     return jsonify({'word_id': random_word.id, 'word': random_word.text}), HTTPStatus.OK
+
 
 if __name__ == '__main__':
     app.run(debug=True)
