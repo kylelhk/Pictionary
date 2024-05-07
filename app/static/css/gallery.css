@@ -1,8 +1,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+.search-bar {
+  margin-top: 20px;
+}
+
 .input-group {
-    width: 250px; /* Adjust width as needed */
-  }
+  width: 250px; /* Adjust width as needed */
+}
   
-  .pagination {
-    margin-top: 20px;
-  }
+.pagination {
+  margin-top: 20px;
+}
