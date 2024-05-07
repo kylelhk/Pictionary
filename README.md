@@ -43,11 +43,20 @@ CITS5505 Agile Web Development - Group Project
 git clone https://github.com/kylelhk/Pictionary
 ```
 
-2. Set the environment
-
+2. Setup virtual environment
 ```bash
+pip -m venv venv
 source venv/bin/activate
-export FLASK_APP=app.py
+```
+
+
+2. Create a `.flaskenv` environment file to setup environment variables. 
+(Save the file in the same location as `.flaskenv.example`). Copy the content of `.flaskenv.example` to `.flaskenv`. 
+
+
+3. Download and install the required packages by running the following command
+```bash
+
 pip install -r requirements.txt
 
 ```
@@ -62,7 +71,6 @@ flask db migrate
 flask db upgrade
 ```
 
-[To set a database "test.db" in the repository. In that case, the above steps can be skipped.]
 
 Run this command to add words to draw and guess to the app's database
 ```bash
