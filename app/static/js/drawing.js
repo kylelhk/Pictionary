@@ -44,7 +44,7 @@ canvas.height = 600;
 function startDrawing(event) {
     isDrawing = true;
     draw(event);
-};
+}
 
 // Function to handle the drawing as the mouse moves
 function draw(event) {
@@ -55,13 +55,13 @@ function draw(event) {
     let y = (event.pageY - canvasBounds.top - scrollY) / canvasBounds.height * canvas.height;
     context.lineTo(x, y);
     context.stroke();
-};
+}
 
 // Function to end drawing
 function stopDrawing() {
     isDrawing = false;
     context.beginPath();
-};
+}
 
 // Event listeners to handle mouse actions
 canvas.addEventListener("mousedown", startDrawing);
@@ -71,9 +71,8 @@ canvas.addEventListener("mouseout", stopDrawing);
 
 // Change brush size upon selection
 function updateBrushSize() {
-    let selectedSize = document.querySelector('input[name="brush-size"]:checked').value;
-    context.lineWidth = selectedSize;
-};
+    context.lineWidth = document.querySelector('input[name="brush-size"]:checked').value;
+}
 
 updateBrushSize(); // set initial brush size
 
@@ -84,9 +83,8 @@ brushSizes.forEach((size) => {
 
 // Change brush colour upon selection
 function updateBrushColour() {
-    let selectedColour = document.querySelector('input[name="brush-colour"]:checked').value;
-    context.strokeStyle = selectedColour;
-};
+    context.strokeStyle = document.querySelector('input[name="brush-colour"]:checked').value;
+}
 
 const brushColours = document.querySelectorAll('input[name="brush-colour"]');
 brushColours.forEach((colour) => {
@@ -133,7 +131,7 @@ function saveDrawing() {
         window.location.href = homeUrl;
     })
     .catch((error) => console.error('Error:', error));
-};
+}
 
 const submitButton = document.getElementById("submit-drawing");
 submitButton.addEventListener("click", saveDrawing);

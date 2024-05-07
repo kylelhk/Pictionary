@@ -1,5 +1,6 @@
 from app import db
 
+
 class Drawing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     word_id = db.Column(db.Integer, db.ForeignKey('word.id'), index=True)
@@ -12,4 +13,4 @@ class Drawing(db.Model):
     guess = db.relationship('Guess', back_populates='drawing')
 
     def __repr__(self):
-        return(f'<Drawing "id={self.id}, word_id={self.word_id}, creator_id={self.creator_id}">')
+        return f'<Drawing "id={self.id}, word_id={self.word_id}, creator_id={self.creator_id}">'
