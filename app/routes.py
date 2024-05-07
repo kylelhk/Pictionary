@@ -2,13 +2,14 @@ from datetime import datetime
 from http import HTTPStatus
 
 import pytz
-from app import app, db
-from app.forms import LoginForm, SignupForm
-from app.models import User, Word, Drawing
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import current_user, login_user, logout_user
 from sqlalchemy.sql.expression import func
 from werkzeug.urls import url_parse
+
+from app import app, db
+from app.forms import LoginForm, SignupForm
+from app.models import User, Word, Drawing
 
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
@@ -102,7 +103,7 @@ def drawing_detail(drawing_id):
     if image:
         return render_template("guess.html", image=image)
 
-    return "Does not exist"
+    return jsonify({"error": "Image does not exist"}), HTTPStatus.NOT_FOUND
 
 
 # Save a drawing in the database
