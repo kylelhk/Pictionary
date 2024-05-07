@@ -1,1 +1,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+.input-group {
+    width: 250px; /* Adjust width as needed */
+  }
+  
+  .pagination {
+    margin-top: 20px;
+  }
