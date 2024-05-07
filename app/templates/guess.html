@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Guess Drawing
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/guess.css') }}"/>
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    {#  IMAGE SHOWING DRAWING #}
+    <div class="image-container">
+      <img class="guess-image" src="{{ image.drawing_data }}" alt="Rendered Image">
+    </div>
+
+    {#  GUESS SECTION #}
+    <div class="guess-container">
+      <div class="chat-box">
+        <div class="header">
+          TAKE A GUESS
+        </div>
+        <div class="chat-room">
+          <div class="message message-right">
+            <div class="bubble bubble-dark">
+              what is going on?
+            </div>
+          </div>
+          <div class="message message-left">
+            <div class="bubble bubble-light">
+              You guessed correctly
+            </div>
+          </div>
+        </div>
+        <div class="type-area">
+          <div class="input-wrapper">
+            <input type="text" id="inputText" placeholder="Type your guess here..."/>
+          </div>
+          <button class="button-send">Guess</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/guess.js') }}"></script>
+
+{% endblock %}
