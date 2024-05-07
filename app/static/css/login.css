@@ -1,12 +1,36 @@
-/* .background {
-  background: url(backgroun3.jpg) no-repeat;
-  background-position: center;
-  background-size: cover;
-  filter: blur(10px);
-} */
+/* Preamble */
+.preamble {
+  position: absolute;
+  top: 16%;
+  left: 53%;
+  width: 1100px;
+  transform: translate(-50%, -50%);
+  text-align: left;
+}
 
-/* Dynamic typing effect for preamble */
-/* Used in login.js - dynamicTypingEffect() function */
+.preamble-1 {
+  font-family: Sedgwick Ave;
+  font-size: 2.8vh;
+}
+
+.guess {
+  color: Green;
+}
+
+.that {
+  color: Blue;
+}
+
+.drawing {
+  color: Orange;
+}
+
+.preamble-2 {
+  font-size: 2vh;
+}
+
+/* Dynamic typing effect */
+/* .typing-cursor used in login.js - dynamicTypingEffect() function */
 .typing-cursor {
   opacity: 1;
   animation: blink-cursor 0.8s infinite;
@@ -16,33 +40,6 @@
   50% {
     opacity: 0;
   }
-}
-
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "poppins", sans-serif;
-} */
-
-/* Preamble */
-.preamble {
-  position: absolute;
-  top: 16%;
-  left: 50%;
-  width: 80%;
-  transform: translate(-50%, -50%);
-  text-align: left;
-  /* color: DarkBlue; */
-  /* font-size: 2.5vh; */
-}
-
-.preamble-1 {
-  font-size: 2.8vh;
-}
-
-.preamble-2 {
-  font-size: 2vh;
 }
 
 /* Hide part of the preamble for line-by-line typing effect */
@@ -58,8 +55,8 @@
   transform: translate(-50%, -50%); /* Center the container */
   width: 977px; /* = width of the video background */
   height: 550px; /* = height of the video background */
-  margin-top: 4vh;
   border-radius: 20px;
+  margin-top: 20px;
   overflow: hidden; /* Hide the signup form */
 }
 
@@ -73,8 +70,8 @@
 /* GitHub icon */
 .github-icon {
   position: absolute;
-  bottom: 6px;
-  right: 20px;
+  bottom: 0.1px;
+  left: 18px;
   z-index: 616;
 }
 
@@ -91,13 +88,13 @@
 /* Login and signup forms */
 .form {
   position: absolute;
-  top: 15%;
+  top: 13%;
   right: 2vw;
   width: 42%;
-  height: 70%;
+  height: 74%;
   color: White;
   backdrop-filter: blur(10px);
-  background-color: rgba(0, 0, 139, 0.3); /* Midnight Blue with 30% opacity */
+  background-color: rgba(0, 0, 139, 0.3); /* MidnightBlue with 30% opacity */
   border-radius: 10px;
 }
 
@@ -110,51 +107,69 @@
   height: 100%;
 }
 
-.form .form-box.login {
-  transform: translateX(0px);
-  transition: transform 0.6s ease;
-  transition-delay: 0.7s;
-}
-
-.form.active .form-box.login {
-  transform: translateX(430px);
-  transition-delay: 0s;
-}
-
 .form-title {
   font-weight: bold;
   text-align: left;
-  font-size: 3vh;
+  font-size: 28px;
+  margin-left: 2px;
+  margin-bottom: -8px;
 }
 
+/* Input field styling */
 .input-box {
   width: 340px;
   height: 50px;
-  border-bottom: 2px solid#fff;
-  margin: 30px 0;
+  border-bottom: 2px solid White;
+  margin: 17px 0;
   position: relative;
 }
 
-/* .input-box input {
-  width: 100%;
+.login-signup-input {
+  padding: 8px 28px 8px 8px;
+  margin: 10px 0;
+  color: White;
+  width: 90%;
   height: 100%;
   background: transparent;
   border: none;
   outline: none;
   font-size: 16px;
-  padding-right: 28px;
-}
- */
-
-.login-signup-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
 }
 
+.input-box label {
+  position: absolute;
+  top: 30%;
+  left: 1%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  transition: 0.5s ease;
+}
+
+.input-box input:hover ~ label {
+  top: -1px;
+}
+
+.input-box .icon {
+  position: absolute;
+  top: 13px;
+  right: 0;
+  font-size: 19px;
+}
+
+/* Placeholder styling */
+.login-signup-input::placeholder {
+  font-style: italic;
+}
+
+.login .login-signup-input::placeholder {
+  color: LightSkyBlue;
+}
+
+.signup .login-signup-input::placeholder {
+  color: Aquamarine;
+}
+
+/* Login and signup buttons */
 .btn-container {
   display: flex;
   justify-content: center;
@@ -162,7 +177,8 @@
 
 .login-signup-btn {
   width: 40%;
-  height: 42px;
+  height: 40px;
+  margin-bottom: -15px;
   border: 2px solid #ccc;
   border-radius: 10px;
   background-color: #1e90ff;
@@ -189,46 +205,15 @@
   font-weight: bold;
 }
 
+/* Error message for invalid user credentials */
 .error-msg {
   color: red;
 }
 
-.input-box input.login-signup-input {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  padding-right: 28px;
-  /* border-bottom: 1px solid #ccc; */
-  /* padding: 10px; */
-}
-
-.input-box label {
-  position: absolute;
-  top: 42%;
-  left: 2%;
-  transform: translateY(-50%);
-  font-size: 16px;
-  font-weight: 600px;
-  pointer-events: none;
-  transition: 0.5s ease;
-}
-
-.input-box .icon {
-  position: absolute;
-  top: 13px;
-  right: 0;
-  font-size: 19px;
-}
-
-.input-box input:hover ~ label {
-  top: -5px;
-}
-
+/* Visibility toggle for password field */
 .visibility-toggle {
   background: none;
+  color: White;
   border: none;
   position: absolute;
   top: 53%;
@@ -237,35 +222,48 @@
   font-size: 20px;
 }
 
+/* Remember me checkbox */
 .remember-password {
   display: flex;
   justify-content: flex-end;
   font-size: 16px;
-  margin: -25px 0 15px;
+  margin: -12px 0 15px;
 }
 
 .remember-me-tickbox {
   margin-right: 3px;
 }
 
+/* Login and signup links */
 .create-account {
-  font-size: 14.5px;
+  font-size: 15px;
   text-align: center;
   margin: 25px;
 }
 
-.create-account p a {
-  color: #fff;
-  font-weight: 600px;
-  text-decoration: none;
-}
-
-.create-account p a:hover {
+.create-account a {
+  color: White;
   text-decoration: underline;
 }
 
-/* Sign up form */
+.create-account a:hover {
+  color: #1e90ff;
+}
+
+/* Form toggle effects */
+.form .form-box.login {
+  transform: translateX(0px);
+  transition: transform 0.6s ease;
+  transition-delay: 0.7s;
+}
+
+.form.active .form-box.login {
+  transform: translateX(430px);
+  transition-delay: 0s;
+}
+
 .form .form-box.signup {
+  top: 10px;
   transform: translateX(430px);
   transition: transform 0.6s ease;
   transition-delay: 0s;

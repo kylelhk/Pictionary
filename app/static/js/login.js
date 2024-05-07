@@ -16,7 +16,7 @@ $(function () {
         $typingText.append(text[index++]);
         setTimeout(typeNext, speed);
       } else {
-        setTimeout(() => $cursor.remove(), 2300); // Remove cursor after completion
+        setTimeout(() => $cursor.remove(), 2250); // Remove cursor after completion
         if (callback) callback(); // Trigger next function if a callback is provided
       }
     }
