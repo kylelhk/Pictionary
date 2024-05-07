@@ -11,14 +11,15 @@ Guessing Gallery
 {% endblock %}
 
 {% block content %}
-<div class="mb-3 d-flex justify-content-start" style="margin-top: 20px;">
-    <div class="input-group" style="width: 250px;">
-        <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-            <i class="bi bi-search"></i>  <!-- Bootstrap 5 search icon -->
-        </button>
+<div class="search-bar">
+    <div class="input-group" >
+      <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+        <i class="bi bi-search"></i> <!-- Bootstrap 5 search icon -->
+      </button>
     </div>
-  </div>
+</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -113,9 +114,8 @@ Guessing Gallery
     </nav>
 </div>
 {% if not current_user.is_authenticated %}
-<div>
-    <h3>Testing</h3>
-</div>
 {% endif %}
 {% endblock %}
+
+
 
