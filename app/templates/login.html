@@ -1,93 +1,209 @@
-{% extends "base.html" %} {% block title %} Log In / Sign Up {% endblock %} {%
+{% extends "base.html" %} {% block title %} Login / Sign Up {% endblock %} {%
 block styles %} {{ super() }}
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/login.css') }}"
 />
+<link
+  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+/>
 {% endblock %} {% block content %}
-<div>
-  <!-- Log In section -->
-  <form method="post">
-    {{ login_form.csrf_token }}
-    <h1>Log In</h1>
-    <p>
-      <!-- Username input field -->
-      <label for="username">Username:</label>
-      {{ login_form.username(size=20, class_='login-signup-input',
-      placeholder='Enter your username...', required=True) }}<br />
-      {% for error in login_form.username.errors %}
-      <span class="error-msg">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      <!-- Password input field -->
-      <label for="password">Password:</label>
-      {{ login_form.password(size=20, class_='login-signup-input',
-      placeholder='Enter your password...', required=True) }}<br />
-      {% for error in login_form.password.errors %}
-      <span class="error-msg">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>{{ login_form.remember_me() }} {{ login_form.remember_me.label }}</p>
-    <p>
-      <input
-        type="submit"
-        name="action"
-        value="Login"
-        class="login-signup-btn"
-      />
-    </p>
-  </form>
+<!-- Preamble -->
+<div class="preamble">
+  <div class="preamble-1">
+    Join the <span class="guess">Guess</span> <span class="that">That</span>
+    <span class="drawing">Drawing</span> community - where your sketches come to
+    life!
+  </div>
+  <!-- Dynamic typing effect for preamble -->
+  <div class="preamble-2">
+    <div class="typing first-line">
+      Unleash your creativity when you are given a drawing prompt, and challenge
+      others to guess what you've drawn.
+    </div>
+    <div class="typing second-line hidden">
+      Grab your friends and start guessing today!
+    </div>
+  </div>
 </div>
-<div>
-  <!-- Sign Up section -->
-  <form method="post">
-    {{ signup_form.csrf_token }}
-    <h1>Sign Up</h1>
-    <p>
-      <!-- Username input field -->
-      <label for="username">Username:</label>
-      {{ signup_form.username(size=20, class_='login-signup-input',
-      placeholder='Choose a username...', required=True) }}<br />
-      {% for error in signup_form.username.errors %}
-      <span class="error-msg">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      <!-- Email input field -->
-      <label for="email">Email:</label>
-      {{ signup_form.email(size=20, class_='login-signup-input',
-      placeholder='Enter your email...', required=True) }}<br />
-      {% for error in signup_form.email.errors %}
-      <span class="error-msg">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      <!-- Password input field -->
-      <label for="password">Password:</label>
-      {{ signup_form.password(size=20, class_='login-signup-input',
-      placeholder='Create a password...', required=True) }}<br />
-      {% for error in signup_form.password.errors %}
-      <span class="error-msg">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      <!-- Confirm password field -->
-      <label for="confirm_password">Confirm Password:</label>
-      {{ signup_form.confirm_password(size=20, class_='login-signup-input',
-      placeholder='Confirm your password...', required=True) }}<br />
-      {% for error in signup_form.confirm_password.errors %}
-      <span class="error-msg">[{{ error }}]</span>
-      {% endfor %}
-    </p>
-    <p>
-      <input
-        type="submit"
-        name="action"
-        value="Sign Up"
-        class="login-signup-btn"
-      />
-    </p>
-  </form>
+
+<!-- Login and Signup container -->
+<div class="container">
+  <!-- Video background created using ChatGPT and VEED.IO: https://www.veed.io/view/7049d95a-5424-4639-861c-7791fe504bf3?panel=share -->
+  <video class="video-background" autoplay muted>
+    <source
+      src="https://github.com/kylelhk/video/raw/main/GuessThatDrawing.mp4"
+      type="video/mp4"
+    />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- GitHub icon -->
+  <div class="github-icon">
+    <a
+      href="https://github.com/kylelhk/Pictionary"
+      class="btn-outline-primary"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <i class="bi bi-github"></i>
+    </a>
+  </div>
+
+  <!-- Flask WTF - Reference: https://flask-wtf.readthedocs.io/en/1.2.x/ -->
+  <div class="form">
+    <!-- Login form -->
+    <div class="form-box login">
+      <form method="post">
+        <!-- A hidden CSRF token for preventing CSRF attacks -->
+        {{ login_form.csrf_token }}
+        <div class="form-title">Login</div>
+        <div class="input-box">
+          <!-- Username input field -->
+          <span class="icon"><i class="bx bxs-user"></i></span>
+          {{ login_form.username(size=20, class_='login-signup-input',
+          placeholder='Enter your username...', required=True) }}
+          <label for="username">Username</label>
+          <!-- Error message for invalid user credentials -->
+          <!-- This will only appear after the login function is implemented. -->
+          {% for error in login_form.username.errors %}
+          <span class="error-msg">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+
+        <!-- Password input field -->
+        <div class="input-box">
+          <!-- Password visibility toggle -->
+          <button type="button" id="togglePassword" class="visibility-toggle">
+            <i class="bi bi-eye"></i>
+          </button>
+          <span class="icon"><i class="bx bxs-lock-alt"></i></span>
+          {{ login_form.password(size=20, class_='login-signup-input',
+          id='password', placeholder='Enter your password...', required=True) }}
+          <label for="password">Password</label>
+          {% for error in login_form.password.errors %}
+          <span class="error-msg">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+        <div class="remember-password">
+          {{ login_form.remember_me(class='remember-me-tickbox')}} {{
+          login_form.remember_me.label }}
+        </div>
+
+        <!-- Login button -->
+        <!-- <button class="btn" type="submit">Login In</button> -->
+
+        <div class="btn-container">
+          <input
+            type="submit"
+            name="action"
+            value="Login"
+            class="login-signup-btn"
+          />
+        </div>
+
+        <!-- Form toggle -->
+        <div class="create-account">
+          Haven't got an account?
+          <a href="#" class="signup-link">Sign Up</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Signup form -->
+    <div class="form-box signup">
+      <form method="post">
+        {{ signup_form.csrf_token }}
+        <div class="form-title">Sign Up</div>
+
+        <!-- Username input field -->
+        <div class="input-box">
+          <span class="icon"><i class="bx bxs-user"></i></span>
+          {{ signup_form.username(size=20, class_='login-signup-input',
+          placeholder='Choose a username...', required=True) }}
+          <label for="username">Username</label>
+          {% for error in signup_form.username.errors %}
+          <span class="error-msg">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+
+        <!-- Email input field -->
+        <div class="input-box">
+          <span class="icon"><i class="bx bxs-envelope"></i></span>
+          {{ signup_form.email(size=20, class_='login-signup-input',
+          placeholder='Enter your email...', required=True) }}
+          <label for="email">Email</label>
+          {% for error in signup_form.email.errors %}
+          <span class="error-msg">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+
+        <!-- Password input field -->
+        <div class="input-box">
+          <!-- Password visibility toggle -->
+          <button
+            type="button"
+            id="toggleSignupPassword"
+            class="visibility-toggle"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+          <span class="icon"><i class="bx bxs-lock-alt"></i></span>
+          {{ signup_form.password(size=20, class_='login-signup-input',
+          id='signup-password', placeholder='Create a password...',
+          required=True) }}
+          <label for="signup-password">Password</label>
+          {% for error in signup_form.password.errors %}
+          <span class="error-msg">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+
+        <!-- Confirm password field -->
+        <div class="input-box">
+          <!-- Password visibility toggle -->
+          <button
+            type="button"
+            id="toggleConfirmPassword"
+            class="visibility-toggle"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+          <span class="icon"><i class="bx bxs-lock-alt"></i></span>
+          {{ signup_form.confirm_password(size=20, class_='login-signup-input',
+          id='confirm-password', placeholder='Confirm your password...',
+          required=True) }}
+          <label for="confirm_password">Confirm Password</label>
+          {% for error in signup_form.confirm_password.errors %}
+          <span class="error-msg">[{{ error }}]</span>
+          {% endfor %}
+        </div>
+
+        <!-- Sign up button -->
+        <div class="btn-container">
+          <input
+            type="submit"
+            name="action"
+            value="Sign Up"
+            class="login-signup-btn"
+          />
+        </div>
+
+        <!-- Form toggle -->
+        <div class="create-account">
+          Already got an account? <a href="#" class="login-link">Log In</a>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+<!-- jQuery dependency -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- JS file -->
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}
