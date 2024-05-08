@@ -17,10 +17,10 @@ styles%} {{ super() }}
         <!-- Points -->
         <div class="col-md-4">
           <div class="points-title">Your Points</div>
-          <div class="points-bg"><span class="points">[points]</span></div>
+          <div class="points-bg"><span class="points">100</span></div>
         </div>
         <!-- Pie chart -->
-        <div class="col-md-8 pie-container">[ECharts]</div>
+        <div class="col-md-8 pie-container"></div>
       </div>
 
       <!-- Activity Feed -->
@@ -104,6 +104,8 @@ styles%} {{ super() }}
 
     <!-- jQuery dependency -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- ECharts dependency -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
     <!-- JS file -->
     <script src="{{ url_for('static', filename='js/home.js') }}"></script>
   </div>

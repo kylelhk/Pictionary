@@ -15,7 +15,7 @@ main {
 .welcome-message {
   text-align: center;
   font: bold 40px "Sedgwick Ave";
-  margin-bottom: 15px;
+  margin: 10px 0;
 }
 
 .panel {
@@ -24,8 +24,10 @@ main {
 
 .points-container {
   display: flex;
+  justify-content: center;
   align-items: center;
-  height: 30%;
+  height: 35%;
+  margin-top: 3vh;
 }
 
 .points-title {
@@ -35,7 +37,7 @@ main {
 }
 
 .points-bg {
-  margin: 15px 40px;
+  margin: 15px 30px;
   border-radius: 10px;
   background-color: AliceBlue;
   z-index: 0;
@@ -83,19 +85,17 @@ main {
   }
 }
 
-/* Activity Feed */
-.feed-container {
-  /* background-color: LightBlue; */
-  /* overflow: hidden; */
-  transition: all 0.3s ease;
-  height: 70%;
-  /* opacity: 0.8; */
+.pie-container {
+  width: 46%;
+  height: 20vw;
+  padding-top: 2vh;
 }
 
-/* .grid-item:hover {
-  opacity: 1;
-  transform: scale(1.08);
-} */
+/* Activity Feed */
+.feed-container {
+  transition: all 0.3s ease;
+  height: 65%;
+}
 
 .feed-title {
   font-size: 2.5vw;
@@ -137,7 +137,7 @@ main {
 }
 
 .table {
-  font-size: 1.1vw;
+  font-size: 1.2vw;
   overflow-x: auto;
 }
 
