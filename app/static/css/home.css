@@ -14,14 +14,16 @@ main {
 /* Welcome message */
 .welcome-message {
   text-align: center;
-  font: bold 40px "Sedgwick Ave";
+  font: bold 50px "Sedgwick Ave";
   margin: 10px 0;
 }
 
+/* Main panel */
 .panel {
   height: 100%;
 }
 
+/* Points summary */
 .points-container {
   display: flex;
   justify-content: center;
@@ -85,10 +87,23 @@ main {
   }
 }
 
+/* Pie chart */
 .pie-container {
   width: 46%;
   height: 20vw;
   padding-top: 2vh;
+}
+
+@media (max-width: 770px) {
+  .pie-container {
+    width: 28%;
+  }
+}
+
+@media (max-width: 560px) {
+  .pie-container {
+    display: none;
+  }
 }
 
 /* Activity Feed */
@@ -136,6 +151,14 @@ main {
   width: 90%;
 }
 
+.content {
+  padding: 10px;
+  background-color: white;
+  color: black;
+  font-size: 1vw;
+  border: 2px solid LightGrey;
+}
+
 .table {
   font-size: 1.2vw;
   overflow-x: auto;
@@ -146,15 +169,7 @@ main {
   width: 25%; /* Distribute the width equally among all four columns */
 }
 
-.content {
-  padding: 10px;
-  background-color: white;
-  color: black;
-  font-size: 1vw;
-  border: 2px solid LightGrey;
-}
-
-.hidden {
+.feed-table .hidden {
   display: none;
 }
 
@@ -215,8 +230,8 @@ main {
   flex: 1;
   display: flex;
   align-items: center;
-  text-align: left; /* Keeps username text left-aligned */
-  padding-left: 10px; /* Adds some padding for better visual spacing */
+  text-align: left;
+  padding-left: 10px;
 }
 
 .board-table .col-md-7 {

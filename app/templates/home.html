@@ -19,7 +19,9 @@ styles%} {{ super() }}
           <div class="points-title">Your Points</div>
           <div class="points-bg"><span class="points">100</span></div>
         </div>
-        <!-- Pie chart -->
+
+        <!-- Pie chart implemented using ECharts library and home.js -->
+        <!-- Reference: https://echarts.apache.org/handbook/en/how-to/chart-types/pie/basic-pie/ -->
         <div class="col-md-8 pie-container"></div>
       </div>
 
@@ -27,12 +29,16 @@ styles%} {{ super() }}
       <!-- div id assigned for scalability -->
       <div class="feed-container" id="item1">
         <div class="feed-title">Activity Feed</div>
+
+        <!-- Tabs for switching between Games In Progress and New Games -->
         <div class="tabs">
           <button class="tab active" data-tab="progress">
             Games In Progress
           </button>
           <button class="tab" data-tab="new">New Games</button>
         </div>
+
+        <!-- Table for displaying Games In Progress and New Games -->
         <div class="feed-table">
           <div class="content" id="content-item1-progress">
             <table class="table table-striped">

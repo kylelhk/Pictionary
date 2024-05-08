@@ -13,6 +13,7 @@ $(function () {
     container.find(`.content[id$="${activeTab}"]`).removeClass("hidden");
   }
 
+  // Initialise tabs
   function initialiseTabs() {
     $(".tabs .tab").click(function () {
       const containerId = $(this).closest(".feed-container").attr("id");
@@ -21,10 +22,10 @@ $(function () {
     });
   }
 
-  // Initialise the tabs
   initialiseTabs();
 
-  /* Pie chart implemented using ECharts library */
+  // Pie chart implemented using ECharts library
+  // Reference: https://echarts.apache.org/handbook/en/how-to/chart-types/pie/basic-pie/
   var pieContainer = document.querySelector(".pie-container");
   if (pieContainer) {
     var pieChart = echarts.init(pieContainer);
@@ -35,7 +36,7 @@ $(function () {
       },
       tooltip: {
         trigger: "item",
-        formatter: "{a} <br/>{b} : {c} ({d}%)",
+        formatter: "{b} : {c} ({d}%)",
       },
       legend: {
         orient: "vertical",
@@ -48,7 +49,7 @@ $(function () {
           name: "Points",
           type: "pie",
           radius: "75%", // Increase the radius to make the pie bigger
-          center: ["35%", "54%"], // 30% from left, 54% from top
+          center: ["35%", "54%"], // 35% from left, 54% from top
           data: [
             { value: 53, name: "Guesser Points", itemStyle: { color: "Blue" } },
             {
@@ -70,6 +71,40 @@ $(function () {
         },
       ],
     };
+
+    // Function to adjust legend visibility based on screen size
+    function adjustLegendVisibility() {
+      pieChart.setOption({
+        legend: {
+          show: window.innerWidth >= 1085,
+        },
+      });
+    }
+
+    // Function to adjust title font size based on screen size
+    function adjustTitleFontSize() {
+      var newFontSize = window.innerWidth < 775 ? 12 : 20; // Change font size to 10px if window width is less than 775px
+      pieChart.setOption({
+        title: {
+          textStyle: {
+            fontSize: newFontSize,
+          },
+        },
+      });
+    }
+
+    // Add event listener to resize chart, adjust legend visibility, and title font size when window is resized
+    window.addEventListener("resize", function () {
+      pieChart.resize();
+      adjustLegendVisibility();
+      adjustTitleFontSize();
+    });
+
+    // Initialise the chart with the configured options
     pieChart.setOption(pieOption);
+
+    // Set initial configurations based on the window size
+    adjustLegendVisibility();
+    adjustTitleFontSize();
   }
 });
