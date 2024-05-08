@@ -5,7 +5,107 @@ styles%} {{ super() }}
   href="{{ url_for('static', filename='css/home.css') }}"
 />
 {% endblock %} {% block content %}
-<div>
-  <p>Hello World!</p>
+<div class="home-body">
+  <!-- Welcome message -->
+  <div class="welcome-message">Welcome back, [username]!</div>
+
+  <!-- Main panel -->
+  <div class="row panel">
+    <!-- Left panel (Points & Activity Feed) -->
+    <div class="col-md-8">
+      <div class="row points-container">
+        <!-- Points -->
+        <div class="col-md-4">
+          <div class="points-title">Your Points</div>
+          <div class="points-bg"><span class="points">[points]</span></div>
+        </div>
+        <!-- Pie chart -->
+        <div class="col-md-8 pie-container">[ECharts]</div>
+      </div>
+
+      <!-- Activity Feed -->
+      <!-- div id assigned for scalability -->
+      <div class="feed-container" id="item1">
+        <div class="feed-title">Activity Feed</div>
+        <div class="tabs">
+          <button class="tab active" data-tab="progress">
+            Games In Progress
+          </button>
+          <button class="tab" data-tab="new">New Games</button>
+        </div>
+        <div class="feed-table">
+          <div class="content" id="content-item1-progress">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Creator</th>
+                  <th>Category</th>
+                  <th>Date Created</th>
+                  <th>Date Attempted</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in range(1, 5) %}
+                <tr>
+                  <td>Username {{ i }}</td>
+                  <td>Category {{ i }}</td>
+                  <td>Date and Time</td>
+                  <td>Date and Time</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="content hidden" id="content-item1-new">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Creator</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Date Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in range(1, 5) %}
+                <tr>
+                  <td>Username {{ i }}</td>
+                  <td>Category {{ i }}</td>
+                  <td>Status {{ i }}</td>
+                  <td>Date and Time</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel (Leaderboard) -->
+    <div class="col-md-4 board">
+      <div class="board-title">Leaderboard</div>
+      <div class="board-table">
+        {% for i in range(1, 11) %}
+        <div class="row">
+          <div class="col-md-2">
+            <div class="rank rank-{{ i }}">{{ i }}</div>
+          </div>
+          <div class="col-md-7">
+            <div class="board-username">[username{{ i }}]</div>
+          </div>
+          <div class="col-md-3">
+            <div class="board-points">[points{{ i }}]</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- jQuery dependency -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- JS file -->
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+  </div>
+  {% endblock %}
 </div>
-{% endblock %}
