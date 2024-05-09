@@ -114,6 +114,23 @@
   }
 }
 
+/* Flash message */
+.alert-container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.alert {
+  display: inline-block;
+  width: auto;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  color: White;
+  background-color: #dc3545;
+}
+
 /* Login and signup form container */
 .container {
   position: absolute;

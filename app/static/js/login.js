@@ -75,6 +75,13 @@ $(function () {
     }
   }
 
+  // Function to fade out flash message
+  $(document).ready(function () {
+    setTimeout(function () {
+      $(".alert").fadeOut("slow");
+    }, 4000); // 4 seconds
+  });
+
   // Initialise form toggle and password visibility functions
   toggleForms();
   togglePasswordVisibility("togglePassword", "password"); // Login password

@@ -32,6 +32,16 @@ block styles %} {{ super() }}
   </div>
 </div>
 
+<!-- Flash message -->
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%}
+<div class="alert-container">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %} {% endwith %}
+
 <!-- Login and Signup container -->
 <div class="container">
   <!-- Video background created using ChatGPT and VEED.IO: https://www.veed.io/view/7049d95a-5424-4639-861c-7791fe504bf3?panel=share -->
@@ -79,7 +89,12 @@ block styles %} {{ super() }}
         <!-- Password input field -->
         <div class="input-box">
           <!-- Password visibility toggle -->
-          <button type="button" id="togglePassword" class="visibility-toggle">
+          <button
+            type="button"
+            id="togglePassword"
+            class="visibility-toggle"
+            tabindex="-1"
+          >
             <i class="bi bi-eye"></i>
           </button>
           <span class="icon"><i class="bx bxs-lock-alt"></i></span>
@@ -151,6 +166,7 @@ block styles %} {{ super() }}
             type="button"
             id="toggleSignupPassword"
             class="visibility-toggle"
+            tabindex="-1"
           >
             <i class="bi bi-eye"></i>
           </button>
@@ -171,6 +187,7 @@ block styles %} {{ super() }}
             type="button"
             id="toggleConfirmPassword"
             class="visibility-toggle"
+            tabindex="-1"
           >
             <i class="bi bi-eye"></i>
           </button>

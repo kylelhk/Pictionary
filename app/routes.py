@@ -40,12 +40,13 @@ def login_signup():
                 current_time = datetime.now(timezone.utc)
 
                 # If user has failed login attempts and is still in lockout period
+                # fmt: off
                 if user.last_failed_login and (current_time - user.last_failed_login).seconds < lockout_time:
                     wait_time = int(
                         lockout_time - (current_time - user.last_failed_login).seconds)
-                    flash(f"Please wait {
-                          wait_time} seconds before trying again.", "danger")
+                    flash(f"Please wait {wait_time} seconds before trying again.", "danger")
                     return render_template("login.html", login_form=login_form, signup_form=signup_form, title="Log In / Sign Up")
+                # fmt: on
 
                 # If user exists and password is correct
                 if user.check_password(login_form.password.data):
