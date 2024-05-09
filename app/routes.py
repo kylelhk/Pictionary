@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from http import HTTPStatus
 
 import pytz
@@ -30,15 +30,44 @@ def login_signup():
 
         # Handle login form submission
         if action == "Login" and login_form.validate_on_submit():
-            user = User.query.filter_by(username=login_form.username.data).first()
-            if user is None or not user.check_password(login_form.password.data):
-                flash("Invalid Username or Password")
-                return redirect(url_for("login"))
-            login_user(user, remember=login_form.remember_me.data)
-            next_page = request.args.get("next")
-            if not next_page or url_parse(next_page).netloc != "":
-                next_page = url_for("home")
-            return redirect(next_page)
+            user = User.query.filter_by(
+                username=login_form.username.data).first()
+
+            # Time-based locking and exponential backoff mechanism
+            # If user exists, check if they are in lockout period
+            if user:
+                lockout_time = user.get_lockout_time()
+                current_time = datetime.now(timezone.utc)
+
+                # If user has failed login attempts and is still in lockout period
+                if user.last_failed_login and (current_time - user.last_failed_login).seconds < lockout_time:
+                    wait_time = int(
+                        lockout_time - (current_time - user.last_failed_login).seconds)
+                    flash(f"Please wait {
+                          wait_time} seconds before trying again.", "danger")
+                    return render_template("login.html", login_form=login_form, signup_form=signup_form, title="Log In / Sign Up")
+
+                # If user exists and password is correct
+                if user.check_password(login_form.password.data):
+                    user.failed_login_attempts = 0
+                    user.last_failed_login = None
+                    db.session.commit()
+                    login_user(user, remember=login_form.remember_me.data)
+                    next_page = request.args.get("next")
+                    if not next_page or url_parse(next_page).netloc != "":
+                        next_page = url_for("home")
+                    return redirect(next_page)
+
+                # If user exists but password is incorrect
+                else:
+                    user.failed_login_attempts += 1
+                    user.last_failed_login = datetime.now(timezone.utc)
+                    db.session.commit()
+                    flash("Invalid Username or Password", "danger")
+
+            # If user does not exist
+            else:
+                flash("Invalid Username or Password", "danger")
 
         # Handle signup form submission
         elif action == "Sign Up" and signup_form.validate_on_submit():
@@ -70,18 +99,18 @@ def logout():
 @app.route("/")
 @app.route("/home")
 def home():
-    """if not current_user.is_authenticated:
-    flash('You must be logged in to access the Home page.', 'error')
-    return redirect(url_for('login_signup'))"""
+    if not current_user.is_authenticated:
+        flash('You must be logged in to access the Home page.', 'error')
+        return redirect(url_for('login_signup'))
     return render_template("home.html", title="Home")
 
 
 # Guessing Gallery Page
 @app.route("/gallery")
 def gallery():
-    """if not current_user.is_authenticated:
-    flash('You must be logged in to access the Guessing Gallery page.', 'error')
-    return redirect(url_for('login_signup'))"""
+    if not current_user.is_authenticated:
+        flash('You must be logged in to access the Guessing Gallery page.', 'error')
+        return redirect(url_for('login_signup'))
     return render_template("gallery.html", title="Guessing Gallery")
 
 
@@ -90,9 +119,9 @@ def gallery():
 def drawing():
     # consider using @login_required decorator from Flask-Login to label routes that require a login
     # instead of the code commented out below
-    """if not current_user.is_authenticated:
-    flash('You must be logged in to access the Create Drawing page.', 'error')
-    return redirect(url_for('login_signup'))"""
+    if not current_user.is_authenticated:
+        flash('You must be logged in to access the Create Drawing page.', 'error')
+        return redirect(url_for('login_signup'))
     return render_template("drawing.html", title="Create Drawing")
 
 
@@ -126,7 +155,8 @@ def submit_drawing():
         word_id=word_id,
         creator_id=creator_id,
         drawing_data=drawing_data,
-        created_at=now,  # TODO: Using `now` defined above, but it's not saving the correct date and time?
+        # TODO: Using `now` defined above, but it's not saving the correct date and time?
+        created_at=now,
     )
 
     db.session.add(new_drawing)
@@ -152,7 +182,8 @@ def get_random_word():
         random_word = Word.query.order_by(func.random()).first()
     else:
         random_word = (
-            Word.query.filter_by(category=category).order_by(func.random()).first()
+            Word.query.filter_by(category=category).order_by(
+                func.random()).first()
         )
     # If no word found, return an error
     if not random_word:
