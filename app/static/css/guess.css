@@ -110,6 +110,11 @@ button {
     background-color: #0E6D95;
 }
 
+.bubble-red {
+    color: white;
+    background-color: rgba(193, 18, 18, 0.95);
+}
+
 .type-area {
     display: flex;
     justify-content: space-between;
