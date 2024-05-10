@@ -75,16 +75,123 @@ $(function () {
     }
   }
 
-  // Function to fade out flash message
-  $(document).ready(function () {
-    setTimeout(function () {
-      $(".alert").fadeOut("slow");
-    }, 4000); // 4 seconds
-  });
-
   // Initialise form toggle and password visibility functions
   toggleForms();
-  togglePasswordVisibility("togglePassword", "password"); // Login password
-  togglePasswordVisibility("toggleSignupPassword", "signup-password"); // Signup password
-  togglePasswordVisibility("toggleConfirmPassword", "confirm-password"); // Confirm password
+  togglePasswordVisibility("togglePassword", "loginPassword");
+  togglePasswordVisibility("toggleSignupPassword", "signupPassword");
+  togglePasswordVisibility("toggleConfirmPassword", "signupConfirmPassword");
+
+  // Set up CSRF token for AJAX requests
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      if (
+        !/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) &&
+        !this.crossDomain
+      ) {
+        const csrfToken = $('input[name="csrf_token"]').val();
+        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+      }
+    },
+  });
+
+  // Prevent the traditional form submission and handle it via AJAX
+  $("#loginForm").submit(function (e) {
+    e.preventDefault();
+    let form = $(this);
+    let formData = form.serializeArray().reduce(function (obj, item) {
+      obj[item.name] = item.value;
+      return obj;
+    }, {});
+    handleFormSubmission(form, formData);
+  });
+
+  $("#signupForm").submit(function (e) {
+    e.preventDefault();
+    let formData = {
+      "signup-csrf_token": $(this).find('input[name="csrf_token"]').val(),
+      "signup-username": $("#signupUsername").val(),
+      "signup-email": $("#signupEmail").val(),
+      "signup-password": $("#signupPassword").val(),
+      "signup-confirm_password": $("#signupConfirmPassword").val(),
+      action: "Sign Up", // Ensure this is correctly set
+    };
+    handleFormSubmission($(this), formData);
+  });
+
+  // Blur event handlers for field validation
+  $(
+    "#signupUsername, #signupEmail, #signupPassword, #signupConfirmPassword"
+  ).blur(function () {
+    let fieldId = $(this).attr("id");
+    let actionUrl = `/validate-${fieldId.split("signup")[1].toLowerCase()}`; // Creates the endpoint URL dynamically based on the field ID
+    let data = { value: $(this).val() };
+
+    if (fieldId === "signupConfirmPassword") {
+      data.password = $("#signupPassword").val(); // Add password for confirm password validation
+    }
+
+    handleAjaxRequest(actionUrl, data, `#${fieldId}Feedback`);
+  });
+
+  // Handle AJAX request for form submissions and field validations
+  function handleFormSubmission(form, formData) {
+    console.log(formData); // This should show an object with keys matching your model fields
+    const actionUrl = form.attr("action");
+    $.ajax({
+      url: actionUrl,
+      type: "POST",
+      data: JSON.stringify(formData),
+      contentType: "application/json",
+      dataType: "json",
+      success: function (response) {
+        if (!response.error && response.redirect) {
+          window.location.href = response.redirect; // Redirect if needed
+        } else if (response.error) {
+          handleFormResponse(response); // Handle form-level error feedback
+        }
+      },
+      error: function (xhr) {
+        console.error("Submission failed:", xhr.status, xhr.responseText);
+      },
+    });
+  }
+
+  function handleAjaxRequest(actionUrl, data, feedbackSelector) {
+    $.ajax({
+      url: actionUrl,
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      success: function (response) {
+        if (response.error) {
+          $(feedbackSelector).text(response.error).show();
+        } else {
+          $(feedbackSelector).hide();
+        }
+      },
+      error: function (xhr) {
+        $(feedbackSelector).text("Error processing request").show();
+      },
+    });
+  }
+
+  function handleFormResponse(response) {
+    // Iterate over the errors and update UI
+    if (response.errors) {
+      for (let field in response.errors) {
+        let feedbackId = "#" + field + "Feedback";
+        $(feedbackId).text(response.errors[field]).show();
+      }
+    }
+  }
+
+  // Fade out alerts after 4 seconds
+  setTimeout(function () {
+    $(".alert").fadeOut("slow");
+  }, 4000);
+
+  // Fade out invalid feedback when user starts editing the fields again
+  $("input, select, textarea").on("input focus", function () {
+    $(".invalid-feedback").fadeOut("slow");
+  });
 });

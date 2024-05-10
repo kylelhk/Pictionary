@@ -7,86 +7,190 @@ from flask_login import current_user, login_user, logout_user
 from sqlalchemy.sql.expression import func
 from werkzeug.urls import url_parse
 
+import json
+
 from app import app, db
 from app.forms import LoginForm, SignupForm
 from app.models import User, Word, Drawing
+
+import re  # Regular expressions library for password validation
+from sqlalchemy.exc import SQLAlchemyError  # For debugging database errors
 
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
 
 
+# Determine if a request is made via AJAX
+def is_ajax():
+    return request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
 # Login and Signup Page
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login_signup():
+    # Redirect to Home page if user is already authenticated
     if current_user.is_authenticated:
         return redirect(url_for("home"))
 
+    if request.method == "POST" and is_ajax():
+        data = request.json
+        action = data.get("action")
+        if action == "Login":
+            return handle_login_ajax()
+        elif action == "Sign Up":
+            return handle_signup_ajax(data)
+        else:
+            return jsonify({'error': True, 'message': 'Unexpected action'}), 400
+
+    elif request.method == "POST":
+        return jsonify({'error': True, 'message': 'Invalid request type'}), 400
+
+    # Serve login/signup page on GET request or non-AJAX POST
     login_form = LoginForm(prefix="login")
     signup_form = SignupForm(prefix="signup")
-    action = None
-
-    if request.method == "POST":
-        action = request.form.get("action")
-
-        # Handle login form submission
-        if action == "Login" and login_form.validate_on_submit():
-            user = User.query.filter_by(
-                username=login_form.username.data).first()
-
-            # Time-based locking and exponential backoff mechanism
-            # If user exists, check if they are in lockout period
-            if user:
-                lockout_time = user.get_lockout_time()
-                current_time = datetime.now(timezone.utc)
-
-                # If user has failed login attempts and is still in lockout period
-                # fmt: off
-                if user.last_failed_login and (current_time - user.last_failed_login).seconds < lockout_time:
-                    wait_time = int(
-                        lockout_time - (current_time - user.last_failed_login).seconds)
-                    flash(f"Please wait {wait_time} seconds before trying again.", "danger")
-                    return render_template("login.html", login_form=login_form, signup_form=signup_form, title="Log In / Sign Up")
-                # fmt: on
-
-                # If user exists and password is correct
-                if user.check_password(login_form.password.data):
-                    user.failed_login_attempts = 0
-                    user.last_failed_login = None
-                    db.session.commit()
-                    login_user(user, remember=login_form.remember_me.data)
-                    next_page = request.args.get("next")
-                    if not next_page or url_parse(next_page).netloc != "":
-                        next_page = url_for("home")
-                    return redirect(next_page)
-
-                # If user exists but password is incorrect
-                else:
-                    user.failed_login_attempts += 1
-                    user.last_failed_login = datetime.now(timezone.utc)
-                    db.session.commit()
-                    flash("Invalid Username or Password", "danger")
-
-            # If user does not exist
-            else:
-                flash("Invalid Username or Password", "danger")
-
-        # Handle signup form submission
-        elif action == "Sign Up" and signup_form.validate_on_submit():
-            user = User(
-                username=signup_form.username.data, email=signup_form.email.data
-            )
-            user.set_password(signup_form.password.data)
-            db.session.add(user)
-            db.session.commit()
-            flash("Congratulations, you are now a registered user!", "success")
-            return redirect(url_for("login"))
-
     return render_template(
         "login.html",
         login_form=login_form,
         signup_form=signup_form,
-        title="Log In / Sign Up",
+        title="Log In / Sign Up"
     )
+
+# Handle login form input and submission
+
+
+def handle_login_ajax():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    remember_me = request.json.get('remember_me', False)
+    user = User.query.filter_by(username=username).first()
+
+    # Time-based locking and exponential backoff mechanism
+    # If user exists, check if they are in lockout period
+    if user:
+        lockout_time = user.get_lockout_time()
+        current_time = datetime.now(timezone)
+
+        # If user has failed login attempts and is still in lockout period
+        if user.last_failed_login and (current_time - user.last_failed_login).seconds < lockout_time:
+            wait_time = int(lockout_time - (current_time -
+                            user.last_failed_login).seconds)
+            return jsonify({'error': True, 'errors': {'Lockout': f"Please wait {wait_time} seconds before trying again."}}), 423
+
+        # If user exists and password is correct
+        if user.check_password(password):
+            user.failed_login_attempts = 0
+            user.last_failed_login = None
+            db.session.commit()
+            login_user(user, remember=remember_me)
+            next_page = request.args.get("next") or url_for("home")
+            return jsonify({'error': False, 'redirect': next_page})
+
+        # If user exists but password is incorrect
+        else:
+            user.failed_login_attempts += 1
+            user.last_failed_login = datetime.now(timezone)
+            db.session.commit()
+            return jsonify({'error': True, 'errors': {'Password': 'Invalid Username or Password'}}), 401
+
+    # If user does not exist
+    else:
+        return jsonify({'error': True, 'errors': {'User': 'Invalid Username or Password'}}), 404
+
+# Handle signup form input and submission
+
+
+def handle_signup_ajax(data):
+    try:
+        username = data.get('signup-username')
+        email = data.get('signup-email')
+        password = data.get('signup-password')
+        confirm_password = data.get('signup-confirm_password')
+
+        if User.query.filter_by(username=username).first():
+            return jsonify({'error': True, 'errors': {'username': 'Username already taken'}}), 400
+
+        if User.query.filter_by(email=email).first():
+            return jsonify({'error': True, 'errors': {'email': 'This email is already in use'}}), 400
+
+        if password != confirm_password:
+            return jsonify({'error': True, 'errors': {'confirm_password': 'Passwords must match'}}), 400
+
+        user = User(username=username, email=email)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+
+        flash("Congratulations, you are now a registered user!", "success")
+        return jsonify({'error': False, 'redirect': url_for("login_signup")})
+
+    except Exception as e:
+        # Detailed logging for errors
+        app.logger.error(f'Error during signup: {e}', exc_info=True)
+        db.session.rollback()
+        return jsonify({'error': True, 'message': 'Signup failed due to server error'}), 500
+
+
+# Additional validations for username, email, and password inputs
+
+
+@app.route('/validate-username', methods=['POST'])
+def validate_username():
+    username = request.json.get('value')
+    # Default to 'signup' if not specified
+    context = request.json.get('context', 'signup')
+
+    user = User.query.filter_by(username=username).first()
+    if context == 'signup':
+        if user:
+            return jsonify({'error': 'This username is already taken.'}), 400
+    elif context == 'login':
+        if not user:
+            return jsonify({'error': 'This username does not exist.'}), 404
+
+    return jsonify({'error': None})
+
+
+@app.route('/validate-email', methods=['POST'])
+def validate_email():
+    email = request.json.get('value')
+    if User.query.filter_by(email=email).first():
+        return jsonify({'error': 'This email is already in use.'}), 400
+    return jsonify({'error': None})
+
+
+@app.route('/validate-password', methods=['POST'])
+def validate_password():
+    password = request.json.get('value')
+
+    if not password:  # Ensure password is actually provided
+        return jsonify({'error': 'No password provided.'}), 400
+
+    if len(password) < 8:
+        return jsonify({'error': 'Password must be at least 8 characters.'}), 400
+
+    if not (re.search("[a-z]", password) and re.search("[A-Z]", password) and re.search("[0-9]", password)):
+        return jsonify({'error': 'Password must include lower, upper, and numeric characters.'}), 400
+
+    return jsonify({'error': None}), 200  # Include HTTP status for clarity
+
+
+@app.route('/validate-confirmpassword', methods=['POST'])
+def validate_confirm_password():
+    password = request.json.get('password')
+    confirm_password = request.json.get('value')
+
+    print("Received password:", password)  # Output the password received
+    # Output the confirm password received
+    print("Received confirm password:", confirm_password)
+
+    if not password or not confirm_password:
+        return jsonify({'error': 'Password and confirm password must not be empty.'}), 400
+
+    if password != confirm_password:
+        return jsonify({'error': 'Passwords must match.'}), 400
+
+    return jsonify({'error': None}), 200
 
 
 @app.route("/logout")

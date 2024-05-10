@@ -13,8 +13,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    last_login = db.Column(db.DateTime, default=lambda: datetime.now(
-        pytz.timezone("Australia/Perth")))  # Default to current time in Perth
+    last_login = db.Column(db.DateTime, default=lambda: datetime.now(timezone))
     # last_failed_login & failed_login_attempts: For time-based locking and exponential backoff to prevent brute force attacks
     last_failed_login = db.Column(db.DateTime, nullable=True)
     failed_login_attempts = db.Column(db.Integer, default=0)

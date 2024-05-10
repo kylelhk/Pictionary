@@ -281,6 +281,16 @@
   color: Aquamarine;
 }
 
+/* Error message for invalid form inputs */
+.invalid-feedback {
+  display: none; /* Hidden by default, shown via login.js */
+  color: Red;
+  position: absolute;
+  top: 100%;
+  font-size: 12px;
+  z-index: 831;
+}
+
 /* Login and signup buttons */
 .btn-container {
   display: flex;
@@ -315,11 +325,6 @@
   background-color: White;
   color: #1e90ff;
   font-weight: bold;
-}
-
-/* Error message for invalid user credentials */
-.error-msg {
-  color: red;
 }
 
 /* Visibility toggle for password field */

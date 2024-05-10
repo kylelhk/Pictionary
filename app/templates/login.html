@@ -69,21 +69,20 @@ block styles %} {{ super() }}
   <div class="form">
     <!-- Login form -->
     <div class="form-box login">
-      <form method="post">
-        <!-- A CSRF token for preventing CSRF attacks -->
+      <form id="loginForm" method="post" action="{{ url_for('login_signup') }}">
+        <!-- A hidden CSRF token for preventing Cross-Site Request Forgery (CSRF) attacks -->
+        <!-- This token is required for every POST request to ensure that the request is coming from the designated form and not from an external source. -->
         {{ login_form.csrf_token }}
         <div class="form-title">Login</div>
         <div class="input-box">
           <!-- Username input field -->
           <span class="icon"><i class="bx bxs-user"></i></span>
           {{ login_form.username(size=20, class_='login-signup-input',
-          id='username', placeholder='Enter your username...', required=True) }}
-          <label for="username">Username</label>
-          <!-- Error message for invalid user credentials -->
-          <!-- This will only appear after the login function is implemented. -->
-          {% for error in login_form.username.errors %}
-          <span class="error-msg">[{{ error }}]</span>
-          {% endfor %}
+          id='loginUsername', placeholder='Enter your username...',
+          required=True) }}
+          <label for="loginUsername">Username</label>
+          <!-- Error message for invalid form inputs -->
+          <div id="loginUsernameFeedback" class="invalid-feedback"></div>
         </div>
 
         <!-- Password input field -->
@@ -99,11 +98,11 @@ block styles %} {{ super() }}
           </button>
           <span class="icon"><i class="bx bxs-lock-alt"></i></span>
           {{ login_form.password(size=20, class_='login-signup-input',
-          id='password', placeholder='Enter your password...', required=True) }}
-          <label for="password">Password</label>
-          {% for error in login_form.password.errors %}
-          <span class="error-msg">[{{ error }}]</span>
-          {% endfor %}
+          id='loginPassword', placeholder='Enter your password...',
+          required=True) }}
+          <label for="loginPassword">Password</label>
+          <!-- Error message for invalid form inputs -->
+          <div id="loginPasswordFeedback" class="invalid-feedback"></div>
         </div>
         <div class="remember-password">
           {{ login_form.remember_me(class='remember-me-tickbox')}} {{
@@ -132,8 +131,12 @@ block styles %} {{ super() }}
 
     <!-- Signup form -->
     <div class="form-box signup">
-      <form method="post">
-        <!-- A CSRF token for preventing CSRF attacks -->
+      <form
+        id="signupForm"
+        method="post"
+        action="{{ url_for('login_signup') }}"
+      >
+        <!-- A hidden CSRF token for preventing CSRF attacks -->
         {{ signup_form.csrf_token }}
         <div class="form-title">Sign Up</div>
 
@@ -141,22 +144,21 @@ block styles %} {{ super() }}
         <div class="input-box">
           <span class="icon"><i class="bx bxs-user"></i></span>
           {{ signup_form.username(size=20, class_='login-signup-input',
-          placeholder='Choose a username...', required=True) }}
-          <label for="username">Username</label>
-          {% for error in signup_form.username.errors %}
-          <span class="error-msg">[{{ error }}]</span>
-          {% endfor %}
+          id='signupUsername', placeholder='Choose a username...',
+          required=True) }}
+          <label for="signupUsername">Username</label>
+          <!-- Error message for invalid form inputs -->
+          <div id="signupUsernameFeedback" class="invalid-feedback"></div>
         </div>
 
         <!-- Email input field -->
         <div class="input-box">
           <span class="icon"><i class="bx bxs-envelope"></i></span>
           {{ signup_form.email(size=20, class_='login-signup-input',
-          placeholder='Enter your email...', required=True) }}
-          <label for="email">Email</label>
-          {% for error in signup_form.email.errors %}
-          <span class="error-msg">[{{ error }}]</span>
-          {% endfor %}
+          id='signupEmail', placeholder='Enter your email...', required=True) }}
+          <label for="signupEmail">Email</label>
+          <!-- Error message for invalid form inputs -->
+          <div id="signupEmailFeedback" class="invalid-feedback"></div>
         </div>
 
         <!-- Password input field -->
@@ -172,12 +174,11 @@ block styles %} {{ super() }}
           </button>
           <span class="icon"><i class="bx bxs-lock-alt"></i></span>
           {{ signup_form.password(size=20, class_='login-signup-input',
-          id='signup-password', placeholder='Create a password...',
+          id='signupPassword', placeholder='Create a password...',
           required=True) }}
-          <label for="signup-password">Password</label>
-          {% for error in signup_form.password.errors %}
-          <span class="error-msg">[{{ error }}]</span>
-          {% endfor %}
+          <label for="signupPassword">Password</label>
+          <!-- Error message for invalid form inputs -->
+          <div id="signupPasswordFeedback" class="invalid-feedback"></div>
         </div>
 
         <!-- Confirm password field -->
@@ -193,12 +194,14 @@ block styles %} {{ super() }}
           </button>
           <span class="icon"><i class="bx bxs-lock-alt"></i></span>
           {{ signup_form.confirm_password(size=20, class_='login-signup-input',
-          id='confirm-password', placeholder='Confirm your password...',
+          id='signupConfirmPassword', placeholder='Confirm your password...',
           required=True) }}
-          <label for="confirm_password">Confirm Password</label>
-          {% for error in signup_form.confirm_password.errors %}
-          <span class="error-msg">[{{ error }}]</span>
-          {% endfor %}
+          <label for="signupConfirmPassword">Confirm Password</label>
+          <!-- Error message for invalid form inputs -->
+          <div
+            id="signupConfirmPasswordFeedback"
+            class="invalid-feedback"
+          ></div>
         </div>
 
         <!-- Sign up button -->
