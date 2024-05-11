@@ -1,3 +1,5 @@
+import { CountdownTimer } from './timer.js'
+
 window.addEventListener("DOMContentLoaded", (e) => {
 
     const inputText = document.querySelector("#inputText");
@@ -20,4 +22,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
 //     TODO: GIVE TIMEOUT OR SUCCESS BUBBLE MESSAGE
 
+    // Create a timer and start it
+    const timer = new CountdownTimer(60, 30, 10); // TODO: Add a call back function to exit once time runs out
+    timer.startTimer();
 });
