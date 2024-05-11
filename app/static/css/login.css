@@ -114,21 +114,29 @@
   }
 }
 
-/* Flash message */
-.alert-container {
+/* AJAX alert message for unauthorised access */
+.alert-error {
+  color: White;
+  background-color: Red;
+}
+
+/* Flask flash message for successful registration */
+.flash-message-container {
   position: relative;
   width: 100%;
   text-align: center;
+  display: none; /* Hidden by default */
+  z-index: 721;
 }
 
-.alert {
+.flash-message-success {
   display: inline-block;
   width: auto;
   margin-top: 5px;
   padding: 10px;
   border-radius: 5px;
   color: White;
-  background-color: #dc3545;
+  background-color: Green;
 }
 
 /* Login and signup form container */
@@ -234,6 +242,7 @@
   border-bottom: 2px solid White;
   margin: 17px 0;
   position: relative;
+  transition: 0.5s ease;
 }
 
 .login-signup-input {
@@ -254,11 +263,11 @@
   left: 1%;
   transform: translateY(-50%);
   font-size: 16px;
-  transition: 0.5s ease;
+  transition: 0.4s ease;
 }
 
 .input-box input:hover ~ label {
-  top: -1px;
+  top: 17%;
 }
 
 .input-box .icon {
@@ -287,8 +296,26 @@
   color: Red;
   position: absolute;
   top: 100%;
+  margin-top: 2px;
   font-size: 12px;
   z-index: 831;
+}
+
+/* Override styles for the autofill background in Chrome, Safari, Firefox, and Opera */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px transparent inset; /* Customize background color */
+}
+
+input:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+input:-moz-ui-valid {
+  box-shadow: none;
 }
 
 /* Login and signup buttons */

@@ -32,12 +32,12 @@ block styles %} {{ super() }}
   </div>
 </div>
 
-<!-- Flash message -->
+<!-- Flask flash message (for successful registration) -->
 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
 %}
-<div class="alert-container">
+<div class="flash-message-container">
   {% for category, message in messages %}
-  <div class="alert alert-{{ category }}">{{ message }}</div>
+  <div class="flash-message-{{ category }}">{{ message }}</div>
   {% endfor %}
 </div>
 {% endif %} {% endwith %}
@@ -70,7 +70,7 @@ block styles %} {{ super() }}
     <!-- Login form -->
     <div class="form-box login">
       <form id="loginForm" method="post" action="{{ url_for('login_signup') }}">
-        <!-- A hidden CSRF token for preventing Cross-Site Request Forgery (CSRF) attacks -->
+        <!-- A hidden Cross-Site Request Forgery (CSRF) token for preventing CSRF attacks -->
         <!-- This token is required for every POST request to ensure that the request is coming from the designated form and not from an external source. -->
         {{ login_form.csrf_token }}
         <div class="form-title">Login</div>
@@ -81,7 +81,7 @@ block styles %} {{ super() }}
           id='loginUsername', placeholder='Enter your username...',
           required=True) }}
           <label for="loginUsername">Username</label>
-          <!-- Error message for invalid form inputs -->
+          <!-- Error message for invalid form input -->
           <div id="loginUsernameFeedback" class="invalid-feedback"></div>
         </div>
 
@@ -101,7 +101,7 @@ block styles %} {{ super() }}
           id='loginPassword', placeholder='Enter your password...',
           required=True) }}
           <label for="loginPassword">Password</label>
-          <!-- Error message for invalid form inputs -->
+          <!-- Error message for invalid form input -->
           <div id="loginPasswordFeedback" class="invalid-feedback"></div>
         </div>
         <div class="remember-password">
@@ -147,7 +147,7 @@ block styles %} {{ super() }}
           id='signupUsername', placeholder='Choose a username...',
           required=True) }}
           <label for="signupUsername">Username</label>
-          <!-- Error message for invalid form inputs -->
+          <!-- Error message for invalid form input -->
           <div id="signupUsernameFeedback" class="invalid-feedback"></div>
         </div>
 
@@ -157,7 +157,7 @@ block styles %} {{ super() }}
           {{ signup_form.email(size=20, class_='login-signup-input',
           id='signupEmail', placeholder='Enter your email...', required=True) }}
           <label for="signupEmail">Email</label>
-          <!-- Error message for invalid form inputs -->
+          <!-- Error message for invalid form input -->
           <div id="signupEmailFeedback" class="invalid-feedback"></div>
         </div>
 
@@ -177,7 +177,7 @@ block styles %} {{ super() }}
           id='signupPassword', placeholder='Create a password...',
           required=True) }}
           <label for="signupPassword">Password</label>
-          <!-- Error message for invalid form inputs -->
+          <!-- Error message for invalid form input -->
           <div id="signupPasswordFeedback" class="invalid-feedback"></div>
         </div>
 
@@ -197,7 +197,7 @@ block styles %} {{ super() }}
           id='signupConfirmPassword', placeholder='Confirm your password...',
           required=True) }}
           <label for="signupConfirmPassword">Confirm Password</label>
-          <!-- Error message for invalid form inputs -->
+          <!-- Error message for invalid form input -->
           <div
             id="signupConfirmPasswordFeedback"
             class="invalid-feedback"

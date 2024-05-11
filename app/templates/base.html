@@ -162,7 +162,13 @@
     </aside>
 
     <!-- Main content -->
-    <main>{% block content %} {% endblock %}</main>
+    <main>
+      <!-- AJAX alert message -->
+      <div class="alert-container"><div class="alert"></div></div>
+
+      <!-- Dynamic content loaded from different html files -->
+      {% block content %} {% endblock %}
+    </main>
 
     <!-- Footer -->
     <footer>CITS5505 Agile Web Development, 2024 Sem 1 &copy; UWA</footer>

@@ -133,30 +133,45 @@ def handle_signup_ajax(data):
 
 # Additional validations for username, email, and password inputs
 
-
 @app.route('/validate-username', methods=['POST'])
 def validate_username():
     username = request.json.get('value')
     # Default to 'signup' if not specified
     context = request.json.get('context', 'signup')
 
+    # Check if the username field is empty
+    if not username.strip():  # Catch empty strings after stripping whitespace
+        return jsonify('No username provided.'), 400
+
     user = User.query.filter_by(username=username).first()
     if context == 'signup':
         if user:
-            return jsonify({'error': 'This username is already taken.'}), 400
+            return jsonify('This username is already taken.'), 400
     elif context == 'login':
         if not user:
-            return jsonify({'error': 'This username does not exist.'}), 404
+            return jsonify('This username does not exist.'), 404
 
-    return jsonify({'error': None})
+    return jsonify({'error': False})
 
 
 @app.route('/validate-email', methods=['POST'])
 def validate_email():
     email = request.json.get('value')
+
+    # Check if the email field is empty
+    if not email.strip():  # Catch empty strings after stripping whitespace
+        return jsonify('No email provided.'), 400
+
+    # Check if email is already in use
     if User.query.filter_by(email=email).first():
-        return jsonify({'error': 'This email is already in use.'}), 400
-    return jsonify({'error': None})
+        return jsonify('This email is already in use.'), 400
+
+    # Validate email format using regex
+    email_regex = r'^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,6}$'
+    if not re.match(email_regex, email.strip()):
+        return jsonify('Invalid email format.'), 400
+
+    return jsonify({'error': False}), 200
 
 
 @app.route('/validate-password', methods=['POST'])
@@ -164,15 +179,15 @@ def validate_password():
     password = request.json.get('value')
 
     if not password:  # Ensure password is actually provided
-        return jsonify({'error': 'No password provided.'}), 400
+        return jsonify('No password provided.'), 400
 
     if len(password) < 8:
-        return jsonify({'error': 'Password must be at least 8 characters.'}), 400
+        return jsonify('Password must be at least 8 characters.'), 400
 
     if not (re.search("[a-z]", password) and re.search("[A-Z]", password) and re.search("[0-9]", password)):
-        return jsonify({'error': 'Password must include lower, upper, and numeric characters.'}), 400
+        return jsonify('Password must include lower, upper, and numeric characters.'), 400
 
-    return jsonify({'error': None}), 200  # Include HTTP status for clarity
+    return jsonify({'error': False}), 200
 
 
 @app.route('/validate-confirmpassword', methods=['POST'])
@@ -180,17 +195,13 @@ def validate_confirm_password():
     password = request.json.get('password')
     confirm_password = request.json.get('value')
 
-    print("Received password:", password)  # Output the password received
-    # Output the confirm password received
-    print("Received confirm password:", confirm_password)
-
     if not password or not confirm_password:
-        return jsonify({'error': 'Password and confirm password must not be empty.'}), 400
+        return jsonify('Password and confirm password must not be empty.'), 400
 
     if password != confirm_password:
-        return jsonify({'error': 'Passwords must match.'}), 400
+        return jsonify('Passwords must match.'), 400
 
-    return jsonify({'error': None}), 200
+    return jsonify({'error': False}), 200
 
 
 @app.route("/logout")
@@ -200,10 +211,17 @@ def logout():
     return redirect(url_for("login"))
 
 
+# For access control via AJAX in login.js
+@app.route('/check-authentication')
+def check_authentication():
+    return jsonify(isAuthenticated=current_user.is_authenticated)
+
+
 # Home Page
 @app.route("/")
 @app.route("/home")
 def home():
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Home page.', 'error')
         return redirect(url_for('login_signup'))
@@ -213,6 +231,7 @@ def home():
 # Guessing Gallery Page
 @app.route("/gallery")
 def gallery():
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Guessing Gallery page.', 'error')
         return redirect(url_for('login_signup'))
@@ -222,8 +241,7 @@ def gallery():
 # Create Drawing Page
 @app.route("/drawing")
 def drawing():
-    # consider using @login_required decorator from Flask-Login to label routes that require a login
-    # instead of the code commented out below
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Create Drawing page.', 'error')
         return redirect(url_for('login_signup'))
