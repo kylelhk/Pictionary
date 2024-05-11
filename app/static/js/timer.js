@@ -1,8 +1,9 @@
-class CountdownTimer {
-    constructor(timeLimit, warningThreshold, alertThreshold) {
+export class CountdownTimer {
+    constructor(timeLimit, warningThreshold, alertThreshold, onTimerEnd) {
         this.TIME_LIMIT = timeLimit;
-        this.WARNING_THRESHOLD = warningThreshold;
-        this.ALERT_THRESHOLD = alertThreshold;
+        this.WARNING_THRESHOLD = warningThreshold; // threshold when the timer colour changes to orange
+        this.ALERT_THRESHOLD = alertThreshold; // threshold when the timer colour changes to red
+        this.onTimerEnd = onTimerEnd; // call back function
         this.FULL_DASH_ARRAY = 283;
         this.timePassed = 0;
         this.timeLeft = this.TIME_LIMIT;
@@ -13,15 +14,16 @@ class CountdownTimer {
             },
             warning: {
                 color: "orange",
-                threshold: WARNING_THRESHOLD
+                threshold: this.WARNING_THRESHOLD
             },
             alert: {
                 color: "red",
-                threshold: ALERT_THRESHOLD
+                threshold: this.ALERT_THRESHOLD
             }
         };
     }
 
+    // Returns the time in mm:ss format
     formatTime(time) {
         const minutes = Math.floor(time / 60);
         let seconds = time % 60;
@@ -31,39 +33,45 @@ class CountdownTimer {
         return `${minutes}:${seconds}`;
     }
 
+    // Calculates the fraction of time remaining
     calculateTimeFraction() {
         const rawTimeFraction = this.timeLeft / this.TIME_LIMIT;
         return rawTimeFraction - (1 / this.TIME_LIMIT) * (1 - rawTimeFraction);
     }
 
-    setCircleDashArray() {
+    // Updates the dasharray value as time passes, starting with 283
+    setCircleDasharray() {
         const circleDasharray = `${(this.calculateTimeFraction() * this.FULL_DASH_ARRAY).toFixed(0)} 283`;
         $("#base-timer-path-remaining").attr("stroke-dasharray", circleDasharray)
     }
 
+    // Change the colour of the remaining path based on the warning and alert thresholds
     setRemainingPathColor(timeLeft) {
         const { alert, warning, info } = this.COLOR_CODES;
         const remainingPath = $("#base-timer-path-remaining");
+        remainingPath.removeClass(`${info.color} ${warning.color} ${alert.color}`);
         if (timeLeft <= alert.threshold) {
-            remainingPath.classList.remove(warning.color);
-            remainingPath.classList.add(alert.color);
+            remainingPath.addClass(alert.color);
         } else if (timeLeft <= warning.threshold) {
-            remainingPath.classList.remove(info.color);
-            remainingPath.classList.add(warning.color);
+            remainingPath.addClass(warning.color);
         } else {
-            remainingPath.classList.add(info.color);
+            remainingPath.addClass(info.color);
         }
     }
 
+    // Starts the timer
     startTimer() {
         this.timerInterval = setInterval(() => {
             this.timePassed += 1;
-            this.timeLeft = TIME_LIMIT - timePassed;
+            this.timeLeft = this.TIME_LIMIT - this.timePassed;
             $("#base-timer-label").text(this.formatTime(this.timeLeft));
             this.setCircleDasharray();
             this.setRemainingPathColor(this.timeLeft);
             if (this.timeLeft === 0) {
                 clearInterval(this.timerInterval);
+                if (this.onTimerEnd) {
+                    this.onTimerEnd();
+                }
             }
         }, 1000);
     }

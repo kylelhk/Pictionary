@@ -1,3 +1,5 @@
+import { CountdownTimer } from './timer.js'
+
 // Display modal when window loads
 window.addEventListener('load', () => {
     let wordCatModal = new bootstrap.Modal('#word-category-modal');
@@ -20,6 +22,8 @@ function fetchWord(category, modal) {
             wordContainer.innerHTML = data.word; // Display the word
             wordContainer.setAttribute('data-word-id', data.word_id); // Store word_id in data attribute
             modal.hide(); // Close the modal
+            const timer = new CountdownTimer(120, 30, 10, saveDrawing); // Start a timer
+            timer.startTimer();
         })
         .catch(error => console.error("Error fetching word:", error));
 }
@@ -122,7 +126,7 @@ function saveDrawing() {
         },
         body: JSON.stringify({
             drawingData: drawingData,
-            wordId: wordId, // TODO: Add variable for word to draw
+            wordId: wordId,
         })
     })
     .then(response => response.json())
