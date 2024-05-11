@@ -19,7 +19,7 @@
     </div>
     {#  IMAGE SHOWING DRAWING #}
     <div class="image-container">
-      <img class="guess-image" src="{{ image.drawing_data }}" alt="Rendered Image">
+      <img class="guess-image" src="{{ image.drawing_data }}" alt="Rendered Image" data-drawing-id="{{ image.id }}">
     </div>
 
     {#  GUESS SECTION #}
@@ -29,16 +29,25 @@
           TAKE A GUESS
         </div>
         <div class="chat-room">
-          <div class="message message-right">
-            <div class="bubble bubble-dark">
-              what is going on?
+
+          {% for guess in image.guess %}
+
+            <div class="message message-right">
+              <div class="bubble bubble-dark">
+                {{ guess.guessed_word }}
+              </div>
             </div>
-          </div>
-          <div class="message message-left">
-            <div class="bubble bubble-light">
-              You guessed correctly
-            </div>
-          </div>
+
+          {% endfor %}
+
+          {#        TEMPLATE OF THE RESPONSE MESSAGE #}
+        
+          {#          <div class="message message-left">#}
+          {#            <div class="bubble bubble-light">#}
+          {#              You guessed correctly#}
+          {#            </div>#}
+          {#          </div>#}
+
         </div>
         <div class="type-area">
           <div class="input-wrapper">
