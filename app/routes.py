@@ -136,7 +136,10 @@ def drawing_detail(drawing_id):
         db.session.add(guess)
         db.session.commit()
 
-        return jsonify({"success": "Guess recorded", "is_correct": is_correct})
+        return (
+            jsonify({"success": "Guess recorded", "is_correct": is_correct}),
+            HTTPStatus.CREATED,
+        )
 
     return render_template("guess.html", image=image)
 
