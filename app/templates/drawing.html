@@ -1,116 +1,116 @@
 {% extends "base.html" %}
 {% block title %} Create Drawing {% endblock %}
 {% block styles %}
-  {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/drawing.css') }}"/>
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/drawing.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/timer.css') }}" />
 {% endblock %}
 {% block content %}
-  <!-- Modal to select category of word to draw -->
-  <div class="modal" id="word-category-modal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Select a category to draw</h4>
-        </div>
-        <div class="modal-body">
-          <button type="button" class="category-btn" data-category="all" id="all-play-btn">ALL PLAY</button>
-          <button type="button" class="category-btn" data-category="Difficult" id="difficult-btn">DIFFICULT</button>
-          <button type="button" class="category-btn" data-category="Action" id="action-btn">ACTION</button>
-          <button type="button" class="category-btn" data-category="Person/Place/Animal"
-                  id="person-btn">PERSON/PLACE/ANIMAL
-          </button>
-          <button type="button" class="category-btn" data-category="Object" id="object-btn">OBJECT</button>
-        </div>
-        <div class="modal-footer">
-          <button type="button" data-bs-dismiss="modal" id="exit-modal">EXIT</button>
-        </div>
+<!-- Modal to select category of word to draw -->
+<div class="modal" id="word-category-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select a category to draw</h4>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="category-btn" data-category="all" id="all-play-btn">ALL PLAY</button>
+        <button type="button" class="category-btn" data-category="Difficult" id="difficult-btn">DIFFICULT</button>
+        <button type="button" class="category-btn" data-category="Action" id="action-btn">ACTION</button>
+        <button type="button" class="category-btn" data-category="Person/Place/Animal"
+          id="person-btn">PERSON/PLACE/ANIMAL
+        </button>
+        <button type="button" class="category-btn" data-category="Object" id="object-btn">OBJECT</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-bs-dismiss="modal" id="exit-modal">EXIT</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Main page -->
-  <div class="container-fluid" id="drawing-container">
-    <div class="row">
-      <div class="col-md-2 d-flex flex-column justify-content-center align-items-center" id="drawing-controls">
-        <div id="timer-and-word">
-          <!-- Timer -->
-          <div id="timer">
-            <h4>Time remaining</h4>
-            <!-- TODO: Remaining time label -->
-          </div>
-          <!-- Word to draw -->
-          <div id="word-to-draw-section">
-            <h4>Word to draw:</h4>
-            <p id="word-to-draw"></p>
-          </div>
-        </div>
-        <div id="tools">
-          <div id="brush-sizes">
-            <fieldset class="d-flex flex-column align-items-center">
-              <legend>Brush Size</legend>
-              <div class="d-flex align-items-center">
-                <input type="radio" id="brush-size-small" name="brush-size" value="2" class="hidden-radio" checked>
-                <label for="brush-size-small" class="brush-size-label small"></label>
-                <input type="radio" id="brush-size-medium" name="brush-size" value="10" class="hidden-radio">
-                <label for="brush-size-medium" class="brush-size-label medium"></label>
-                <input type="radio" id="brush-size-large" name="brush-size" value="20" class="hidden-radio">
-                <label for="brush-size-large" class="brush-size-label large"></label>
-              </div>
-            </fieldset>
-          </div>
-          <div id="brush-colours">
-            <fieldset>
-              <legend>Colour</legend>
-              <input type="radio" id="brush-colour-black" name="brush-colour" value="black" class="hidden-radio"
-                     checked>
-              <label for="brush-colour-black" class="brush-colour-label black"></label>
-              <input type="radio" id="brush-colour-red" name="brush-colour" value="red" class="hidden-radio">
-              <label for="brush-colour-red" class="brush-colour-label red"></label>
-              <input type="radio" id="brush-colour-orange" name="brush-colour" value="orange" class="hidden-radio">
-              <label for="brush-colour-orange" class="brush-colour-label orange"></label>
-              <input type="radio" id="brush-colour-yellow" name="brush-colour" value="yellow" class="hidden-radio">
-              <label for="brush-colour-yellow" class="brush-colour-label yellow"></label>
-              <br>
-              <input type="radio" id="brush-colour-green" name="brush-colour" value="green" class="hidden-radio">
-              <label for="brush-colour-green" class="brush-colour-label green"></label>
-              <input type="radio" id="brush-colour-blue" name="brush-colour" value="blue" class="hidden-radio">
-              <label for="brush-colour-blue" class="brush-colour-label blue"></label>
-              <input type="radio" id="brush-colour-purple" name="brush-colour" value="purple" class="hidden-radio">
-              <label for="brush-colour-purple" class="brush-colour-label purple"></label>
-              <input type="radio" id="brush-colour-white" name="brush-colour" value="white" class="hidden-radio">
-              <label for="brush-colour-white" class="brush-colour-label white"></label>
-            </fieldset>
-          </div>
-          <div id="erasers">
-            <fieldset class="d-flex flex-column align-items-center">
-              <legend>Eraser</legend>
-              <div class="d-flex align-items-center">
-                <input type="checkbox" id="eraser" name="eraser" value="eraser" class="hidden-checkbox">
-                <label for="eraser" class="eraser-label">
-                  <img src="{{ url_for('static', filename='images/eraser.png') }}" alt="eraser" class="eraser-img">
-                </label>
-                <button type="reset" id="clear-all">Clear All</button>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-        <button type="submit" id="submit-drawing">SUBMIT</button>
+<!-- Main page -->
+<div class="container-fluid" id="drawing-container">
+  <div class="row">
+    <div class="col-md-2 d-flex flex-column justify-content-center align-items-center" id="drawing-controls">
+      <!-- Timer -->
+      <div id="timer">
+        <h4>Time remaining:</h4>
+        {% include 'timer.html' %}
       </div>
-      <div class="col-md-10" id="drawing-area">
-        <div class="text-end">
-          <button type="button" id="quit-drawing">QUIT</button>
-        </div>
-        <canvas id="drawing-canvas"></canvas>
+      <!-- Word to draw -->
+      <div id="word-to-draw-section">
+        <h4>Word to draw:</h4>
+        <p id="word-to-draw"></p>
       </div>
+      <!-- Brush selection -->
+      <div id="tools">
+        <div id="brush-sizes">
+          <fieldset class="d-flex flex-column align-items-center">
+            <legend>Brush Size</legend>
+            <div class="d-flex align-items-center">
+              <input type="radio" id="brush-size-small" name="brush-size" value="2" class="hidden-radio" checked>
+              <label for="brush-size-small" class="brush-size-label small"></label>
+              <input type="radio" id="brush-size-medium" name="brush-size" value="10" class="hidden-radio">
+              <label for="brush-size-medium" class="brush-size-label medium"></label>
+              <input type="radio" id="brush-size-large" name="brush-size" value="20" class="hidden-radio">
+              <label for="brush-size-large" class="brush-size-label large"></label>
+            </div>
+          </fieldset>
+        </div>
+        <div id="brush-colours">
+          <fieldset>
+            <legend>Colour</legend>
+            <input type="radio" id="brush-colour-black" name="brush-colour" value="black" class="hidden-radio" checked>
+            <label for="brush-colour-black" class="brush-colour-label black"></label>
+            <input type="radio" id="brush-colour-red" name="brush-colour" value="red" class="hidden-radio">
+            <label for="brush-colour-red" class="brush-colour-label red"></label>
+            <input type="radio" id="brush-colour-orange" name="brush-colour" value="orange" class="hidden-radio">
+            <label for="brush-colour-orange" class="brush-colour-label orange"></label>
+            <input type="radio" id="brush-colour-yellow" name="brush-colour" value="yellow" class="hidden-radio">
+            <label for="brush-colour-yellow" class="brush-colour-label yellow"></label>
+            <br>
+            <input type="radio" id="brush-colour-green" name="brush-colour" value="green" class="hidden-radio">
+            <label for="brush-colour-green" class="brush-colour-label green"></label>
+            <input type="radio" id="brush-colour-blue" name="brush-colour" value="blue" class="hidden-radio">
+            <label for="brush-colour-blue" class="brush-colour-label blue"></label>
+            <input type="radio" id="brush-colour-purple" name="brush-colour" value="purple" class="hidden-radio">
+            <label for="brush-colour-purple" class="brush-colour-label purple"></label>
+            <input type="radio" id="brush-colour-white" name="brush-colour" value="white" class="hidden-radio">
+            <label for="brush-colour-white" class="brush-colour-label white"></label>
+          </fieldset>
+        </div>
+        <div id="erasers">
+          <fieldset class="d-flex flex-column align-items-center">
+            <legend>Eraser</legend>
+            <div class="d-flex align-items-center">
+              <input type="checkbox" id="eraser" name="eraser" value="eraser" class="hidden-checkbox">
+              <label for="eraser" class="eraser-label">
+                <img src="{{ url_for('static', filename='images/eraser.png') }}" alt="eraser" class="eraser-img">
+              </label>
+              <button type="reset" id="clear-all">Clear All</button>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <button type="submit" id="submit-drawing">SUBMIT</button>
+    </div>
+    <!-- Drawing area -->
+    <div class="col-md-10" id="drawing-area">
+      <div class="text-end">
+        <button type="button" id="quit-drawing">QUIT</button>
+      </div>
+      <canvas id="drawing-canvas"></canvas>
     </div>
   </div>
+</div>
 
-  {% if not current_user.is_authenticated %}
-    <div>
-      <h3>Testing</h3>
-    </div>
-  {% endif %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ url_for('static', filename='js/drawing.js') }}"></script>
-  <script> var homeUrl = "{{ url_for('home') }}"; </script>
+{% if not current_user.is_authenticated %}
+<!-- Anything to be added here? -->
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="{{ url_for('static', filename='js/timer.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/drawing.js') }}"></script>
+<script> var homeUrl = "{{ url_for('home') }}"; </script>
 {% endblock %}

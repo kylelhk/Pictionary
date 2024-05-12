@@ -45,7 +45,8 @@ button {
 /* Timer Styles */
 
 /* Word to Draw Styles */
-#word-to-draw-section h4 {
+#word-to-draw-section h4,
+#timer h4 {
     font-size: larger;
 }
 

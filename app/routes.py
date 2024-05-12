@@ -11,7 +11,7 @@ import json
 
 from app import app, db
 from app.forms import LoginForm, SignupForm
-from app.models import User, Word, Drawing
+from app.models import User, Word, Drawing, Guess
 
 import re  # Regular expressions library for password validation
 
@@ -287,14 +287,52 @@ def drawing():
     return render_template("drawing.html", title="Create Drawing")
 
 
-@app.route("/drawings/<int:drawing_id>")
+@app.route("/drawings/<int:drawing_id>", methods=["GET", "POST"])
 def drawing_detail(drawing_id):
-    image = Drawing.query.get(drawing_id)
+    image = Drawing.query.get_or_404(drawing_id)
 
-    if image:
-        return render_template("guess.html", image=image)
+    if request.method == "POST":
+        # if not current_user.is_authenticated:
+        #     return (
+        #         jsonify({"error": "Authentication required"}),
+        #         HTTPStatus.UNAUTHORIZED,
+        #     )
 
-    return jsonify({"error": "Image does not exist"}), HTTPStatus.NOT_FOUND
+        # Fetch the guess from JSON data
+        guessed_word = request.get_json().get("guess")
+
+        # Check if a guess already exists for this drawing and user to prevent multiple guesses
+        # TODO: The following filter should be updated to include current user id as well
+        existing_guess = Guess.query.filter_by(drawing_id=drawing_id).first()
+
+        if existing_guess:
+            return (
+                jsonify({"error": "You have already made a guess on this image"}),
+                HTTPStatus.FORBIDDEN,
+            )
+
+        # Simulate guess checking (you would typically compare with a correct answer associated with the image)
+        is_correct = guessed_word.lower() == image.word.text.lower()
+
+        # TODO: If correct update the score of the user by 1
+
+        guess = Guess(
+            drawing_id=drawing_id,
+            # guesser_id=current_user.id,
+            is_correct=is_correct,
+            guessed_at=datetime.utcnow(),
+            guessed_word=guessed_word,
+        )
+
+        db.session.add(guess)
+        db.session.commit()
+
+        return (
+            jsonify({"success": "Guess recorded", "is_correct": is_correct}),
+            HTTPStatus.CREATED,
+        )
+
+    return render_template("guess.html", image=image)
 
 
 # Save a drawing in the database
