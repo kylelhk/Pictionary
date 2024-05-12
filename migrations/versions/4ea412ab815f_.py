@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: d597fbf56cec
+Revision ID: 4ea412ab815f
 Revises: 
-Create Date: 2024-05-03 08:36:42.547213
+Create Date: 2024-05-10 20:00:54.594815
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd597fbf56cec'
+revision = '4ea412ab815f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -59,11 +59,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('drawing_id', sa.Integer(), nullable=True),
     sa.Column('guesser_id', sa.Integer(), nullable=True),
+    sa.Column('guessed_word', sa.String(length=255), nullable=False),
+    sa.Column('guessed_at', sa.DateTime(), nullable=True),
     sa.Column('is_correct', sa.Boolean(), nullable=True),
     sa.Column('points_for_creator', sa.Integer(), nullable=True),
     sa.Column('points_for_guesser', sa.Integer(), nullable=True),
     sa.Column('time_shown', sa.DateTime(), nullable=True),
-    sa.Column('time_guessed', sa.DateTime(), nullable=True),
     sa.Column('time_taken', sa.Float(), nullable=True),
     sa.ForeignKeyConstraint(['drawing_id'], ['drawing.id'], ),
     sa.ForeignKeyConstraint(['guesser_id'], ['user.id'], ),
