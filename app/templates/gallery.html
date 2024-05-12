@@ -20,31 +20,6 @@ Guessing Gallery
     </div>
 </div>
 
-<!-- FOR TESTING PURPOSES -->
-<!-- TODO: redo this table properly -->
-<h1>Test: database query result</h1>
-<table>
-    <thead>
-        <tr>
-            <th scope="col">Drawing id</th>
-            <th scope="col">Creator</th>
-            <th scope="col">Category</th>
-            <th scope="col">Status</th>
-            <th scope="col">Date Created</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for drawing in gallery_data %}
-        <tr>
-            <td>{{ drawing.drawing_id }}</td> <!-- Should not be displayed, but should be stored somewhere to link to drawing page? -->
-            <td>{{ drawing.username }}</td>
-            <td>{{ drawing.category }}</td>
-            <td>{{ drawing.status }}</td>
-            <td>{{ drawing.created_at }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
 
 <table class="table table-striped">
     <thead>
