@@ -4,6 +4,7 @@ from http import HTTPStatus
 import pytz
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import current_user, login_user, logout_user
+from sqlalchemy import case
 from sqlalchemy.sql.expression import func
 from werkzeug.urls import url_parse
 
@@ -268,13 +269,32 @@ def home():
 
 
 # Guessing Gallery Page
-@app.route("/gallery")
+@app.route("/gallery", methods=["GET"])
 def gallery():
     # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Guessing Gallery page.', 'error')
         return redirect(url_for('login_signup'))
-    return render_template("gallery.html", title="Guessing Gallery")
+    
+    # Query database to get view of gallery for the currently logged in user
+    gallery_data = db.session.query(
+        Drawing.id.label('drawing_id'),
+        User.username.label('username'),
+        Word.category.label('category'),
+        case(
+            (Drawing.creator_id == current_user.id, 'My Creation') # can pick another suitable status label
+            , else_=Guess.is_correct)
+        .label('status'), 
+        Drawing.created_at.label('created_at')
+    ).join(
+        User, User.id == Drawing.creator_id
+    ).join(
+        Word, Word.id == Drawing.word_id
+    ).outerjoin(
+        Guess, (Guess.drawing_id == Drawing.id) & (Guess.guesser_id == current_user.id)
+    ).all()
+
+    return render_template("gallery.html", gallery_data=gallery_data, title="Guessing Gallery")
 
 
 # Create Drawing Page
