@@ -30,7 +30,7 @@
       <div class="fixed-nav">
         <!-- Logo -->
         <!-- Source: https://www.istockphoto.com/vector/pencil-vector-icon-back-to-school-vector-illustration-gm1072508470-287016128 -->
-        <a class="navbar-brand" href="/home">
+        <div class="navbar-brand">
           <img
             src="{{ url_for('static', filename='images/logo.png') }}"
             alt="Logo"
@@ -50,7 +50,7 @@
               stroke-linecap="round"
             />
           </svg>
-        </a>
+        </div>
 
         <!-- Game name -->
         <span id="game-name">Guess That Drawing</span>
@@ -117,9 +117,11 @@
         </div>
 
         <!-- Logout button for horizontal navbar -->
+        {% if current_user.is_authenticated %}
         <div class="logout-btn">
-          <a class="nav-link" href="/login">Logout</a>
+          <a class="nav-link" href="/logout">Logout</a>
         </div>
+        {% endif %}
       </div>
 
       <!-- Hamburger / toggle button (for screen width < 768px) -->
@@ -155,9 +157,11 @@
         </nav>
 
         <!-- Logout button for sidebar -->
+        {% if current_user.is_authenticated %}
         <div class="sidebar-logout">
-          <a class="sidebar-nav-link nav-link logout" href="/login">Logout</a>
+          <a class="sidebar-nav-link nav-link logout" href="/logout">Logout</a>
         </div>
+        {% endif %}
       </div>
     </aside>
 

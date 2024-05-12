@@ -29,14 +29,18 @@ $(function () {
 
   $(".nav-link").on("click", checkAuthentication);
 
-  // Display AJAX alert message (for nav link access control)
+  // Function to display AJAX alert message (for nav link access control)
   function displayAjaxMessage(message, category) {
     const alertHtml = `<div class="alert alert-${category}">${message}</div>`;
     $(".alert-container").html(alertHtml).show().delay(3000).fadeOut("slow");
   }
 
-  // Display Flask flash message (for successful registration)
-  $(".flash-message-container").show().delay(3000).fadeOut("slow");
+  // Function to display flash messages (for form submission feedback and successful registration)
+  function displayFlashMessage() {
+    $(".flash-message-container").show().delay(3000).fadeOut("slow");
+  }
+
+  displayFlashMessage();
 
   // Function for dynamic typing effect
   function dynamicTypingEffect(element, speed = 30, callback = null) {
@@ -123,80 +127,145 @@ $(function () {
   // Set up CSRF token for AJAX requests
   $.ajaxSetup({
     beforeSend: function (xhr, settings) {
+      // Add CSRF token to non-GET requests
       if (
         !/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) &&
         !this.crossDomain
       ) {
+        // Get CSRF token value from meta tag and set it as request header
         const csrfToken = $('input[name="csrf_token"]').val();
         xhr.setRequestHeader("X-CSRFToken", csrfToken);
       }
     },
   });
 
-  // Prevent the traditional form submission and handle it via AJAX
-  $("#loginForm").submit(function (e) {
-    e.preventDefault();
+  // Client-side validation for login form
+  function validateLoginField(fieldId, fieldValue) {
+    let error = "";
 
-    let form = $(this);
-    let formData = form.serializeArray().reduce(function (obj, item) {
-      obj[item.name] = item.value;
-      return obj;
-    }, {});
+    // Check for empty fields
+    if (fieldId === "loginUsername" && !fieldValue.trim()) {
+      error = "Username is required.";
+    } else if (fieldId === "loginPassword" && !fieldValue) {
+      error = "Password is required.";
+    }
 
-    handleFormSubmission(form, formData);
+    let feedbackSelector = `#${fieldId}Feedback`;
+    handleAjaxRequest(null, error, feedbackSelector, false); // Display errors
+    return !error; // Return true if no error, false otherwise
+  }
+
+  // Client-side validation for signup form
+  function validateSignupField(fieldId, fieldValue, formData) {
+    let error = "";
+
+    switch (fieldId) {
+      // Check for empty fields
+      case "signupUsername":
+        if (!fieldValue.trim()) error = "Username is required.";
+        break;
+      case "signupEmail":
+        if (!fieldValue.trim()) {
+          error = "Email is required.";
+        } else if (
+          // Validate email format
+          !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,6}$/.test(
+            fieldValue.trim()
+          )
+        ) {
+          error = "Invalid email format.";
+        }
+        break;
+
+      // Validate password strength
+      case "signupPassword":
+        error = validatePassword(fieldValue);
+        break;
+
+      // Confirm password match
+      case "signupConfirmPassword":
+        if (fieldValue !== formData["signup-password"]) {
+          error = "Passwords do not match.";
+        }
+        break;
+    }
+
+    let feedbackSelector = `#${fieldId}Feedback`;
+    handleAjaxRequest(null, error, feedbackSelector, false); // Display errors
+    return error === ""; // Returns true if no error, false otherwise
+  }
+
+  // Helper function for validating password strength
+  function validatePassword(password) {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
+    }
+    if (
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[0-9]/.test(password)
+    ) {
+      return "At least one uppercase, lowercase, and numeric character is required.";
+    }
+    return "";
+  }
+
+  // Perform client-side validation for login form on blur
+  $("#loginUsername, #loginPassword").blur(function () {
+    validateLoginField(this.id, $(this).val());
   });
 
-  // Function to handle form-level error messages
-  function handleFormResponse(response) {
-    if (response.errors) {
-      // Clear previous error messages
-      $(".invalid-feedback").text("").hide();
+  // Perform client-side validation for signup form on blur
+  $(
+    "#signupUsername, #signupEmail, #signupPassword, #signupConfirmPassword"
+  ).blur(function () {
+    let formData = {
+      "signup-password": $("#signupPassword").val(), // Needed for confirm password validation
+    };
+    validateSignupField(this.id, $(this).val(), formData);
+  });
 
-      // Display new error messages
-      for (let field in response.errors) {
-        let fieldError = response.errors[field];
-        let feedbackId = `#${field}Feedback`; // Ensure the IDs match your input error display containers
-        if (Array.isArray(fieldError)) {
-          $(feedbackId).text(fieldError.join(", ")).show(); // Join array of messages with comma
-        } else {
-          $(feedbackId).text(fieldError).show();
-        }
+  // Handle login form submission via AJAX
+  $("#loginForm").submit(function (e) {
+    e.preventDefault(); // Prevent the traditional form submission
+
+    // Extract form data and store in an object
+    let formData = {
+      "login-csrf_token": $(this).find('input[name="csrf_token"]').val(),
+      "login-username": $("#loginUsername").val(),
+      "login-password": $("#loginPassword").val(),
+      remember_me: $("#rememberMe").is(":checked"),
+      action: "Login",
+    };
+
+    // Check client-side validation result for all fields
+    const fieldsToValidate = [
+      { id: "loginUsername", value: formData["login-username"] },
+      { id: "loginPassword", value: formData["login-password"] },
+    ];
+
+    let allFieldsValid = true;
+    for (const field of fieldsToValidate) {
+      if (!validateLoginField(field.id, field.value)) {
+        allFieldsValid = false;
+        break; // Stop checking if any field fails
       }
     }
-  }
 
-  // Handle AJAX request for form submissions and field validations
-  function handleFormSubmission(form, formData) {
-    // TODO: Perform client-side validation before submission
-    /* if (form.attr("id") === "loginForm" && !validateLoginForm(formData)) {
-      return; // Stop the submission if validation fails
-    } */
+    // Only submit the form via AJAX if client-side validation passes
+    // TODO: Add server-side validation before submitting login form
+    if (allFieldsValid) {
+      submitFormViaAjax($(this), formData);
+    } else {
+      displayFlashMessage("Please correct the errors before submitting.");
+    }
+  });
 
-    // Submit the form data via AJAX for server-side validation
-    const actionUrl = form.attr("action");
-    $.ajax({
-      url: actionUrl,
-      type: "POST",
-      data: JSON.stringify(formData),
-      contentType: "application/json",
-      dataType: "json",
-      success: function (response) {
-        if (!response.error && response.redirect) {
-          window.location.href = response.redirect; // Redirect if needed
-        } else if (response.error) {
-          handleFormResponse(response); // Handle form-level error feedback
-        }
-      },
-      error: function (xhr) {
-        console.error("Submission failed:", xhr.status, xhr.responseText);
-      },
-    });
-  }
+  // Handle signup form submission via AJAX
+  $("#signupForm").submit(async function (e) {
+    e.preventDefault(); // Prevent the default form submission
 
-  // Handle signup form submission
-  $("#signupForm").submit(function (e) {
-    e.preventDefault();
-
+    // Extract form data
     let formData = {
       "signup-csrf_token": $(this).find('input[name="csrf_token"]').val(),
       "signup-username": $("#signupUsername").val(),
@@ -206,156 +275,207 @@ $(function () {
       action: "Sign Up",
     };
 
-    // Perform client-side validation before submission
-    if (!validateSignupForm(formData)) {
-      // Show errors and stop submission if invalid
-      return;
+    // Check client-side validation result for all fields
+    const fieldsToValidate = [
+      { id: "signupUsername", value: formData["signup-username"] },
+      { id: "signupEmail", value: formData["signup-email"] },
+      { id: "signupPassword", value: formData["signup-password"] },
+      {
+        id: "signupConfirmPassword",
+        value: formData["signup-confirm_password"],
+      },
+    ];
+
+    let allFieldsValid = true;
+    for (const field of fieldsToValidate) {
+      if (!validateSignupField(field.id, field.value, formData)) {
+        allFieldsValid = false;
+        break; // Stop checking if any field fails
+      }
     }
 
-    handleFormSubmission($(this), formData);
+    // Perform server-side validation if client-side validation passes
+    if (allFieldsValid) {
+      const serverValidationPassed = await serverValidation(
+        "#signupUsername, #signupEmail, #signupPassword, #signupConfirmPassword"
+      );
+      // Only submit the form via AJAX if both validations pass
+      if (serverValidationPassed) {
+        submitFormViaAjax($(this), formData);
+      } else {
+        displayFlashMessage(
+          "Server-side validation failed. Please revise your inputs."
+        );
+      }
+    } else {
+      displayFlashMessage(
+        "Please revise your inputs according to the error messages."
+      );
+    }
   });
 
-  // Function to handle error messages in various formats
-  function handleErrorMessage(error) {
-    // Check if the error is in JSON format and parse it
-    try {
-      // This try block handles cases where error messages are JSON strings
-      if (typeof error === "string") {
-        error = JSON.parse(error); // Parse JSON string to remove extra quotes
-      }
-    } catch (e) {
-      // If JSON.parse fails, it means it's not a JSON string, handle normally
-    }
-
-    // If it's an object, get the message property or stringify it
-    if (typeof error === "object" && error !== null) {
-      return error.message || JSON.stringify(error);
-    }
-
-    // Ensure it's a string and trim any residual quotes
-    return String(error).replace(/^"|"$/g, "").trim();
-  }
-
-  // Handle AJAX request for field validations
-  function handleAjaxRequest(actionUrl, data, feedbackSelector) {
+  // Function for AJAX form submission
+  function submitFormViaAjax(form, formData) {
+    // Send the form data via AJAX
     $.ajax({
-      url: actionUrl,
+      url: "/login", // Flask route for both login and signup form submission
       type: "POST",
-      data: JSON.stringify(data),
+      data: JSON.stringify(formData),
       contentType: "application/json",
+      dataType: "json",
+
+      // Handle AJAX request success
       success: function (response) {
-        let inputBox = $(feedbackSelector).closest(".input-box");
-        if (response.error) {
-          $(feedbackSelector).text(handleErrorMessage(response.error)).show();
-          inputBox.css("border-bottom", "2px solid Red"); // Change border color on error
-        } else {
-          $(feedbackSelector).hide();
-          inputBox.css("border-bottom", "2px solid White"); // Revert border color when no error
+        if (!response.error && response.redirect) {
+          window.location.href = response.redirect; // Redirect if no errors
+        } else if (response.errors) {
+          displayErrors(response.errors); // Display form-level error messages
         }
       },
-      error: function (xhr) {
-        let inputBox = $(feedbackSelector).closest(".input-box");
-        $(feedbackSelector)
-          .text(
-            handleErrorMessage(xhr.responseText) || "Error processing request"
-          )
-          .show();
-        inputBox.css("border-bottom", "2px solid Red"); // Change border color on AJAX error
+
+      // Handle AJAX request errors
+      error: function (xhr, textStatus, errorThrown) {
+        console.error("AJAX request failed:", textStatus, errorThrown);
+        let errorMessage = "Server error occurred. Please try again later.";
+        let alertCategory = "danger"; // Bootstrap class for error messages
+        if (xhr.status === 0) {
+          errorMessage = "Cannot connect. Please check your connection.";
+        } else if (xhr.status === 404) {
+          errorMessage = "Requested page not found. [404]";
+        } else if (xhr.status === 500) {
+          errorMessage = "Internal Server Error [500].";
+        }
+
+        // Use the function defined above to display the error message
+        displayAjaxMessage(errorMessage, alertCategory);
       },
     });
   }
 
-  // Function to validate password strength
-  function validatePassword(password) {
-    const minLength = 8;
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
-    const hasNumbers = /[0-9]/.test(password);
-    const errors = [];
+  // Function to display form-level error messages
+  function displayErrors(response) {
+    if (response.errors) {
+      // Clear previous error messages
+      $(".invalid-feedback").text("").hide();
 
-    if (password.length < minLength) {
-      errors.push("Password must be at least 8 characters long.");
-    }
-    if (!hasUppercase) {
-      errors.push("Password must include at least one uppercase letter.");
-    }
-    if (!hasLowercase) {
-      errors.push("Password must include at least one lowercase letter.");
-    }
-    if (!hasNumbers) {
-      errors.push("Password must include at least one number.");
-    }
-    return errors.length > 0 ? errors.join(" ") : "";
-  }
-
-  // Function to validate the signup form
-  function validateSignupForm(formData) {
-    let isValid = true;
-    let errors = {};
-
-    // Check if username field is empty
-    if (!formData["signup-username"].trim()) {
-      errors["signup-username"] = "No username provided";
-      isValid = false;
-    }
-
-    // Check if email field is empty
-    if (!formData["signup-email"].trim()) {
-      errors["signup-email"] = "No email provided";
-      isValid = false;
-    }
-
-    // Email format validation using regex
-    if (
-      !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,6}$/.test(
-        formData["signup-email"]
-      )
-    ) {
-      errors["signup-email"] = "Invalid email format";
-      isValid = false;
-    }
-
-    // Password validations
-    const passwordErrors = validatePassword(formData["signup-password"]);
-    if (passwordErrors) {
-      errors["signup-password"] = passwordErrors;
-      isValid = false;
-    }
-
-    // Confirm password match
-    if (formData["signup-password"] !== formData["signup-confirm_password"]) {
-      errors["signup-confirm_password"] = "Passwords do not match";
-      isValid = false;
-    }
-
-    // Display errors
-    if (!isValid) {
-      for (let field in errors) {
+      // Display new error messages
+      for (let field in response.errors) {
+        let fieldError = response.errors[field];
         let feedbackId = `#${field}Feedback`;
-        $(feedbackId).text(errors[field]).show();
+        if (Array.isArray(fieldError)) {
+          $(feedbackId).text(fieldError.join(", ")).show();
+        } else {
+          $(feedbackId).text(fieldError).show();
+        }
       }
     }
-
-    return isValid;
   }
 
-  // Blur event handlers for field validation
-  $(
-    "#signupUsername, #signupEmail, #signupPassword, #signupConfirmPassword"
-  ).blur(function () {
-    let fieldId = $(this).attr("id");
-    let actionUrl = `/validate-${fieldId.split("signup")[1].toLowerCase()}`; // Creates the endpoint URL dynamically based on the field ID
-    let data = { value: $(this).val() };
+  // Function to trigger AJAX requests for server-side validation
+  async function serverValidation(selectors) {
+    let promises = [];
 
-    if (fieldId === "signupConfirmPassword") {
-      data.password = $("#signupPassword").val(); // Add password for confirm password validation
+    $(selectors).each(function () {
+      let fieldId = $(this).attr("id");
+      let actionUrl = `/validate-${fieldId.split("signup")[1].toLowerCase()}`; // Creates the endpoint URL dynamically based on field ID
+      let data = { value: $(this).val() };
+
+      // Include password for confirm password validation
+      if (fieldId === "signupConfirmPassword") {
+        data.password = $("#signupPassword").val();
+      }
+
+      // Push the AJAX request to the promises array
+      let feedbackSelector = `#${fieldId}Feedback`;
+      promises.push(handleAjaxRequest(actionUrl, data, feedbackSelector));
+    });
+
+    // Wait for all promises to resolve and return the result
+    try {
+      await Promise.all(promises);
+      return true; // Return true if all validations pass
+    } catch (error) {
+      console.error("Validation error:", error);
+      return false; // Return false if any validation fails
+    }
+  }
+
+  // Function for sending data to the server via AJAX and handling the resulting response or error
+  function handleAjaxRequest(
+    actionUrl,
+    data,
+    feedbackSelector,
+    useAjax = true
+  ) {
+    const inputBox = $(feedbackSelector).closest(".input-box");
+
+    // Function to display or hide error message based on server response
+    function displayError(message) {
+      $(feedbackSelector).text(message).show();
+      inputBox.css("border-bottom", "2px solid Red");
+    }
+    function clearError() {
+      $(feedbackSelector).hide();
+      inputBox.css("border-bottom", "2px solid White");
     }
 
-    handleAjaxRequest(actionUrl, data, `#${fieldId}Feedback`);
-  });
+    // Perform AJAX request or direct error handling
+    if (useAjax) {
+      // Send the data to the server via AJAX
+      $.ajax({
+        url: actionUrl,
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
 
-  // Fade out invalid feedback when user starts editing any field
+        // Handle AJAX request success
+        success: function (response) {
+          if (response.error) {
+            displayError(convertErrorMessage(response.error));
+          } else {
+            clearError();
+          }
+        },
+
+        // Handle AJAX request errors
+        error: function (xhr) {
+          displayError(
+            convertErrorMessage(xhr.responseText) || "Error processing request"
+          );
+        },
+      });
+    } else {
+      // Handle error messages for client-side validations
+      if (typeof data === "string" && data.trim() !== "") {
+        displayError(data);
+      } else {
+        clearError();
+      }
+    }
+  }
+
+  // Function for converting different forms of error message into a consistent format for user prompt
+  function convertErrorMessage(error) {
+    // Parse error if it is a JSON-formatted string
+    try {
+      if (typeof error === "string") {
+        error = JSON.parse(error);
+      }
+    } catch (e) {
+      // Silent failure - if JSON.parse fails, use the original error message
+    }
+
+    // If error is an object (not a string), attempt to find a message directly
+    if (typeof error === "object" && error !== null) {
+      return error.message || JSON.stringify(error);
+    }
+
+    // Convert error to string and remove any enclosing quotes
+    return String(error).replace(/^"|"$/g, "").trim();
+  }
+
+  // Fade out error messages when user starts editing any field
   $("input, select, textarea").on("input focus", function () {
-    $(".invalid-feedback").fadeOut("slow");
+    $(this).closest(".form-group").find(".invalid-feedback").fadeOut("slow");
   });
 });

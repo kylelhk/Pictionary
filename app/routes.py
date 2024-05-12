@@ -14,7 +14,6 @@ from app.forms import LoginForm, SignupForm
 from app.models import User, Word, Drawing
 
 import re  # Regular expressions library for password validation
-from sqlalchemy.exc import SQLAlchemyError  # For debugging database errors
 
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
@@ -33,20 +32,22 @@ def login_signup():
     if current_user.is_authenticated:
         return redirect(url_for("home"))
 
+    # Handle AJAX requests for login and signup
     if request.method == "POST" and is_ajax():
         data = request.json
         action = data.get("action")
         if action == "Login":
-            return handle_login_ajax()
+            return handle_login_ajax(data)
         elif action == "Sign Up":
             return handle_signup_ajax(data)
         else:
             return jsonify({'error': True, 'message': 'Unexpected action'}), 400
 
+    # Handle non-AJAX POST requests
     elif request.method == "POST":
         return jsonify({'error': True, 'message': 'Invalid request type'}), 400
 
-    # Serve login/signup page on GET request or non-AJAX POST
+    # Handle GET requests
     login_form = LoginForm(prefix="login")
     signup_form = SignupForm(prefix="signup")
     return render_template(
@@ -56,48 +57,67 @@ def login_signup():
         title="Log In / Sign Up"
     )
 
-# Handle login form input and submission
+# Process login form inputs and submission
 
 
-def handle_login_ajax():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    remember_me = request.json.get('remember_me', False)
-    user = User.query.filter_by(username=username).first()
+def handle_login_ajax(data):
+    try:
+        username = data.get('login-username')
+        password = data.get('login-password')
+        remember_me = data.get('remember_me', False)
+        user = User.query.filter_by(username=username).first()
 
-    # Time-based locking and exponential backoff mechanism
-    # If user exists, check if they are in lockout period
-    if user:
-        lockout_time = user.get_lockout_time()
-        current_time = datetime.now(timezone)
+        # TODO: Time-based locking and exponential backoff mechanism
+        """ # If user exists, check if they are in lockout period
+        if user:
+            lockout_time = user.get_lockout_time()
+            current_time = datetime.now(timezone)
 
-        # If user has failed login attempts and is still in lockout period
-        if user.last_failed_login and (current_time - user.last_failed_login).seconds < lockout_time:
-            wait_time = int(lockout_time - (current_time -
-                            user.last_failed_login).seconds)
-            return jsonify({'error': True, 'errors': {'Lockout': f"Please wait {wait_time} seconds before trying again."}}), 423
+            # If user has failed login attempts and is still in lockout period
+            if user.last_failed_login and (current_time - user.last_failed_login).seconds < lockout_time:
+                wait_time = int(lockout_time - (current_time -
+                                user.last_failed_login).seconds)
+                return jsonify({'error': True, 'errors': {'Lockout': f"Please wait {wait_time} seconds before trying again."}}), 423
 
-        # If user exists and password is correct
-        if user.check_password(password):
-            user.failed_login_attempts = 0
-            user.last_failed_login = None
-            db.session.commit()
-            login_user(user, remember=remember_me)
-            next_page = request.args.get("next") or url_for("home")
-            return jsonify({'error': False, 'redirect': next_page})
+            # If user exists and password is correct
+            if user.check_password(password):
+                user.failed_login_attempts = 0
+                user.last_failed_login = None
+                db.session.commit()
+                login_user(user, remember=remember_me)
+                # Redirect to the Home page
+                next_page = request.args.get("next") or url_for("home")
+                return jsonify({'error': False, 'redirect': url_for(next_page)})
 
-        # If user exists but password is incorrect
+            # If user exists but password is incorrect
+            else:
+                user.failed_login_attempts += 1
+                user.last_failed_login = datetime.now(timezone)
+                db.session.commit()
+                return jsonify({'error': True, 'errors': {'Password': 'Invalid Username or Password'}}), 401
+
+        # If user does not exist
         else:
-            user.failed_login_attempts += 1
-            user.last_failed_login = datetime.now(timezone)
-            db.session.commit()
-            return jsonify({'error': True, 'errors': {'Password': 'Invalid Username or Password'}}), 401
+            return jsonify({'error': True, 'errors': {'User': 'Invalid Username or Password'}}), 404 """
 
-    # If user does not exist
-    else:
-        return jsonify({'error': True, 'errors': {'User': 'Invalid Username or Password'}}), 404
+        # If user exists, check password and manage user session
+        if user:
+            if user.check_password(password):
+                user.last_login = datetime.now(timezone)
+                db.session.commit()
+                login_user(user, remember=remember_me)
+                return jsonify({'error': False, 'redirect': url_for("home")})
+            else:
+                return jsonify({'error': True, 'errors': {'Password': 'Invalid Username or Password'}}), 401
+        else:
+            return jsonify({'error': True, 'errors': {'User': 'User not found'}}), 404
 
-# Handle signup form input and submission
+    # Handle unexpected errors
+    except Exception as e:
+        app.logger.error(f'Unexpected error: {str(e)}', exc_info=True)
+        return jsonify({'error': True, 'message': 'Internal server error'}), 500
+
+# Process signup form inputs and submission
 
 
 def handle_signup_ajax(data):
@@ -107,15 +127,24 @@ def handle_signup_ajax(data):
         password = data.get('signup-password')
         confirm_password = data.get('signup-confirm_password')
 
+        # Check if username and email are unique
         if User.query.filter_by(username=username).first():
             return jsonify({'error': True, 'errors': {'username': 'Username already taken'}}), 400
 
         if User.query.filter_by(email=email).first():
             return jsonify({'error': True, 'errors': {'email': 'This email is already in use'}}), 400
 
+        # Check password strength
+        if len(password) < 8:
+            return jsonify({'error': True, 'errors': {'password': 'Password must be at least 8 characters'}}), 400
+        if not (re.search("[a-z]", password) and re.search("[A-Z]", password) and re.search("[0-9]", password)):
+            return jsonify({'error': True, 'errors': {'password': 'Password must contain at least one uppercase, lowercase, and numeric character'}}), 400
+
+        # Check if passwords match
         if password != confirm_password:
             return jsonify({'error': True, 'errors': {'confirm_password': 'Passwords must match'}}), 400
 
+        # Create new user and add to database
         user = User(username=username, email=email)
         user.set_password(password)
         db.session.add(user)
@@ -124,15 +153,17 @@ def handle_signup_ajax(data):
         flash("Congratulations, you are now a registered user!", "success")
         return jsonify({'error': False, 'redirect': url_for("login_signup")})
 
+    # Handle unexpected errors
     except Exception as e:
-        # Detailed logging for errors
         app.logger.error(f'Error during signup: {e}', exc_info=True)
         db.session.rollback()
         return jsonify({'error': True, 'message': 'Signup failed due to server error'}), 500
 
 
-# Additional validations for username, email, and password inputs
+# Server-side validations for username, email, and password inputs before form submission
+# TODO: Check if any redundancy with the code above and forms.py
 
+# Validate username
 @app.route('/validate-username', methods=['POST'])
 def validate_username():
     username = request.json.get('value')
@@ -153,6 +184,8 @@ def validate_username():
 
     return jsonify({'error': False})
 
+# Validate email
+
 
 @app.route('/validate-email', methods=['POST'])
 def validate_email():
@@ -166,12 +199,14 @@ def validate_email():
     if User.query.filter_by(email=email).first():
         return jsonify('This email is already in use.'), 400
 
-    # Validate email format using regex
+    # Validate email format using regex (generated by ChatGPT)
     email_regex = r'^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,6}$'
     if not re.match(email_regex, email.strip()):
         return jsonify('Invalid email format.'), 400
 
     return jsonify({'error': False}), 200
+
+# Validate password
 
 
 @app.route('/validate-password', methods=['POST'])
@@ -185,9 +220,11 @@ def validate_password():
         return jsonify('Password must be at least 8 characters.'), 400
 
     if not (re.search("[a-z]", password) and re.search("[A-Z]", password) and re.search("[0-9]", password)):
-        return jsonify('Password must include lower, upper, and numeric characters.'), 400
+        return jsonify('At least one uppercase, lowercase, and numeric character.'), 400
 
     return jsonify({'error': False}), 200
+
+# Confirm password match
 
 
 @app.route('/validate-confirmpassword', methods=['POST'])
@@ -203,12 +240,14 @@ def validate_confirm_password():
 
     return jsonify({'error': False}), 200
 
+# Logout route
+
 
 @app.route("/logout")
 def logout():
     logout_user()
-    flash("You have been logged out.", "info")
-    return redirect(url_for("login"))
+    flash("You have been logged out.", "success")
+    return redirect(url_for("login_signup"))
 
 
 # For access control via AJAX in login.js
@@ -221,7 +260,7 @@ def check_authentication():
 @app.route("/")
 @app.route("/home")
 def home():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled)
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Home page.', 'error')
         return redirect(url_for('login_signup'))
@@ -231,7 +270,7 @@ def home():
 # Guessing Gallery Page
 @app.route("/gallery")
 def gallery():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled)
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Guessing Gallery page.', 'error')
         return redirect(url_for('login_signup'))
@@ -241,7 +280,7 @@ def gallery():
 # Create Drawing Page
 @app.route("/drawing")
 def drawing():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled)
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Create Drawing page.', 'error')
         return redirect(url_for('login_signup'))

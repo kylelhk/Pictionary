@@ -32,7 +32,7 @@ block styles %} {{ super() }}
   </div>
 </div>
 
-<!-- Flask flash message (for successful registration) -->
+<!-- Flask flash message (for successful registration and logout) -->
 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages
 %}
 <div class="flash-message-container">
@@ -104,9 +104,10 @@ block styles %} {{ super() }}
           <!-- Error message for invalid form input -->
           <div id="loginPasswordFeedback" class="invalid-feedback"></div>
         </div>
-        <div class="remember-password">
-          {{ login_form.remember_me(class='remember-me-tickbox')}} {{
-          login_form.remember_me.label }}
+        <div class="remember-me">
+          {{ login_form.remember_me(class='remember-me-tickbox',
+          id='rememberMe')}} {{ login_form.remember_me.label(for='rememberMe')
+          }}
         </div>
 
         <!-- Login button -->

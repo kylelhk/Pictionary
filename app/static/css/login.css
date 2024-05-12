@@ -120,7 +120,7 @@
   background-color: Red;
 }
 
-/* Flask flash message for successful registration */
+/* Flask flash message for successful registration and logout */
 .flash-message-container {
   position: relative;
   width: 100%;
@@ -137,6 +137,16 @@
   border-radius: 5px;
   color: White;
   background-color: Green;
+}
+
+.flash-message-error {
+  display: inline-block;
+  width: auto;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  color: White;
+  background-color: Red;
 }
 
 /* Login and signup form container */
@@ -367,7 +377,7 @@ input:-moz-ui-valid {
 }
 
 /* Remember me checkbox */
-.remember-password {
+.remember-me {
   display: flex;
   justify-content: flex-end;
   font-size: 16px;
@@ -411,9 +421,11 @@ input:-moz-ui-valid {
   transform: translateX(430px);
   transition: transform 0.6s ease;
   transition-delay: 0s;
+  visibility: hidden;
 }
 
 .form.active .form-box.signup {
   transform: translateX(0px);
   transition-delay: 0.7s;
+  visibility: visible;
 }
