@@ -7,11 +7,16 @@
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/guess.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/timer.css') }}"/>
 {% endblock %}
 
 {% block content %}
 
   <div class="container">
+    <div id="timer">
+      <h4>Time remaining:</h4>
+      {% include 'timer.html' %}
+    </div>
     {#  IMAGE SHOWING DRAWING #}
     <div class="image-container">
       <img class="guess-image" src="{{ image.drawing_data }}" alt="Rendered Image" data-drawing-id="{{ image.id }}">
@@ -54,6 +59,7 @@
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='js/guess.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/timer.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/guess.js') }}"></script>
 
 {% endblock %}

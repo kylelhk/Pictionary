@@ -1,3 +1,5 @@
+import { CountdownTimer } from './timer.js'
+
 function createBubble(text, className) {
     let bubble = document.createElement('div');
     bubble.className = "bubble " + className; // e.g., 'bubble-dark', 'bubble-light'
@@ -50,4 +52,8 @@ window.addEventListener("DOMContentLoaded", function () {
                 .catch(error => console.error('Error:', error));
         }
     });
+
+    // Create a timer and start it
+    const timer = new CountdownTimer(60, 30, 10); // TODO: Add a call back function to exit once time runs out
+    timer.startTimer();
 });
