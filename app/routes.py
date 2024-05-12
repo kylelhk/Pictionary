@@ -278,7 +278,7 @@ def gallery():
     return render_template("gallery.html", title="Guessing Gallery")
 
 # Get Gallery Data
-@app.route("/get-gallery-data", methods=["GET"])
+@main.route("/get-gallery-data", methods=["GET"])
 def get_gallery_data():
     # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
