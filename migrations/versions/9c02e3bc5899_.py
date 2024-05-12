@@ -1,7 +1,7 @@
-"""empty message
+"""Add columns to the User model to track failed login attempts
 
 Revision ID: 9c02e3bc5899
-Revises: d597fbf56cec
+Revises: 7e4adebcbbd4
 Create Date: 2024-05-09 19:30:09.102077
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '9c02e3bc5899'
-down_revision = 'd597fbf56cec'
+down_revision = '7e4adebcbbd4'
 branch_labels = None
 depends_on = None
 
