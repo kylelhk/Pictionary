@@ -1,4 +1,4 @@
-"""Change names of some attributes in Guess model
+"""Change the names of some attributes in Guess model for easier understanding
 
 Revision ID: 7e4adebcbbd4
 Revises: d597fbf56cec

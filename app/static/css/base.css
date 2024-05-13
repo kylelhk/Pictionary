@@ -17,6 +17,23 @@ footer {
   background-color: transparent;
 }
 
+/* AJAX alert message */
+.alert-container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  display: none; /* Hidden by default */
+  z-index: 721;
+}
+
+.alert {
+  display: inline-block;
+  width: auto;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 /* Horizontal navbar */
 .navbar {
   position: fixed;

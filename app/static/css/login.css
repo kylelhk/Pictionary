@@ -114,6 +114,41 @@
   }
 }
 
+/* AJAX alert message for unauthorised access */
+.alert-error {
+  color: White;
+  background-color: Red;
+}
+
+/* Flask flash message for successful registration and logout */
+.flash-message-container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  display: none; /* Hidden by default */
+  z-index: 721;
+}
+
+.flash-message-success {
+  display: inline-block;
+  width: auto;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  color: White;
+  background-color: Green;
+}
+
+.flash-message-error {
+  display: inline-block;
+  width: auto;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  color: White;
+  background-color: Red;
+}
+
 /* Login and signup form container */
 .container {
   position: absolute;
@@ -217,6 +252,7 @@
   border-bottom: 2px solid White;
   margin: 17px 0;
   position: relative;
+  transition: 0.5s ease;
 }
 
 .login-signup-input {
@@ -237,11 +273,11 @@
   left: 1%;
   transform: translateY(-50%);
   font-size: 16px;
-  transition: 0.5s ease;
+  transition: 0.4s ease;
 }
 
 .input-box input:hover ~ label {
-  top: -1px;
+  top: 17%;
 }
 
 .input-box .icon {
@@ -262,6 +298,34 @@
 
 .signup .login-signup-input::placeholder {
   color: Aquamarine;
+}
+
+/* Error message for invalid form inputs */
+.invalid-feedback {
+  display: none; /* Hidden by default, shown via login.js */
+  color: Red;
+  position: absolute;
+  top: 100%;
+  margin-top: 2px;
+  font-size: 12px;
+  z-index: 831;
+}
+
+/* Override styles for the autofill background in Chrome, Safari, Firefox, and Opera */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px transparent inset; /* Customize background color */
+}
+
+input:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+input:-moz-ui-valid {
+  box-shadow: none;
 }
 
 /* Login and signup buttons */
@@ -300,11 +364,6 @@
   font-weight: bold;
 }
 
-/* Error message for invalid user credentials */
-.error-msg {
-  color: red;
-}
-
 /* Visibility toggle for password field */
 .visibility-toggle {
   background: none;
@@ -318,7 +377,7 @@
 }
 
 /* Remember me checkbox */
-.remember-password {
+.remember-me {
   display: flex;
   justify-content: flex-end;
   font-size: 16px;
@@ -362,9 +421,11 @@
   transform: translateX(430px);
   transition: transform 0.6s ease;
   transition-delay: 0s;
+  visibility: hidden;
 }
 
 .form.active .form-box.signup {
   transform: translateX(0px);
   transition-delay: 0.7s;
+  visibility: visible;
 }
