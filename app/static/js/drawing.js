@@ -1,38 +1,57 @@
 import { CountdownTimer } from './timer.js'
 
-// Display modal when window loads
-window.addEventListener('load', () => {
-    let wordCatModal = new bootstrap.Modal('#word-category-modal');
-    wordCatModal.show();
-    document.querySelectorAll('.category-btn').forEach(button => {
-        button.addEventListener("click", () => {
-            const category = button.getAttribute('data-category');
-            fetchWord(category, wordCatModal);
-        });
-    });
-});
+let isWordCatModalVisible = false;
+let wordCatModal;
 
 // Fetch a random word from the chosen category
-function fetchWord(category, modal) {
+function fetchWord(category) {
     fetch(`/get-random-word?category=${category}`)
         .then(response => response.json())
         .then(data => {
             const wordContainer = document.getElementById('word-to-draw');
             wordContainer.innerHTML = data.word; // Display the word
-            wordContainer.setAttribute('data-word-id', data.word_id); // Store word_id in data attribute
-            modal.hide(); // Close the modal
+            wordContainer.setAttribute('data-word-id', data.word_id); // Store word_id in data attribute for saving in database
+            wordCatModal.hide(); // Close the modal
             const timer = new CountdownTimer(120, 30, 10, saveDrawing); // Start a timer
             timer.startTimer();
         })
         .catch(error => console.error("Error fetching word:", error));
 }
 
-// Redirect to the Home screen when the exit button is clicked
-document.getElementById("exit-modal").addEventListener("click", function () {
-    if (confirm("Are you sure you want to quit drawing?")) {
-        window.location.href = homeUrl;
+// Display modal to select the category of word to draw when window loads
+window.addEventListener('load', () => {
+    wordCatModal = new bootstrap.Modal('#word-category-modal');
+    wordCatModal.show();
+    isWordCatModalVisible = true;
+
+    document.querySelectorAll('.category-btn').forEach(button => {
+        button.addEventListener("click", () => {
+            const category = button.getAttribute('data-category');
+            fetchWord(category);
+            isWordCatModalVisible = false;
+        });
+    });
+});
+
+// Show a confirmation modal when the user wants to quit the drawing
+document.querySelectorAll("#exit-modal, #quit-drawing").forEach((element) => {
+    element.addEventListener("click", function () {
+        let confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+        confirmModal.show();
+    })
+});
+
+// Redirect to the home page if the user confirms they want to quit
+document.getElementById("confirm-yes").addEventListener("click", function () {
+    window.location.href = homeUrl;
+});
+
+// Show the category modal or the canvas if the user cancels quitting
+document.getElementById("confirm-cancel").addEventListener("click", function () {
+    if (isWordCatModalVisible) {
+        wordCatModal.show();
     }
-})
+});
 
 // Get canvas element and its context
 const canvas = document.getElementById("drawing-canvas");
@@ -138,12 +157,3 @@ function saveDrawing() {
 
 const submitButton = document.getElementById("submit-drawing");
 submitButton.addEventListener("click", saveDrawing);
-
-// TODO: Automatically save canvas when time runs out
-
-// Redirect to Home screen when quit button clicked
-document.getElementById("quit-drawing").addEventListener("click", function () {
-    if (confirm("Are you sure you want to quit drawing?")) {
-        window.location.href = homeUrl;
-    }
-});
