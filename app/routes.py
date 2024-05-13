@@ -110,7 +110,7 @@ def handle_login_ajax(data):
             else:
                 return jsonify({'error': True, 'errors': {'Password': 'Invalid Username or Password'}}), 401
         else:
-            return jsonify({'error': True, 'errors': {'User': 'User not found'}}), 404
+            return jsonify({'error': True, 'errors': {'User': 'User not found'}}), HTTPStatus.NOT_FOUND
 
     # Handle unexpected errors
     except Exception as e:
