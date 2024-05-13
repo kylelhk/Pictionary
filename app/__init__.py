@@ -18,5 +18,5 @@ from app.cli import load_data_command
 app.cli.add_command(load_data_command)
 
 from app import routes, forms
-from app.models import Drawing, Guess, User, Word
+from app.models import Drawing, Guess, User, Word, Gallery
 # fmt: on

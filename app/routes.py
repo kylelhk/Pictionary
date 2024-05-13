@@ -9,7 +9,8 @@ from werkzeug.urls import url_parse
 
 from app import app, db
 from app.forms import LoginForm, SignupForm
-from app.models import User, Word, Drawing
+from app.models import User, Word, Drawing, Gallery
+
 
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
@@ -75,15 +76,23 @@ def home():
     return redirect(url_for('login_signup'))"""
     return render_template("home.html", title="Home")
 
-
-# Guessing Gallery Page
-@app.route("/gallery")
+# Gallery Page
+@app.route('/gallery')
 def gallery():
-    """if not current_user.is_authenticated:
-    flash('You must be logged in to access the Guessing Gallery page.', 'error')
-    return redirect(url_for('login_signup'))"""
-    return render_template("gallery.html", title="Guessing Gallery")
+    return render_template('gallery.html')
 
+@app.route('/gallery_table')
+def get_gallery():
+    galleries = Gallery.query.all()  # Fetch all records
+    response = jsonify([{
+        'id': gallery.id,
+        'creator': gallery.creator,
+        'category': gallery.category,
+        'status': gallery.status,
+        'date_created': gallery.date_created.strftime('%Y-%m-%d %H:%M:%S')
+    } for gallery in galleries])
+    response.headers['X-Total-Count'] = len(galleries)
+    return response
 
 # Create Drawing Page
 @app.route("/drawing")
