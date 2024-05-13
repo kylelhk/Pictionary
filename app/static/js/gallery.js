@@ -38,7 +38,7 @@ function updateGalleryTable(data) {
 
 function createTableRow(item) {
     return `<tr>
-                <td><button class="btn btn-primary btn-sm" onclick="openDrawing(${item.id})">Open</button></td>
+                <td><button class="btn btn-primary btn-sm" onclick="openDrawing(${item.drawing_id})">Open</button></td>
                 <td>${item.creator}</td>
                 <td>${item.category}</td>
                 <td>${item.status}</td>
