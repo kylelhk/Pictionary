@@ -69,7 +69,7 @@ block styles %} {{ super() }}
   <div class="form">
     <!-- Login form -->
     <div class="form-box login">
-      <form id="loginForm" method="post" action="{{ url_for('login_signup') }}">
+      <form id="loginForm" method="post" action="{{ url_for('main.login_signup') }}">
         <!-- A hidden Cross-Site Request Forgery (CSRF) token for preventing CSRF attacks -->
         <!-- This token is required for every POST request to ensure that the request is coming from the designated form and not from an external source. -->
         {{ login_form.csrf_token }}
@@ -135,7 +135,7 @@ block styles %} {{ super() }}
       <form
         id="signupForm"
         method="post"
-        action="{{ url_for('login_signup') }}"
+        action="{{ url_for('main.login_signup') }}"
       >
         <!-- A hidden CSRF token for preventing CSRF attacks -->
         {{ signup_form.csrf_token }}

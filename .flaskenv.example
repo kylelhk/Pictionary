@@ -1,3 +1,5 @@
-FLASK_APP=app.py
+FLASK_APP="app:create_app('DeploymentConfig')"
 FLASK_DEBUG=1
+# FLASK_APP="app:create_app('TestConfig')"
+# FLASK_DEBUG=0
 SECRET_KEY=your_secret_key_here

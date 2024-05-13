@@ -2,23 +2,23 @@ from datetime import datetime, timezone
 from http import HTTPStatus
 
 import pytz
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import current_app, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import current_user, login_user, logout_user
 from sqlalchemy import case
 from sqlalchemy.sql.expression import func
 from werkzeug.urls import url_parse
-
 import json
-
-from app import app, db
-from app.forms import LoginForm, SignupForm
-from app.models import User, Word, Drawing, Guess
-
 import re  # Regular expressions library for password validation
+
+from app import db
+from app.blueprints import main
+from app.forms import LoginForm, SignupForm
+from app.models import Drawing, Guess, Word, User
+
+
 
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
-
 
 # Determine if a request is made via AJAX
 def is_ajax():
@@ -27,11 +27,11 @@ def is_ajax():
 # Login and Signup Page
 
 
-@app.route("/login", methods=["GET", "POST"])
+@main.route("/login", methods=["GET", "POST"])
 def login_signup():
     # Redirect to Home page if user is already authenticated
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
 
     # Handle AJAX requests for login and signup
     if request.method == "POST" and is_ajax():
@@ -87,7 +87,7 @@ def handle_login_ajax(data):
                 db.session.commit()
                 login_user(user, remember=remember_me)
                 # Redirect to the Home page
-                next_page = request.args.get("next") or url_for("home")
+                next_page = request.args.get("next") or url_for("main.home")
                 return jsonify({'error': False, 'redirect': url_for(next_page)})
 
             # If user exists but password is incorrect
@@ -107,7 +107,7 @@ def handle_login_ajax(data):
                 user.last_login = datetime.now(timezone)
                 db.session.commit()
                 login_user(user, remember=remember_me)
-                return jsonify({'error': False, 'redirect': url_for("home")})
+                return jsonify({'error': False, 'redirect': url_for("main.home")})
             else:
                 return jsonify({'error': True, 'errors': {'Password': 'Invalid Username or Password'}}), 401
         else:
@@ -115,7 +115,7 @@ def handle_login_ajax(data):
 
     # Handle unexpected errors
     except Exception as e:
-        app.logger.error(f'Unexpected error: {str(e)}', exc_info=True)
+        current_app.logger.error(f'Unexpected error: {str(e)}', exc_info=True)
         return jsonify({'error': True, 'message': 'Internal server error'}), 500
 
 # Process signup form inputs and submission
@@ -152,11 +152,11 @@ def handle_signup_ajax(data):
         db.session.commit()
 
         flash("Congratulations, you are now a registered user!", "success")
-        return jsonify({'error': False, 'redirect': url_for("login_signup")})
+        return jsonify({'error': False, 'redirect': url_for("main.login_signup")})
 
     # Handle unexpected errors
     except Exception as e:
-        app.logger.error(f'Error during signup: {e}', exc_info=True)
+        current_app.logger.error(f'Error during signup: {e}', exc_info=True)
         db.session.rollback()
         return jsonify({'error': True, 'message': 'Signup failed due to server error'}), 500
 
@@ -165,7 +165,7 @@ def handle_signup_ajax(data):
 # TODO: Check if any redundancy with the code above and forms.py
 
 # Validate username
-@app.route('/validate-username', methods=['POST'])
+@main.route('/validate-username', methods=['POST'])
 def validate_username():
     username = request.json.get('value')
     # Default to 'signup' if not specified
@@ -188,7 +188,7 @@ def validate_username():
 # Validate email
 
 
-@app.route('/validate-email', methods=['POST'])
+@main.route('/validate-email', methods=['POST'])
 def validate_email():
     email = request.json.get('value')
 
@@ -210,7 +210,7 @@ def validate_email():
 # Validate password
 
 
-@app.route('/validate-password', methods=['POST'])
+@main.route('/validate-password', methods=['POST'])
 def validate_password():
     password = request.json.get('value')
 
@@ -228,7 +228,7 @@ def validate_password():
 # Confirm password match
 
 
-@app.route('/validate-confirmpassword', methods=['POST'])
+@main.route('/validate-confirmpassword', methods=['POST'])
 def validate_confirm_password():
     password = request.json.get('password')
     confirm_password = request.json.get('value')
@@ -244,37 +244,37 @@ def validate_confirm_password():
 # Logout route
 
 
-@app.route("/logout")
+@main.route("/logout")
 def logout():
     logout_user()
     flash("You have been logged out.", "success")
-    return redirect(url_for("login_signup"))
+    return redirect(url_for("main.login_signup"))
 
 
 # For access control via AJAX in login.js
-@app.route('/check-authentication')
+@main.route('/check-authentication')
 def check_authentication():
     return jsonify(isAuthenticated=current_user.is_authenticated)
 
 
 # Home Page
-@app.route("/")
-@app.route("/home")
+@main.route("/")
+@main.route("/home")
 def home():
     # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Home page.', 'error')
-        return redirect(url_for('login_signup'))
+        return redirect(url_for('main.login_signup'))
     return render_template("home.html", title="Home")
 
 
 # Guessing Gallery Page
-@app.route("/gallery")
+@main.route("/gallery")
 def gallery():
     # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Guessing Gallery page.', 'error')
-        return redirect(url_for('login_signup'))
+        return redirect(url_for('main.login_signup'))
     return render_template("gallery.html", title="Guessing Gallery")
 
 # Get Gallery Data
@@ -318,16 +318,16 @@ def get_gallery_data():
     return jsonify(results)
 
 # Create Drawing Page
-@app.route("/drawing")
+@main.route("/drawing")
 def drawing():
     # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Create Drawing page.', 'error')
-        return redirect(url_for('login_signup'))
+        return redirect(url_for('main.login_signup'))
     return render_template("drawing.html", title="Create Drawing")
 
 
-@app.route("/drawings/<int:drawing_id>", methods=["GET", "POST"])
+@main.route("/drawings/<int:drawing_id>", methods=["GET", "POST"])
 def drawing_detail(drawing_id):
     image = Drawing.query.get_or_404(drawing_id)
 
@@ -376,7 +376,7 @@ def drawing_detail(drawing_id):
 
 
 # Save a drawing in the database
-@app.route("/submit-drawing", methods=["POST"])
+@main.route("/submit-drawing", methods=["POST"])
 # @login_required
 def submit_drawing():
     if not request.json:
@@ -408,7 +408,7 @@ def submit_drawing():
 
 
 # Retrieve a random word to draw
-@app.route("/get-random-word", methods=["GET"])
+@main.route("/get-random-word", methods=["GET"])
 # @login_required
 def get_random_word():
     # Get category from request parameters
@@ -433,7 +433,3 @@ def get_random_word():
         )
 
     return jsonify({"word_id": random_word.id, "word": random_word.text}), HTTPStatus.OK
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

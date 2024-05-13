@@ -1,4 +1,4 @@
-from app import db, login
+from app import db, login_manager
 import pytz
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -46,6 +46,6 @@ class User(UserMixin, db.Model):
 # User loader function for flask-login
 
 
-@login.user_loader
+@login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))

@@ -5,18 +5,33 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
-app = Flask(__name__)
+db = SQLAlchemy()
+migrate = Migrate()
+login_manager = LoginManager()
 
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-login = LoginManager(app)
-login.login_view = 'login'
+def create_app(config_name='DefaultConfig'):
+    app = Flask(__name__)
 
-from app.cli import load_data_command
+    # Dynamically select the configuration based on the input parameter
+    if config_name == 'DeploymentConfig':
+        app.config.from_object('config.DeploymentConfig')
+    elif config_name == 'TestConfig':
+        app.config.from_object('config.TestConfig')
+    else:
+        app.config.from_object('config.Config')
 
-app.cli.add_command(load_data_command)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
 
-from app import routes, forms
-from app.models import Drawing, Guess, User, Word
+    from app.blueprints import main
+    app.register_blueprint(main)
+
+    from app.cli import load_data_command
+    app.cli.add_command(load_data_command)
+
+    return app
+
+
 # fmt: on
