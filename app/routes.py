@@ -393,8 +393,3 @@ def get_random_word():
         )
 
     return jsonify({"word_id": random_word.id, "word": random_word.text}), HTTPStatus.OK
-
-
-if __name__ == "__main__":
-    #app.run(debug=True)
-    pass
