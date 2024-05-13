@@ -9,7 +9,7 @@ from werkzeug.urls import url_parse
 
 from app import app, db
 from app.forms import LoginForm, SignupForm
-from app.models import User, Word, Drawing, Gallery
+from app.models import User, Word, Drawing
 
 
 timezone = pytz.timezone("Australia/Perth")
@@ -81,7 +81,7 @@ def home():
 def gallery():
     return render_template('gallery.html')
 
-@app.route('/gallery_table')
+@app.route('/get-gallery-data')
 def get_gallery():
     galleries = Gallery.query.all()  # Fetch all records
     response = jsonify([{

@@ -8,7 +8,7 @@ let currentPage = 1;
 const perPage = 20;  // Items per page
 
 function fetchAndDisplayGallery() {
-    const apiUrl = `/gallery_table`;
+    const apiUrl = `/get-gallery-data`;
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
