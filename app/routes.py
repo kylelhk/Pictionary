@@ -12,7 +12,7 @@ from flask import (
     current_app,
     render_template,
 )
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import case
 from sqlalchemy.sql.expression import func
 
@@ -401,6 +401,7 @@ def get_gallery_data():
 
 # Create Drawing Page
 @main.route("/drawing")
+@login_required
 def drawing():
     # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
@@ -476,7 +477,7 @@ def drawing_detail(drawing_id):
 
 # Save a drawing in the database
 @main.route("/submit-drawing", methods=["POST"])
-# @login_required
+@login_required
 def submit_drawing():
     if not request.json:
         return jsonify({"error": "No JSON in request"}), HTTPStatus.BAD_REQUEST

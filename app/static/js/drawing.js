@@ -14,11 +14,10 @@ window.addEventListener('load', () => {
 
 // Fetch a random word from the chosen category
 function fetchWord(category, modal) {
-    const url = '/get-random-word?' + new URLSearchParams({ category: category }).toString()
-    fetch(url)
+    fetch(`/get-random-word?category=${category}`)
         .then(response => response.json())
         .then(data => {
-            const wordContainer = document.getElementById('word-to-draw')
+            const wordContainer = document.getElementById('word-to-draw');
             wordContainer.innerHTML = data.word; // Display the word
             wordContainer.setAttribute('data-word-id', data.word_id); // Store word_id in data attribute
             modal.hide(); // Close the modal
@@ -103,7 +102,7 @@ eraserToggle.addEventListener('change', () => {
         context.globalCompositeOperation = 'destination-out';
         context.lineWidth = 20;
     } else {
-        context.globalCompositeOperation = 'source-over'; 
+        context.globalCompositeOperation = 'source-over';
         updateBrushSize();
         updateBrushColour();
     }
@@ -122,19 +121,19 @@ function saveDrawing() {
     fetch('/submit-drawing', {
         method: 'POST',
         headers: {
-            'Content-Type':'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             drawingData: drawingData,
             wordId: wordId,
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        alert('Success: ' + data.message)
-        window.location.href = homeUrl;
-    })
-    .catch((error) => console.error('Error:', error));
+        .then(response => response.json())
+        .then(data => {
+            alert('Success: ' + data.message)
+            window.location.href = homeUrl;
+        })
+        .catch((error) => console.error('Error:', error));
 }
 
 const submitButton = document.getElementById("submit-drawing");
@@ -143,7 +142,7 @@ submitButton.addEventListener("click", saveDrawing);
 // TODO: Automatically save canvas when time runs out
 
 // Redirect to Home screen when quit button clicked
-document.getElementById("quit-drawing").addEventListener("click", function() {
+document.getElementById("quit-drawing").addEventListener("click", function () {
     if (confirm("Are you sure you want to quit drawing?")) {
         window.location.href = homeUrl;
     }
