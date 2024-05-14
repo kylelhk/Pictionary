@@ -11,112 +11,40 @@ Guessing Gallery
 {% endblock %}
 
 {% block content %}
-<div class="search-bar">
-    <div class="input-group" >
-      <input type="text" class="form-control" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-        <i class="bi bi-search"></i> <!-- Bootstrap 5 search icon -->
-      </button>
+<div class="container mt-3">
+    <div class="search-bar mb-4">
+        <div class="input-group">
+            <!-- Use input event for real-time search or keep button for manual trigger -->
+            <input type="text" class="form-control" placeholder="Search" aria-label="Search" id="search-input">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                <i class="bi bi-search"></i> <!-- Bootstrap 5 search icon -->
+            </button>
+        </div>
+    </div>
+
+    <table class="table table-striped" id="galleryTable">
+        <thead>
+            <tr>
+                <th>Creator</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <tbody id="galleryTableBody">
+            <!-- Content filled from gallery.js -->
+        </tbody>
+    </table>
+    
+    <div class="d-flex justify-content-end">
+        <nav aria-label="Page navigation example" id="pagination-container">
+            <ul class="pagination">
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                <!-- Pagination dynamically filled from gallery.js -->
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
     </div>
 </div>
-
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Creator</th>
-            <th scope="col">Category</th>
-            <th scope="col">Status</th>
-            <th scope="col">Date Created</th>
-        </tr>
-    </thead>
-
-      <tbody>
-        <tr>
-            <td>User</td>
-            <td>Person/Place/Animal</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>Object</td>
-            <td>In Progress</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>Action</td>
-            <td>Guessed Correctly</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>Difficult</td>
-            <td>Guessed Incorrectly</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>All</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-        <!-- Add more entries as needed -->
-        <tr>
-            <td>User</td>
-            <td>All</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>All</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>All</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-        <!-- Repeat the pattern for more data to fill pages for pagination -->
-        <tr>
-            <td>User</td>
-            <td>All</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>All</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-        <tr>
-            <td>User</td>
-            <td>All</td>
-            <td>New</td>
-            <td>Date and Time</td>
-        </tr>
-    </tbody>
-
-</table>
-<div class="d-flex justify-content-end">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
-</div>
-{% if not current_user.is_authenticated %}
-{% endif %}
+<script src="{{ url_for('static', filename='js/gallery.js') }}"></script>
 {% endblock %}
-
-
-

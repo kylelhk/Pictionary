@@ -271,19 +271,14 @@ def home():
 # Guessing Gallery Page
 @main.route("/gallery")
 def gallery():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
+    return render_template('gallery.html')
+
+@main.route('/get-gallery-data')
+def get_gallery_data():
+ # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Guessing Gallery page.', 'error')
         return redirect(url_for('main.login_signup'))
-    return render_template("gallery.html", title="Guessing Gallery")
-
-# Get Gallery Data
-@main.route("/get-gallery-data", methods=["GET"])
-def get_gallery_data():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
-    if not current_user.is_authenticated:
-        flash('You must be logged in to access the Guessing Gallery page.', 'error')
-        return redirect(url_for('login_signup'))
     
     # Query database to get view of gallery for the currently logged in user
     gallery_query = db.session.query(
