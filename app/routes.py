@@ -3,11 +3,10 @@ from http import HTTPStatus
 
 import pytz
 from flask import current_app, render_template, request, redirect, url_for, flash, jsonify
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from sqlalchemy import case
 from sqlalchemy.sql.expression import func
-from werkzeug.urls import url_parse
-import json
+
 import re  # Regular expressions library for password validation
 
 from app import db
@@ -16,11 +15,12 @@ from app.forms import LoginForm, SignupForm
 from app.models import Drawing, Guess, Word, User
 
 
-
 timezone = pytz.timezone("Australia/Perth")
 now = datetime.now(timezone)
 
 # Determine if a request is made via AJAX
+
+
 def is_ajax():
     return request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
@@ -267,37 +267,94 @@ def home():
         return redirect(url_for('main.login_signup'))
     return render_template("home.html", title="Home")
 
+# Get username for the welcome message in Home Page
+
+
+@main.route('/user/info', methods=['GET'])
+@login_required
+def get_user_info():
+    user_info = {
+        'username': current_user.username
+    }
+    return jsonify(user_info)
+
+
+# Get user points for Home Page
+
+
+@main.route('/api/user/points', methods=['GET'])
+@login_required
+def get_user_points():
+    user_id = current_user.id
+    user = User.query.get(user_id)
+    if user:
+        points = {
+            'points_as_creator': user.points_as_creator,
+            'points_as_guesser': user.points_as_guesser
+        }
+        return jsonify(points)
+    else:
+        return jsonify({'error': 'User not found'}), 404
+
+
+# Get data for the leaderboard in Home Page
+@main.route('/leaderboard', methods=['GET'])
+@login_required
+def get_leaderboard():
+    # Get top 10 users based on total points
+    top_users = User.query.order_by(
+        (User.points_as_creator + User.points_as_guesser).desc()
+    ).limit(10).all()
+
+    leaderboard = []
+    # Create a list of dictionaries with username and total points
+    for user in top_users:
+        leaderboard.append({
+            'username': user.username,
+            'total_points': user.points_as_creator + user.points_as_guesser
+        })
+
+    # If less than 10 users, fill remaining with N/A
+    while len(leaderboard) < 10:
+        leaderboard.append({'username': 'N/A', 'total_points': 'N/A'})
+
+    return jsonify(leaderboard)
+
 
 # Guessing Gallery Page
 @main.route("/gallery")
 def gallery():
-    return render_template('gallery.html')
-
-@main.route('/get-gallery-data')
-def get_gallery_data():
- # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
     if not current_user.is_authenticated:
         flash('You must be logged in to access the Guessing Gallery page.', 'error')
         return redirect(url_for('main.login_signup'))
-    
+    return render_template("gallery.html", title="Guessing Gallery")
+
+# Get Gallery Data
+
+
+@main.route("/get-gallery-data", methods=["GET"])
+def get_gallery_data():
     # Query database to get view of gallery for the currently logged in user
     gallery_query = db.session.query(
         Drawing.id.label('drawing_id'),
         User.username.label('username'),
         Word.category.label('category'),
         case(
-            (Drawing.creator_id == current_user.id, 'My Creation'), # can pick another suitable status label
-            (Guess.is_correct == True, 'Guessed Correctly'),       
+            # can pick another suitable status label
+            (Drawing.creator_id == current_user.id, 'My Creation'),
+            (Guess.is_correct == True, 'Guessed Correctly'),
             (Guess.is_correct == False, 'Guessed Incorrectly'),
             else_='New')
-        .label('status'), 
+        .label('status'),
         Drawing.created_at.label('created_at')
     ).join(
         User, User.id == Drawing.creator_id
     ).join(
         Word, Word.id == Drawing.word_id
     ).outerjoin(
-        Guess, (Guess.drawing_id == Drawing.id) & (Guess.guesser_id == current_user.id)
+        Guess, (Guess.drawing_id == Drawing.id) & (
+            Guess.guesser_id == current_user.id)
     ).all()
 
     results = [
@@ -313,6 +370,8 @@ def get_gallery_data():
     return jsonify(results)
 
 # Create Drawing Page
+
+
 @main.route("/drawing")
 def drawing():
     # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)

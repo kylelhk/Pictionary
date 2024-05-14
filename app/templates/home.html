@@ -7,7 +7,7 @@ styles%} {{ super() }}
 {% endblock %} {% block content %}
 <div class="home-body">
   <!-- Welcome message -->
-  <div class="welcome-message">Welcome back, [username]!</div>
+  <div class="welcome-message"></div>
 
   <!-- Main panel -->
   <div class="row panel">
@@ -17,7 +17,7 @@ styles%} {{ super() }}
         <!-- Points -->
         <div class="col-md-4">
           <div class="points-title">Your Points</div>
-          <div class="points-bg"><span class="points">100</span></div>
+          <div class="points-bg"><span class="points"></span></div>
         </div>
 
         <!-- Pie chart implemented using ECharts library and home.js -->
@@ -98,10 +98,10 @@ styles%} {{ super() }}
             <div class="rank rank-{{ i }}">{{ i }}</div>
           </div>
           <div class="col-md-7">
-            <div class="board-username">[username{{ i }}]</div>
+            <div class="board-username"></div>
           </div>
           <div class="col-md-3">
-            <div class="board-points">[points{{ i }}]</div>
+            <div class="board-points"></div>
           </div>
         </div>
         {% endfor %}
