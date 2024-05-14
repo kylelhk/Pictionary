@@ -12,10 +12,6 @@ class Guess(db.Model):
 
     is_correct = db.Column(db.Boolean)
 
-    # FIXME: The points related to a user can be added on different table <Points table with userid and score only>
-    points_for_creator = db.Column(db.Integer, default=0)
-    points_for_guesser = db.Column(db.Integer, default=0)
-
     # FIXME: Might need discussion on why these are needed
     time_shown = db.Column(db.DateTime)
     time_taken = db.Column(db.Float)

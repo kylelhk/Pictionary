@@ -1,386 +1,421 @@
 /* Page layout */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0.5vw;
-  display: flex;
-  flex-direction: column;
-  min-height: 98vh;
+    font-family: Arial, sans-serif;
+    margin: 0.5vw;
+    display: flex;
+    flex-direction: column;
+    min-height: 98vh;
 }
 
 main {
-  flex-grow: 1;
-  margin-top: 80px; /* = navbar height */
+    flex-grow: 1;
+    margin-top: 80px; /* = navbar height */
 }
 
 footer {
-  text-align: right;
-  background-color: transparent;
+    text-align: right;
+    background-color: transparent;
 }
 
 /* AJAX alert message */
 .alert-container {
-  position: relative;
-  width: 100%;
-  text-align: center;
-  display: none; /* Hidden by default */
-  z-index: 721;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    display: none; /* Hidden by default */
+    z-index: 721;
 }
 
 .alert {
-  display: inline-block;
-  width: auto;
-  margin-top: 5px;
-  padding: 10px;
-  border-radius: 5px;
+    display: inline-block;
+    width: auto;
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 /* Horizontal navbar */
 .navbar {
-  position: fixed;
-  width: 99%;
-  display: flex;
-  justify-content: space-between;
-  height: 80px;
-  padding: 0;
-  background: linear-gradient(to right, #1e90ff, MediumSlateBlue);
-  border-radius: 0.5em;
+    position: fixed;
+    width: 99%;
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0;
+    background: linear-gradient(to right, #1e90ff, MediumSlateBlue);
+    border-radius: 0.5em;
 }
 
 .navbar-brand {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Container for game logo and name */
 .fixed-nav {
-  display: flex;
+    display: flex;
 }
 
 /* Game logo */
 .logo {
-  width: 50px;
-  margin: 3px -10px 4px 18px;
-  animation: rotateLogo 0.6s ease-out forwards;
+    width: 50px;
+    margin: 3px -10px 4px 18px;
+    animation: rotateLogo 0.6s ease-out forwards;
 }
 
 @keyframes rotateLogo {
-  from {
-    transform: rotate(-95deg);
-  }
-  to {
-    transform: rotate(-12deg);
-  }
+    from {
+        transform: rotate(-95deg);
+    }
+    to {
+        transform: rotate(-12deg);
+    }
 }
 
 .logo-line {
-  position: relative;
-  left: 16.5px;
-  margin-top: 0.4px;
+    position: relative;
+    left: 16.5px;
+    margin-top: 0.4px;
 }
 
 .draw-logo {
-  stroke: Navy;
-  stroke-width: 6px;
-  fill: none;
-  stroke-dasharray: 70; /* Based on polyline length */
-  stroke-dashoffset: -70; /* Draw from right to left */
-  animation: draw-line 0.5s forwards ease-in-out;
+    stroke: Navy;
+    stroke-width: 6px;
+    fill: none;
+    stroke-dasharray: 70; /* Based on polyline length */
+    stroke-dashoffset: -70; /* Draw from right to left */
+    animation: draw-line 0.5s forwards ease-in-out;
 }
 
 @keyframes draw-line {
-  to {
-    stroke-dashoffset: 0;
-  }
+    to {
+        stroke-dashoffset: 0;
+    }
 }
 
 /* Game name */
 /* Font style reference: https://fonts.google.com/?preview.text=Guess%20that%20Drawing&classification=Handwriting */
 #game-name {
-  width: 320px;
-  display: flex;
-  align-items: center;
-  font: bold 2.1em Sedgwick Ave; /* Other font family options: Rock Salt, Indie Flower, Bangers */
-  background: linear-gradient(
-    20deg,
-    White,
-    Tomato,
-    Orange,
-    Yellow,
-    Green,
-    Blue,
-    Indigo,
-    Violet,
-    White
-  );
-  background-size: 300% 300%; /* Size of the gradient */
-  animation: flowingColors 8s ease infinite;
-  background-clip: text;
-  color: transparent;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    width: 320px;
+    display: flex;
+    align-items: center;
+    font: bold 2.1em Sedgwick Ave; /* Other font family options: Rock Salt, Indie Flower, Bangers */
+    background: linear-gradient(
+            20deg,
+            White,
+            Tomato,
+            Orange,
+            Yellow,
+            Green,
+            Blue,
+            Indigo,
+            Violet,
+            White
+    );
+    background-size: 300% 300%; /* Size of the gradient */
+    animation: flowingColors 8s ease infinite;
+    background-clip: text;
+    color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 @keyframes flowingColors {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 @media (max-width: 410px) {
-  #game-name {
-    display: none;
-  }
+    #game-name {
+        display: none;
+    }
 }
 
 /* Nav links */
 .nav-link {
-  color: White;
-  font-size: 25px;
-  font-family: Sedgwick Ave;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 80%;
-  transition: background-color 0.3s ease;
-  border-radius: 0.3em;
-  position: relative;
+    color: White;
+    font-size: 25px;
+    font-family: Sedgwick Ave;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    transition: background-color 0.3s ease;
+    border-radius: 0.3em;
+    position: relative;
 }
 
 .wavy-line {
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  height: 10px;
-  display: none;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    height: 10px;
+    display: none;
 }
 
 .draw {
-  stroke: Navy;
-  stroke-width: 6px;
-  fill: none;
-  stroke-dasharray: 120; /* Based on polyline length */
-  stroke-dashoffset: 120;
-  animation: draw-line 0.6s forwards ease-in-out;
+    stroke: Navy;
+    stroke-width: 6px;
+    fill: none;
+    stroke-dasharray: 120; /* Based on polyline length */
+    stroke-dashoffset: 120;
+    animation: draw-line 0.6s forwards ease-in-out;
 }
 
 .horizontal-nav {
-  display: flex;
-  align-items: center;
-  flex-grow: 1; /* Occupy the remaining space after the fixed-nav */
-  height: 100%;
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* Occupy the remaining space after the fixed-nav */
+    height: 100%;
 }
 
 .main-nav {
-  flex-grow: 1;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10vw;
-  gap: 0.5vw; /* Spacing between the links */
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10vw;
+    gap: 0.5vw; /* Spacing between the links */
 }
 
 .logout-btn {
-  width: 15%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100%;
-  margin-right: 0.6vw;
+    width: 15%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    margin-right: 0.6vw;
 }
 
 @media (max-width: 1200px) {
-  #game-name {
-    width: 285px;
-  }
-  .main-nav {
-    margin-right: 0.6vw;
-    gap: 0;
-  }
-  .horizontal-nav .nav-link {
-    font-size: 22.5px;
-  }
+    #game-name {
+        width: 285px;
+    }
+
+    .main-nav {
+        margin-right: 0.6vw;
+        gap: 0;
+    }
+
+    .horizontal-nav .nav-link {
+        font-size: 22.5px;
+    }
 }
 
 @media (max-width: 950px) {
-  .horizontal-nav .nav-link {
-    font-size: 18px;
-  }
-  .logout-btn {
-    display: none;
-  }
+    .horizontal-nav .nav-link {
+        font-size: 18px;
+    }
+
+    .logout-btn {
+        display: none;
+    }
 }
 
 /* Nav link hover effects */
 .nav-link:not(.active):hover {
-  background: linear-gradient(90deg, White, #afeeee);
-  font-family: Sedgwick Ave, serif;
-  font-weight: bold;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); // Glow effect
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 0.3em;
+    background: linear-gradient(90deg, White, #afeeee);
+    font-family: Sedgwick Ave, serif;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+/ / Glow effect transition: background-color 0.3 s ease, box-shadow 0.3 s ease;
+    border-radius: 0.3em;
 }
 
 .nav-link:not(.active):hover .wavy-line {
-  display: block; /* Show the line drawing */
+    display: block; /* Show the line drawing */
 }
 
 .home-link:not(.active):hover {
-  color: Green;
+    color: Green;
 }
 
 .gallery-link:not(.active):hover {
-  color: Blue;
+    color: Blue;
 }
 
 .drawing-link:not(.active):hover {
-  color: Orange;
+    color: Orange;
 }
 
 .logout-btn .nav-link:hover,
 .sidebar-logout .nav-link:hover {
-  color: DeepPink;
-  background: linear-gradient(90deg, White, LightSkyBlue, White);
-  background-size: 200% 100%;
-  background-clip: padding-box;
-  animation: shimmer 2.2s infinite linear;
+    color: DeepPink;
+    background: linear-gradient(90deg, White, LightSkyBlue, White);
+    background-size: 200% 100%;
+    background-clip: padding-box;
+    animation: shimmer 2.2s infinite linear;
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: -100% 0;
-  }
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
 }
 
 /* Nav link effects for active page */
 .navbar .active,
 .sidebar .active {
-  background-image: url("../images/stroke.png"); /* Source: https://www.pngwing.com/en/free-png-dhrne */
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
+    background-image: url("../images/stroke.png"); /* Source: https://www.pngwing.com/en/free-png-dhrne */
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .page-home .active {
-  color: Green !important;
+    color: Green !important;
 }
 
 .page-gallery .active {
-  color: Blue !important;
+    color: Blue !important;
 }
 
 .page-drawing .active {
-  color: Orange !important;
+    color: Orange !important;
 }
 
 /* Hamburger Button */
 .hamburger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  top: 23px;
-  right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 23px;
+    right: 20px;
 }
 
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 /* Sidebar */
 .sidebar {
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0.5vw;
-  right: -250px;
-  width: 220px;
-  height: 420px;
-  background: linear-gradient(to right, #48d1cc, #00bfff);
-  opacity: 0.8;
-  padding: 0 20px;
-  border-radius: 0.5em;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-  transition: right 0.3s ease;
-  z-index: 831;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0.5vw;
+    right: -250px;
+    width: 220px;
+    height: 420px;
+    background: linear-gradient(to right, #48d1cc, #00bfff);
+    opacity: 0.8;
+    padding: 0 20px;
+    border-radius: 0.5em;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: right 0.3s ease;
+    z-index: 831;
 }
 
 @media (max-height: 430px) {
-  .sidebar {
-    height: 90%;
-  }
+    .sidebar {
+        height: 90%;
+    }
 }
 
 .sidebar-active {
-  right: 0.5vw;
+    right: 0.5vw;
 }
 
 .sidebar-close-btn {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 80px;
-  font-size: 48px;
-  color: White;
-  background: none;
-  border: none;
-  cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 80px;
+    font-size: 48px;
+    color: White;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .sidebar-panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  margin: 20px -10px 0;
-  overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    margin: 20px -10px 0;
+    overflow-y: auto;
 }
 
 .sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
 
 .sidebar-logout {
-  display: flex;
-  justify-content: center;
-  margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
 }
 
 .sidebar-nav-link {
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  height: 46px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    height: 46px;
 }
 
 /* Toggle between sidebar and horizontal navbar */
 /* 768px is a common breakpoint for differentiating between mobile and desktop devices */
 @media (min-width: 768px) {
-  .hamburger {
-    display: none;
-  }
-  .sidebar {
-    display: none;
-  }
+    .hamburger {
+        display: none;
+    }
+
+    .sidebar {
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
-  .horizontal-nav {
-    display: none;
-  }
-  .hamburger {
-    display: block;
-  }
+    .horizontal-nav {
+        display: none;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
+
+
+/* Flask flash message for successful registration and logout */
+.flash-message-container {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    display: none; /* Hidden by default */
+    z-index: 721;
+}
+
+.flash-message-success {
+    display: inline-block;
+    width: auto;
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    color: White;
+    background-color: Green;
+}
+
+.flash-message-error {
+    display: inline-block;
+    width: auto;
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    color: White;
+    background-color: Red;
 }

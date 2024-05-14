@@ -411,25 +411,23 @@ def drawing():
 
 @main.route("/drawings/<int:drawing_id>", methods=["GET", "POST"])
 def drawing_detail(drawing_id):
-
     if not current_user.is_authenticated:
         flash("You must be logged in to access this page.", "error")
         return redirect(url_for("main.login_signup"))
 
     image = Drawing.query.get_or_404(drawing_id)
 
+    # Check if the current user is the creator of the drawing
+    if image.creator_id == current_user.id:
+        flash("You cannot guess your own drawing.", "error")
+        return redirect(url_for("main.gallery"))
+
     if request.method == "POST":
-        # if not current_user.is_authenticated:
-        #     return (
-        #         jsonify({"error": "Authentication required"}),
-        #         HTTPStatus.UNAUTHORIZED,
-        #     )
 
         # Fetch the guess from JSON data
         guessed_word = request.get_json().get("guess")
 
         # Check if a guess already exists for this drawing and user to prevent multiple guesses
-        # TODO: The following filter should be updated to include current user id as well
         existing_guess = Guess.query.filter_by(
             drawing_id=drawing_id, guesser_id=current_user.id
         ).first()
@@ -440,10 +438,14 @@ def drawing_detail(drawing_id):
                 HTTPStatus.FORBIDDEN,
             )
 
-        # Simulate guess checking (you would typically compare with a correct answer associated with the image)
+        # Check whether the guess is correct
         is_correct = guessed_word.lower() == image.word.text.lower()
 
-        # TODO: If correct update the score of the user by 1
+        # Increase the score of guesser and creator by 1
+        if is_correct:
+            image.creator.points_as_creator += 1
+            current_user.points_as_guesser += 1
+            db.session.commit()
 
         guess = Guess(
             drawing_id=drawing_id,
@@ -463,7 +465,7 @@ def drawing_detail(drawing_id):
 
     current_user_guess = Guess.query.filter_by(
         drawing_id=drawing_id, guesser_id=current_user.id
-    )
+    ).all()
 
     return render_template(
         "guess.html",
@@ -499,7 +501,7 @@ def submit_drawing():
     db.session.add(new_drawing)
     db.session.commit()
 
-    flash("Your drawing has been successfully submitted")
+    flash("Your drawing has been successfully submitted", "success")
 
     return jsonify({"message": "Drawing saved successfully!"}), HTTPStatus.CREATED
 
