@@ -30,23 +30,26 @@
         </div>
         <div class="chat-room">
 
-          {% for guess in image.guess %}
+          {% for guess in current_user_guess %}
 
             <div class="message message-right">
               <div class="bubble bubble-dark">
                 {{ guess.guessed_word }}
               </div>
             </div>
+            <div class="message message-left">
+              <div class="bubble {{ 'bubble-light' if  guess.is_correct else 'bubble-red' }}">
+                {% if guess.is_correct %}
+                  You guessed correctly
+                {% else %}
+                  Oops. Wrong guess or guessed already.
+                {% endif %}
+              </div>
+            </div>
+
 
           {% endfor %}
 
-          {#        TEMPLATE OF THE RESPONSE MESSAGE #}
-        
-          {#          <div class="message message-left">#}
-          {#            <div class="bubble bubble-light">#}
-          {#              You guessed correctly#}
-          {#            </div>#}
-          {#          </div>#}
 
         </div>
         <div class="type-area">
