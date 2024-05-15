@@ -356,7 +356,7 @@ def get_user_info():
 # Get user points for Home Page
 
 
-@main.route('/api/user/points', methods=['GET'])
+@main.route('/user/points', methods=['GET'])
 @login_required
 def get_user_points():
     user_id = current_user.id
@@ -368,7 +368,7 @@ def get_user_points():
         }
         return jsonify(points)
     else:
-        return jsonify({'error': 'User not found'}), 404
+        return jsonify({'error': 'User not found'}), HTTPStatus.NOT_FOUND
 
 
 # Get data for the leaderboard in Home Page
@@ -415,8 +415,6 @@ def get_latest_drawings():
         if drawing.guesser_id == current_user.id:
             if drawing.is_correct is not None:
                 status = "Successful" if drawing.is_correct else "Unsuccessful"
-            else:
-                status = "In Progress"
         else:
             status = "New"
 
