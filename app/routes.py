@@ -22,7 +22,6 @@ from app.forms import LoginForm, SignupForm
 from app.models import Drawing, Guess, Word, User
 
 timezone = pytz.timezone("Australia/Perth")
-now = datetime.now(timezone)
 
 
 # Determine if a request is made via AJAX
@@ -463,21 +462,19 @@ def submit_drawing():
         return jsonify({"error": "No JSON in request"}), HTTPStatus.BAD_REQUEST
 
     word_id = request.json.get("wordId")
-    creator_id = (
-        current_user.id
-    )
+    creator_id = current_user.id
     drawing_data = request.json.get("drawingData")
 
-    if not word_id or not drawing_data:
+    # If any data missing from request, return an error
+    if not word_id or not drawing_data or not creator_id:
         return jsonify({"error": "Missing necessary data"}), HTTPStatus.BAD_REQUEST
 
     new_drawing = Drawing(
         word_id=word_id,
         creator_id=creator_id,
         drawing_data=drawing_data,
-        created_at=datetime.utcnow(),
+        created_at=datetime.now(timezone),
     )
-
     db.session.add(new_drawing)
     db.session.commit()
 
@@ -492,6 +489,7 @@ def submit_drawing():
 def get_random_word():
     # Get category from request parameters
     category = request.args.get("category")
+    
     # If no category given, return an error
     if not category:
         return jsonify({"error": "Category is required"}), HTTPStatus.BAD_REQUEST
@@ -503,6 +501,7 @@ def get_random_word():
         random_word = (
             Word.query.filter_by(category=category).order_by(func.random()).first()
         )
+        
     # If no word found, return an error
     if not random_word:
         return (
