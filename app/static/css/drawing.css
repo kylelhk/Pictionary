@@ -1,3 +1,9 @@
+#drawing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 /* Modal Styles */
 .category-btn {
     width: 300px;
@@ -8,7 +14,7 @@
 .modal-body {
     display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
     justify-content: center;
 }
 
@@ -41,8 +47,6 @@ button {
     background-color: #f7c200;
     border-color: #f7c200;
 }
-
-/* Timer Styles */
 
 /* Word to Draw Styles */
 #word-to-draw-section h4,
@@ -199,15 +203,15 @@ legend {
     width: 130px;
 }
 
-#quit-drawing, 
+#quit-drawing,
 #exit-modal {
     background-color: #F22E2E;
     color: white;
     border-color: #F22E2E;
-    width: 130px;   
+    width: 130px;
 }
 
-#quit-drawing{
+#quit-drawing {
     margin: 20px 0;
 }
 
@@ -216,7 +220,7 @@ legend {
     border-color: #0a4964;
 }
 
-#quit-drawing:hover, 
+#quit-drawing:hover,
 #exit-modal:hover {
     background-color: #c72a2a;
     border-color: #c72a2a;

@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <!-- Modal to select category of word to draw -->
-<div class="modal" id="word-category-modal">
+<div class="modal fade" id="word-category-modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -24,6 +24,25 @@
       </div>
       <div class="modal-footer">
         <button type="button" data-bs-dismiss="modal" id="exit-modal">EXIT</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal to confirm the user wants to quit drawing -->
+<div class="modal fade" id="confirm-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm exit</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to quit drawing?
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="confirm-cancel" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="confirm-yes" class="btn btn-danger">Yes</button>
       </div>
     </div>
   </div>
