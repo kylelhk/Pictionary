@@ -191,4 +191,32 @@ $(function () {
 
   // Load leaderboard when the page loads
   loadLeaderboard();
+
+  // Function to fetch and display the latest 4 drawings
+  function loadLatestDrawings() {
+    $.ajax({
+      url: "/latest-drawings",
+      method: "GET",
+      success: function (data) {
+        const tableBody = $("#content-item1-new tbody");
+        tableBody.empty(); // Clear existing rows
+
+        data.forEach((drawing) => {
+          const row = `<tr>
+            <td>${drawing.username}</td>
+            <td>${drawing.category}</td>
+            <td>${drawing.status}</td>
+            <td>${drawing.created_at}</td>
+          </tr>`;
+          tableBody.append(row);
+        });
+      },
+      error: function (error) {
+        console.error("Failed to fetch latest drawings:", error);
+      },
+    });
+  }
+
+  // Load the latest drawings when the page loads
+  loadLatestDrawings();
 });

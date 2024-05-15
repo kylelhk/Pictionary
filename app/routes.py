@@ -307,7 +307,7 @@ def get_leaderboard():
     ).limit(10).all()
 
     leaderboard = []
-    # Create a list of dictionaries with username and total points
+    # Create a list of usernames and total points
     for user in top_users:
         leaderboard.append({
             'username': user.username,
@@ -319,6 +319,42 @@ def get_leaderboard():
         leaderboard.append({'username': 'N/A', 'total_points': 'N/A'})
 
     return jsonify(leaderboard)
+
+
+# Get the latest 4 drawings for the Home Page
+@main.route('/latest-drawings', methods=['GET'])
+@login_required
+def get_latest_drawings():
+    # Query to get the latest 4 drawings based on created_at
+    latest_drawings = db.session.query(
+        Drawing.id, Drawing.created_at, User.username, Word.category,
+        Guess.is_correct, Guess.guesser_id
+    ).join(User, Drawing.creator_id == User.id
+           ).join(Word, Drawing.word_id == Word.id
+                  ).outerjoin(Guess, Drawing.id == Guess.drawing_id
+                              ).order_by(Drawing.created_at.desc()
+                                         ).limit(4).all()
+
+    drawings_data = []
+    for drawing in latest_drawings:
+        # Determine the status of the drawing for the current user
+        if drawing.guesser_id == current_user.id:
+            if drawing.is_correct is not None:
+                status = "Successful" if drawing.is_correct else "Unsuccessful"
+            else:
+                status = "In Progress"
+        else:
+            status = "New"
+
+        # Add the drawing details to the list
+        drawings_data.append({
+            'username': drawing.username,
+            'category': drawing.category,
+            'status': status,
+            'created_at': drawing.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        })
+
+    return jsonify(drawings_data)
 
 
 # Guessing Gallery Page
@@ -335,6 +371,11 @@ def gallery():
 
 @main.route("/get-gallery-data", methods=["GET"])
 def get_gallery_data():
+    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
+    if not current_user.is_authenticated:
+        flash('You must be logged in to access the Guessing Gallery page.', 'error')
+        return redirect(url_for('main.login_signup'))
+
     # Query database to get view of gallery for the currently logged in user
     gallery_query = db.session.query(
         Drawing.id.label('drawing_id'),
@@ -383,6 +424,10 @@ def drawing():
 
 @main.route("/drawings/<int:drawing_id>", methods=["GET", "POST"])
 def drawing_detail(drawing_id):
+    if not current_user.is_authenticated:
+        flash('You must be logged in to access the Create Drawing page.', 'error')
+        return redirect(url_for('main.login_signup'))
+
     image = Drawing.query.get_or_404(drawing_id)
 
     if request.method == "POST":
