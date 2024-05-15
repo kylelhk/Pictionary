@@ -12,7 +12,7 @@ from flask import (
     current_app,
     render_template,
 )
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import case
 from sqlalchemy.sql.expression import func
 
@@ -22,7 +22,6 @@ from app.forms import LoginForm, SignupForm
 from app.models import Drawing, Guess, Word, User
 
 timezone = pytz.timezone("Australia/Perth")
-now = datetime.now(timezone)
 
 
 # Determine if a request is made via AJAX
@@ -215,32 +214,22 @@ def check_authentication():
 # Home Page
 @main.route("/")
 @main.route("/home")
+@login_required
 def home():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
-    if not current_user.is_authenticated:
-        flash("You must be logged in to access the Home page.", "error")
-        return redirect(url_for("main.login_signup"))
     return render_template("home.html", title="Home")
 
 
 # Guessing Gallery Page
 @main.route("/gallery")
+@login_required
 def gallery():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
-    if not current_user.is_authenticated:
-        flash("You must be logged in to access the Guessing Gallery page.", "error")
-        return redirect(url_for("main.login_signup"))
     return render_template("gallery.html", title="Guessing Gallery")
 
 
 # Get Gallery Data
 @main.route("/get-gallery-data", methods=["GET"])
+@login_required
 def get_gallery_data():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
-    if not current_user.is_authenticated:
-        flash("You must be logged in to access the Guessing Gallery page.", "error")
-        return redirect(url_for("main.login_signup"))
-
     # Query database to get view of gallery for the currently logged in user
     gallery_query = (
         db.session.query(
@@ -248,10 +237,7 @@ def get_gallery_data():
             User.username.label("username"),
             Word.category.label("category"),
             case(
-                (
-                    Drawing.creator_id == current_user.id,
-                    "My Creation",
-                ),  # can pick another suitable status label
+                (Drawing.creator_id == current_user.id, "My Creation"),
                 (Guess.is_correct == True, "Guessed Correctly"),
                 (Guess.is_correct == False, "Guessed Incorrectly"),
                 else_="New",
@@ -284,20 +270,14 @@ def get_gallery_data():
 
 # Create Drawing Page
 @main.route("/drawing")
+@login_required
 def drawing():
-    # Regular handling for non-AJAX requests (in case AJAX fails or is disabled, and for direct access via URL)
-    if not current_user.is_authenticated:
-        flash("You must be logged in to access the Create Drawing page.", "error")
-        return redirect(url_for("main.login_signup"))
     return render_template("drawing.html", title="Create Drawing")
 
 
 @main.route("/drawings/<int:drawing_id>", methods=["GET", "POST"])
+@login_required
 def drawing_detail(drawing_id):
-    if not current_user.is_authenticated:
-        flash("You must be logged in to access this page.", "error")
-        return redirect(url_for("main.login_signup"))
-
     image = Drawing.query.get_or_404(drawing_id)
 
     # Check if the current user is the creator of the drawing
@@ -359,28 +339,25 @@ def drawing_detail(drawing_id):
 
 # Save a drawing in the database
 @main.route("/submit-drawing", methods=["POST"])
-# @login_required
+@login_required
 def submit_drawing():
     if not request.json:
         return jsonify({"error": "No JSON in request"}), HTTPStatus.BAD_REQUEST
 
     word_id = request.json.get("wordId")
-    creator_id = (
-        current_user.id if current_user.is_authenticated else None
-    )  # TODO: remove else None once users implemented
+    creator_id = current_user.id
     drawing_data = request.json.get("drawingData")
 
-    if not word_id or not drawing_data:
+    # If any data missing from request, return an error
+    if not word_id or not drawing_data or not creator_id:
         return jsonify({"error": "Missing necessary data"}), HTTPStatus.BAD_REQUEST
 
     new_drawing = Drawing(
         word_id=word_id,
         creator_id=creator_id,
         drawing_data=drawing_data,
-        # TODO: Using `now` defined above, but it's not saving the correct date and time?
-        created_at=now,
+        created_at=datetime.now(timezone),
     )
-
     db.session.add(new_drawing)
     db.session.commit()
 
@@ -391,10 +368,11 @@ def submit_drawing():
 
 # Retrieve a random word to draw
 @main.route("/get-random-word", methods=["GET"])
-# @login_required
+@login_required
 def get_random_word():
     # Get category from request parameters
     category = request.args.get("category")
+    
     # If no category given, return an error
     if not category:
         return jsonify({"error": "Category is required"}), HTTPStatus.BAD_REQUEST
@@ -407,6 +385,7 @@ def get_random_word():
             Word.query.filter_by(category=category).order_by(
                 func.random()).first()
         )
+        
     # If no word found, return an error
     if not random_word:
         return (
