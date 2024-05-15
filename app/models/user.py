@@ -20,12 +20,12 @@ class User(UserMixin, db.Model):
     points_as_creator = db.Column(db.Integer, default=0)
     points_as_guesser = db.Column(db.Integer, default=0)
 
-    drawing = db.relationship('Drawing', back_populates='creator')
-    guesser = db.relationship('Guess', back_populates='guesser')
+    drawing = db.relationship("Drawing", back_populates="creator")
+    guesser = db.relationship("Guess", back_populates="guesser")
 
     # Format how the object is printed for debugging
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return "<User {}>".format(self.username)
 
     # Set password hash
     def set_password(self, password):
@@ -42,6 +42,7 @@ class User(UserMixin, db.Model):
             # Cap the cooling-off period at 10 minutes (600 seconds)
             return min(600, 10 * 2 ** (self.failed_login_attempts - 1))
         return 0
+
 
 # User loader function for flask-login
 
