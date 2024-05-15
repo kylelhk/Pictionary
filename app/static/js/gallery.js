@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     fetchAndDisplayGallery();
 });
 
@@ -53,7 +53,7 @@ function openDrawing(drawingId) {
 
 function updatePagination(currentPage, totalPages) {
     const paginationContainer = document.querySelector('.pagination');
-    paginationContainer.innerHTML = ''; 
+    paginationContainer.innerHTML = '';
 
     paginationContainer.innerHTML += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
         <a class="page-link" href="#" onclick="${currentPage > 1 ? 'navigatePage(' + (currentPage - 1) + ')' : 'event.preventDefault()'}">Previous</a>
@@ -83,11 +83,7 @@ function filterGalleryData() {
         displayedData = currentData; // Reset to all data if search term is empty
     } else {
         const terms = searchTerm.split(' '); // Split search term into individual words
-        displayedData = currentData.filter(item => terms.some(term => 
-            item.creator.toLowerCase().includes(term) ||
-            item.category.toLowerCase().includes(term) ||
-            item.status.toLowerCase().includes(term) ||
-            item.date_created.includes(term) // Include date in the search
+        displayedData = currentData.filter(item => terms.some(term => item.creator.toLowerCase().includes(term) || item.category.toLowerCase().includes(term) || item.status.toLowerCase().includes(term) || item.date_created.includes(term) // Include date in the search
         ));
     }
     currentPage = 1; // Reset to first page
@@ -95,7 +91,7 @@ function filterGalleryData() {
 }
 
 // Adding an event listener to the search button
-document.getElementById('button-addon2').addEventListener('click', function() {
+document.getElementById('button-addon2').addEventListener('click', function () {
     filterGalleryData();
     window.scrollTo(0, 0); // Scroll to the top of the page after filtering
 });
