@@ -1,247 +1,246 @@
 main {
-    display: flex;
-    align-items: stretch;
-
+  display: flex;
+  align-items: stretch;
 }
 
 /* Container for the whole page */
 .home-body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    margin: 20px 30px 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 30px 12px;
 }
 
 /* Welcome message */
 .welcome-message {
-    text-align: center;
-    font: bold 50px "Sedgwick Ave";
-    margin: 10px 0;
+  text-align: center;
+  font: bold 50px "Sedgwick Ave";
+  margin: 10px 0;
 }
 
 /* Main panel */
 .panel {
-    height: 100%;
+  height: 100%;
 }
 
 /* Points summary */
 .points-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 35%;
-    margin-top: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35%;
+  margin-top: 3vh;
 }
 
 .points-title {
-    font-size: 2.5vw;
-    font-weight: bold;
-    margin-bottom: 1.5vh;
+  font-size: 2.5vw;
+  font-weight: bold;
+  margin-bottom: 1.5vh;
 }
 
 .points-bg {
-    margin: 15px 30px;
-    border-radius: 10px;
-    background-color: AliceBlue;
-    z-index: 0;
+  margin: 15px 30px;
+  border-radius: 10px;
+  background-color: AliceBlue;
+  z-index: 0;
 }
 
 .points {
-    display: flex;
-    justify-content: center;
-    font-size: 2.5vw;
-    font-weight: bold;
-    padding: 15px 0;
-    border: 3px solid Black;
-    border-radius: 10px;
-    background: linear-gradient(
-            20deg,
-            White,
-            White,
-            White,
-            Gold,
-            DeepSkyBlue,
-            DarkBlue,
-            MediumPurple,
-            Gold,
-            White,
-            White,
-            White
-    );
-    background-size: 250% 250%; /* Size of the gradient */
-    animation: flowingColors 8s ease infinite;
-    background-clip: text;
-    color: transparent;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  display: flex;
+  justify-content: center;
+  font-size: 2.5vw;
+  font-weight: bold;
+  padding: 15px 0;
+  border: 3px solid Black;
+  border-radius: 10px;
+  background: linear-gradient(
+    20deg,
+    White,
+    White,
+    White,
+    Gold,
+    DeepSkyBlue,
+    DarkBlue,
+    MediumPurple,
+    Gold,
+    White,
+    White,
+    White
+  );
+  background-size: 250% 250%; /* Size of the gradient */
+  animation: flowingColors 8s ease infinite;
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 @keyframes flowingColors {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Pie chart */
 .pie-container {
-    width: 46%;
-    height: 20vw;
-    padding-top: 2vh;
+  width: 46%;
+  height: 20vw;
+  padding-top: 2vh;
 }
 
 @media (max-width: 770px) {
-    .pie-container {
-        width: 28%;
-    }
+  .pie-container {
+    width: 28%;
+  }
 }
 
 @media (max-width: 560px) {
-    .pie-container {
-        display: none;
-    }
+  .pie-container {
+    display: none;
+  }
 }
 
 /* Activity Feed */
 .feed-container {
-    transition: all 0.3s ease;
-    height: 65%;
+  transition: all 0.3s ease;
+  height: 65%;
 }
 
 .feed-title {
-    font-size: 2.5vw;
-    font-weight: bold;
-    margin: 2vh 0;
+  font-size: 2.5vw;
+  font-weight: bold;
+  margin: 2vh 0;
 }
 
 .tabs {
-    display: flex;
-    justify-content: flex-end;
-    width: 48%;
-    border: 2px solid LightGrey;
-    border-bottom: none;
-    margin-bottom: -2px;
+  display: flex;
+  justify-content: flex-end;
+  width: 48%;
+  border: 2px solid LightGrey;
+  border-bottom: none;
+  margin-bottom: -2px;
 }
 
 .tab {
-    flex: 1;
-    cursor: pointer;
-    padding: 0.8vh;
-    border: none;
-    transition: background-color 0.3s ease;
-    font-size: 1.4vw;
+  flex: 1;
+  cursor: pointer;
+  padding: 0.8vh;
+  border: none;
+  transition: background-color 0.3s ease;
+  font-size: 1.4vw;
 }
 
 .tab.active {
-    background-color: white;
-    font-weight: bold;
-    color: #1e90ff !important;
+  background-color: white;
+  font-weight: bold;
+  color: #1e90ff !important;
 }
 
 .tab:hover {
-    font-weight: bold;
-    color: #1e90ff;
+  font-weight: bold;
+  color: #1e90ff;
 }
 
 .feed-table {
-    width: 90%;
+  width: 90%;
 }
 
 .content {
-    padding: 10px;
-    background-color: white;
-    color: black;
-    font-size: 1vw;
-    border: 2px solid LightGrey;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  font-size: 1vw;
+  border: 2px solid LightGrey;
 }
 
 .table {
-    font-size: 1.2vw;
-    overflow-x: auto;
+  font-size: 1.2vw;
+  overflow-x: auto;
 }
 
 .table-striped th,
 .table-striped td {
-    width: 25%; /* Distribute the width equally among all four columns */
+  width: 25%; /* Distribute the width equally among all four columns */
 }
 
 .feed-table .hidden {
-    display: none;
+  display: none;
 }
 
 /* Leaderboard */
 .board-title {
-    font-size: 2.5vw;
-    font-weight: bold;
-    margin-bottom: 1.5vh;
+  font-size: 2.5vw;
+  font-weight: bold;
+  margin-bottom: 1.5vh;
 }
 
 .board-table .row {
-    border-radius: 5px;
-    border: 2px solid LightGrey;
-    margin-bottom: 0.6vh;
-    height: 6vh;
+  border-radius: 5px;
+  border: 2px solid LightGrey;
+  margin-bottom: 0.6vh;
+  height: 6vh;
 }
 
 .board-table .row > div {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .rank,
 .board-points {
-    justify-content: center;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    text-align: center;
+  justify-content: center;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
 
 .rank {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    margin: 1.8px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 1.8px;
 }
 
 .rank-1,
 .rank-2,
 .rank-3 {
-    color: transparent;
+  color: transparent;
 }
 
 .rank-1 {
-    background-image: url("../images/gold.png");
+  background-image: url("../images/gold.png");
 }
 
 .rank-2 {
-    background-image: url("../images/silver.png");
+  background-image: url("../images/silver.png");
 }
 
 .rank-3 {
-    background-image: url("../images/bronze.png");
+  background-image: url("../images/bronze.png");
 }
 
 .board-username {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    text-align: left;
-    padding-left: 10px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  padding-left: 10px;
 }
 
 .board-table .col-md-7 {
-    border-left: 1px solid LightGrey;
-    border-right: 1px solid LightGrey;
+  border-left: 1px solid LightGrey;
+  border-right: 1px solid LightGrey;
 }
 
 @media (max-width: 980px) {
-    .board {
-        display: none;
-    }
+  .board {
+    display: none;
+  }
 }

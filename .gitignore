@@ -34,3 +34,5 @@ dist/
 
 # Instance folder for Flask
 instance/
+
+node_modules

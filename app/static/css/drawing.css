@@ -1,81 +1,81 @@
 #drawing-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 /* Modal Styles */
 .category-btn {
-    width: 300px;
-    margin: 3px 0;
-    color: white;
+  width: 300px;
+  margin: 3px 0;
+  color: white;
 }
 
 .modal-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
-    border: 3px solid;
-    border-radius: 10px;
+  border: 3px solid;
+  border-radius: 10px;
 }
 
 #all-play-btn {
-    background-color: #8503D5;
-    border-color: #8503D5;
+  background-color: #8503d5;
+  border-color: #8503d5;
 }
 
 #difficult-btn {
-    background-color: #5BC209;
-    border-color: #5BC209;
+  background-color: #5bc209;
+  border-color: #5bc209;
 }
 
 #action-btn {
-    background-color: #E98607;
-    border-color: #E98607;
+  background-color: #e98607;
+  border-color: #e98607;
 }
 
 #person-btn {
-    background-color: #0CB1F2;
-    border-color: #0CB1F2;
+  background-color: #0cb1f2;
+  border-color: #0cb1f2;
 }
 
 #object-btn {
-    background-color: #f7c200;
-    border-color: #f7c200;
+  background-color: #f7c200;
+  border-color: #f7c200;
 }
 
 /* Word to Draw Styles */
 #word-to-draw-section h4,
 #timer h4 {
-    font-size: larger;
+  font-size: larger;
 }
 
 #word-to-draw-section p {
-    font-weight: bold;
-    border: 1px solid #0E6D95;
-    border-radius: 10px;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-weight: bold;
+  border: 1px solid #0e6d95;
+  border-radius: 10px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Tool Container Styles */
 #tools {
-    background-color: #e0e0e0;
-    margin: 10px;
-    width: 200px;
-    padding: 20px;
-    border: none;
-    border-radius: 10px;
+  background-color: #e0e0e0;
+  margin: 10px;
+  width: 200px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
 }
 
 legend {
-    font-size: large;
+  font-size: large;
 }
 
 /* Brush Size and Colour Label Styles */
@@ -83,160 +83,160 @@ legend {
 /* Hide default radio buttons for brush tools so styling can apply to their labels */
 .hidden-radio,
 .hidden-checkbox {
-    display: none;
+  display: none;
 }
 
 /* Base style for brush size and colour labels */
 .brush-size-label,
 .brush-colour-label {
-    display: inline-block;
-    cursor: pointer;
-    border: 0;
-    border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  border: 0;
+  border-radius: 50%;
 }
 
 .brush-size-label {
-    margin: 5px 20px;
-    background-color: black;
+  margin: 5px 20px;
+  background-color: black;
 }
 
 .brush-colour-label {
-    margin: 8px;
-    width: 20px;
-    height: 20px;
+  margin: 8px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Specific brush size modifiers */
 .brush-size-label.small {
-    width: 6px;
-    height: 6px;
+  width: 6px;
+  height: 6px;
 }
 
 .brush-size-label.medium {
-    width: 10px;
-    height: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 .brush-size-label.large {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 /* When the radio button is checked */
-.hidden-radio:checked+.brush-size-label,
-.hidden-radio:checked+.brush-colour-label {
-    box-shadow: 0 0 0 4px #e0e0e0, 0 0 0 6px #7c7c7c;
+.hidden-radio:checked + .brush-size-label,
+.hidden-radio:checked + .brush-colour-label {
+  box-shadow: 0 0 0 4px #e0e0e0, 0 0 0 6px #7c7c7c;
 }
 
 /* Specific brush colour modifiers */
 .brush-colour-label.black {
-    background-color: black;
+  background-color: black;
 }
 
 .brush-colour-label.red {
-    background-color: red;
+  background-color: red;
 }
 
 .brush-colour-label.orange {
-    background-color: orange;
+  background-color: orange;
 }
 
 .brush-colour-label.yellow {
-    background-color: yellow;
+  background-color: yellow;
 }
 
 .brush-colour-label.green {
-    background-color: green;
+  background-color: green;
 }
 
 .brush-colour-label.blue {
-    background-color: blue;
+  background-color: blue;
 }
 
 .brush-colour-label.purple {
-    background-color: purple;
+  background-color: purple;
 }
 
 .brush-colour-label.white {
-    background-color: white;
+  background-color: white;
 }
 
 /* Eraser Styles */
 .eraser-label {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .eraser-img {
-    display: block;
-    width: 35px;
-    height: auto;
-    background-color: #e0e0e0;
-    margin: 0 10px;
+  display: block;
+  width: 35px;
+  height: auto;
+  background-color: #e0e0e0;
+  margin: 0 10px;
 }
 
-.hidden-checkbox:checked+.eraser-label {
-    border: 3px solid #7c7c7c;
-    border-radius: 5px;
+.hidden-checkbox:checked + .eraser-label {
+  border: 3px solid #7c7c7c;
+  border-radius: 5px;
 }
 
 /* Button Styles*/
 #clear-all {
-    background-color: white;
-    border-color: #f86767;
-    width: 90px;
-    margin: 10px;
+  background-color: white;
+  border-color: #f86767;
+  width: 90px;
+  margin: 10px;
 }
 
 #clear-all:hover {
-    background-color: #f86767;
-    border-color: #f86767;
-    color: white;
+  background-color: #f86767;
+  border-color: #f86767;
+  color: white;
 }
 
 #submit-drawing {
-    background-color: #0E6D95;
-    color: white;
-    border-color: #0E6D95;
-    width: 130px;
+  background-color: #0e6d95;
+  color: white;
+  border-color: #0e6d95;
+  width: 130px;
 }
 
 #quit-drawing,
 #exit-modal {
-    background-color: #F22E2E;
-    color: white;
-    border-color: #F22E2E;
-    width: 130px;
+  background-color: #f22e2e;
+  color: white;
+  border-color: #f22e2e;
+  width: 130px;
 }
 
 #quit-drawing {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 #submit-drawing:hover {
-    background-color: #0a4964;
-    border-color: #0a4964;
+  background-color: #0a4964;
+  border-color: #0a4964;
 }
 
 #quit-drawing:hover,
 #exit-modal:hover {
-    background-color: #c72a2a;
-    border-color: #c72a2a;
+  background-color: #c72a2a;
+  border-color: #c72a2a;
 }
 
 /* Drawing Area Styles */
 #drawing-area {
-    max-width: 1000px;
+  max-width: 1000px;
 }
 
 /* TODO: Make the canvas size adaptable depending on screen size? */
 #drawing-canvas {
-    max-width: 1000px;
-    max-height: 600px;
-    width: 75vw;
-    height: 75vh;
-    border: 2px solid #868686;
-    border-radius: 10px;
+  max-width: 1000px;
+  max-height: 600px;
+  width: 75vw;
+  height: 75vh;
+  border: 2px solid #868686;
+  border-radius: 10px;
 }
