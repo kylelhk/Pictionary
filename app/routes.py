@@ -179,7 +179,7 @@ def handle_signup_ajax(data):
                         },
                     }
                 ),
-                400,
+                HTTPStatus.BAD_REQUEST,
             )
         if not (
             re.search("[a-z]", password)

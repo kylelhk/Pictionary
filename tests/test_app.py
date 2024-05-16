@@ -6,6 +6,7 @@ from app.models import User
 
 # Add test cases here
 
+
 class BasicTests(TestCase):
     def setUp(self):
         test_app = create_app(TestConfig)
@@ -19,5 +20,6 @@ class BasicTests(TestCase):
         # db.drop_all()
         self.app_context.pop()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
