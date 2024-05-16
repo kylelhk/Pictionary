@@ -16,6 +16,8 @@ from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import case
 from sqlalchemy.sql.expression import func
 
+import re  # Regular expressions library for password validation
+
 from app import db
 from app.blueprints import main
 from app.forms import LoginForm, SignupForm
@@ -25,6 +27,8 @@ timezone = pytz.timezone("Australia/Perth")
 
 
 # Determine if a request is made via AJAX
+
+
 def is_ajax():
     return request.headers.get("X-Requested-With") == "XMLHttpRequest"
 
@@ -56,7 +60,12 @@ def login_signup():
     # Render the login/signup page for GET requests
     login_form = LoginForm(prefix="login")
     signup_form = SignupForm(prefix="signup")
-    return render_template("login.html", login_form=login_form, signup_form=signup_form, title="Log In / Sign Up")
+    return render_template(
+        "login.html",
+        login_form=login_form,
+        signup_form=signup_form,
+        title="Log In / Sign Up",
+    )
 
 
 # Process login form inputs and submission
@@ -77,7 +86,20 @@ def handle_login_ajax(data):
             login_user(user, remember=remember_me)
             return jsonify({"error": False, "redirect": url_for("main.home")}), 200
         else:
-            return jsonify({"error": True, "errors": {"Password": "Invalid Username or Password"}}), 401 if user else jsonify({"error": True, "errors": {"User": "User not found"}}), 404
+            return (
+                jsonify(
+                    {
+                        "error": True,
+                        "errors": {"Password": "Invalid Username or Password"},
+                    }
+                ),
+                (
+                    401
+                    if user
+                    else jsonify({"error": True, "errors": {"User": "User not found"}})
+                ),
+                404,
+            )
 
     # Handle unexpected errors
     except Exception as e:
@@ -109,11 +131,12 @@ def handle_signup_ajax(data):
         db.session.rollback()
         return (
             jsonify({"error": True, "message": "Signup failed due to server error"}),
-            500
+            500,
         )
 
 
 # Server-side input validation for signup form
+
 
 # Validate username
 @main.route("/validate-username", methods=["POST"])
@@ -219,6 +242,103 @@ def home():
     return render_template("home.html", title="Home")
 
 
+# Get username for the welcome message in Home Page
+
+
+@main.route("/user/info", methods=["GET"])
+@login_required
+def get_user_info():
+    user_info = {"username": current_user.username}
+    return jsonify(user_info)
+
+
+# Get user points for Home Page
+
+
+@main.route("/user/points", methods=["GET"])
+@login_required
+def get_user_points():
+    user_id = current_user.id
+    user = User.query.get(user_id)
+    if user:
+        points = {
+            "points_as_creator": user.points_as_creator,
+            "points_as_guesser": user.points_as_guesser,
+        }
+        return jsonify(points)
+    else:
+        return jsonify({"error": "User not found"}), HTTPStatus.NOT_FOUND
+
+
+# Get data for the leaderboard in Home Page
+@main.route("/leaderboard", methods=["GET"])
+@login_required
+def get_leaderboard():
+    # Get top 10 users based on total points
+    top_users = (
+        User.query.order_by((User.points_as_creator + User.points_as_guesser).desc())
+        .limit(10)
+        .all()
+    )
+
+    leaderboard = []
+    # Create a list of usernames and total points
+    for user in top_users:
+        leaderboard.append(
+            {
+                "username": user.username,
+                "total_points": user.points_as_creator + user.points_as_guesser,
+            }
+        )
+
+    # If less than 10 users, fill remaining with N/A
+    while len(leaderboard) < 10:
+        leaderboard.append({"username": "N/A", "total_points": "N/A"})
+
+    return jsonify(leaderboard)
+
+
+# Get the latest 4 "New" drawings for the Home Page
+@main.route("/latest-drawings", methods=["GET"])
+@login_required
+def get_latest_drawings():
+    latest_new_drawings = (
+        db.session.query(
+            Drawing.id.label("drawing_id"),
+            Drawing.created_at,
+            User.username,
+            Word.category,
+        )
+        .join(User, Drawing.creator_id == User.id)
+        .join(Word, Drawing.word_id == Word.id)
+        .outerjoin(
+            Guess,
+            (Drawing.id == Guess.drawing_id) & (Guess.guesser_id == current_user.id),
+        )
+        .filter(
+            (Drawing.creator_id != current_user.id)
+            & (Guess.id == None)
+            # Display by descending order of created_at timestamp
+        )
+        .order_by(Drawing.created_at.desc())
+        .limit(4)
+        .all()
+    )
+
+    # Add the drawing details to the list
+    drawings_data = [
+        {
+            "username": drawing.username,
+            "category": drawing.category,
+            "status": "New",
+            "created_at": drawing.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        for drawing in latest_new_drawings
+    ]
+
+    return jsonify(drawings_data)
+
+
 # Guessing Gallery Page
 @main.route("/gallery")
 @login_required
@@ -248,8 +368,7 @@ def get_gallery_data():
         .join(Word, Word.id == Drawing.word_id)
         .outerjoin(
             Guess,
-            (Guess.drawing_id == Drawing.id) & (
-                Guess.guesser_id == current_user.id),
+            (Guess.drawing_id == Drawing.id) & (Guess.guesser_id == current_user.id),
         )
         .all()
     )
@@ -269,6 +388,8 @@ def get_gallery_data():
 
 
 # Create Drawing Page
+
+
 @main.route("/drawing")
 @login_required
 def drawing():
@@ -372,7 +493,7 @@ def submit_drawing():
 def get_random_word():
     # Get category from request parameters
     category = request.args.get("category")
-    
+
     # If no category given, return an error
     if not category:
         return jsonify({"error": "Category is required"}), HTTPStatus.BAD_REQUEST
@@ -382,10 +503,9 @@ def get_random_word():
         random_word = Word.query.order_by(func.random()).first()
     else:
         random_word = (
-            Word.query.filter_by(category=category).order_by(
-                func.random()).first()
+            Word.query.filter_by(category=category).order_by(func.random()).first()
         )
-        
+
     # If no word found, return an error
     if not random_word:
         return (
