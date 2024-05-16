@@ -11,11 +11,4 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies: [ prettier@2.3.2 ]
-        files: \.(js|css)$
-
-  - repo: https://github.com/motet-a/jinjalint
-    rev: master # select a tag / sha to point at
-    hooks:
-      - id: jinjalint
-        types: [ file ]  # restore the default `types` matching
-        files: \.(html|sls)$
+        files: \.(js|css|html)$
