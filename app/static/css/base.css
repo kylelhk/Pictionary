@@ -393,7 +393,7 @@ footer {
 
 /* Flask flash message for successful registration and logout */
 .flash-message-container {
-    position: relative;
+    position: absolute;
     width: 100%;
     text-align: center;
     display: none; /* Hidden by default */
@@ -410,7 +410,7 @@ footer {
     background-color: Green;
 }
 
-.flash-message-error {
+.flash-message-error, .flash-message-message {
     display: inline-block;
     width: auto;
     margin-top: 5px;

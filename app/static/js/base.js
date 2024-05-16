@@ -17,14 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sidebar.classList.remove("sidebar-active");
         }
     });
-
-
-    // Function to display AJAX alert message (for nav link access control)
-    function displayAjaxMessage(message, category) {
-        const alertHtml = `<div class="alert alert-${category}">${message}</div>`;
-        $(".alert-container").html(alertHtml).show().delay(3000).fadeOut("slow");
-    }
-
+    
     // Function to display flash messages (for form submission feedback and successful registration)
     function displayFlashMessage() {
         $(".flash-message-container").show().delay(3000).fadeOut("slow");
