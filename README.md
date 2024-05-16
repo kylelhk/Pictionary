@@ -97,7 +97,25 @@ Enjoy!
 
 ## Unit Tests
 
-[ ]
+Unit tests are found in `test/unit/`
+
+To run all tests, use the following command:  
+
+```py
+python -m unittest
+```  
+
+Or for a more detailed output:
+
+```py
+python -m unittest -v
+```
+
+If you would like to run a specific unit test class file, use the command:
+
+```py
+python -m unittest test.unit.<filename without .py extension>
+```
 
 ## System Tests
 
