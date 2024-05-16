@@ -174,7 +174,7 @@ def handle_signup_ajax(data):
                         },
                     }
                 ),
-                400,
+                HTTPStatus.BAD_REQUEST,
             )
         if not (
             re.search("[a-z]", password)
@@ -489,7 +489,7 @@ def submit_drawing():
 def get_random_word():
     # Get category from request parameters
     category = request.args.get("category")
-    
+
     # If no category given, return an error
     if not category:
         return jsonify({"error": "Category is required"}), HTTPStatus.BAD_REQUEST
@@ -501,7 +501,7 @@ def get_random_word():
         random_word = (
             Word.query.filter_by(category=category).order_by(func.random()).first()
         )
-        
+
     # If no word found, return an error
     if not random_word:
         return (
