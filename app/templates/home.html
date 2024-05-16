@@ -7,7 +7,7 @@ styles%} {{ super() }}
 {% endblock %} {% block content %}
 <div class="home-body">
   <!-- Welcome message -->
-  <div class="welcome-message">Welcome back, [username]!</div>
+  <div class="welcome-message"><!-- Dynamic content loading --></div>
 
   <!-- Main panel -->
   <div class="row panel">
@@ -17,12 +17,16 @@ styles%} {{ super() }}
         <!-- Points -->
         <div class="col-md-4">
           <div class="points-title">Your Points</div>
-          <div class="points-bg"><span class="points">100</span></div>
+          <div class="points-bg">
+            <span class="points"><!-- Dynamic content loading --></span>
+          </div>
         </div>
 
         <!-- Pie chart implemented using ECharts library and home.js -->
         <!-- Reference: https://echarts.apache.org/handbook/en/how-to/chart-types/pie/basic-pie/ -->
-        <div class="col-md-8 pie-container"></div>
+        <div class="col-md-8 pie-container">
+          <!-- Dynamic content loading -->
+        </div>
       </div>
 
       <!-- Activity Feed -->
@@ -38,7 +42,8 @@ styles%} {{ super() }}
           <button class="tab" data-tab="new">New Games</button>
         </div>
 
-        <!-- Table for displaying Games In Progress and New Games -->
+        <!-- Table for displaying the latest 4 Games In Progress -->
+        <!-- TODO / to skip - pending the implementation of in_progress if time allows -->
         <div class="feed-table">
           <div class="content" id="content-item1-progress">
             <table class="table table-striped">
@@ -62,6 +67,8 @@ styles%} {{ super() }}
               </tbody>
             </table>
           </div>
+
+          <!-- Table for displaying the latest 4 New Games -->
           <div class="content hidden" id="content-item1-new">
             <table class="table table-striped">
               <thead>
@@ -73,14 +80,7 @@ styles%} {{ super() }}
                 </tr>
               </thead>
               <tbody>
-                {% for i in range(1, 5) %}
-                <tr>
-                  <td>Username {{ i }}</td>
-                  <td>Category {{ i }}</td>
-                  <td>Status {{ i }}</td>
-                  <td>Date and Time</td>
-                </tr>
-                {% endfor %}
+                <!-- Dynamic content loading -->
               </tbody>
             </table>
           </div>
@@ -98,10 +98,10 @@ styles%} {{ super() }}
             <div class="rank rank-{{ i }}">{{ i }}</div>
           </div>
           <div class="col-md-7">
-            <div class="board-username">[username{{ i }}]</div>
+            <div class="board-username"><!-- Dynamic content loading --></div>
           </div>
           <div class="col-md-3">
-            <div class="board-points">[points{{ i }}]</div>
+            <div class="board-points"><!-- Dynamic content loading --></div>
           </div>
         </div>
         {% endfor %}

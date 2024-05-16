@@ -16,6 +16,8 @@ from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import case
 from sqlalchemy.sql.expression import func
 
+import re  # Regular expressions library for password validation
+
 from app import db
 from app.blueprints import main
 from app.forms import LoginForm, SignupForm
@@ -25,6 +27,8 @@ timezone = pytz.timezone("Australia/Perth")
 
 
 # Determine if a request is made via AJAX
+
+
 def is_ajax():
     return request.headers.get("X-Requested-With") == "XMLHttpRequest"
 
@@ -337,6 +341,103 @@ def home():
     return render_template("home.html", title="Home")
 
 
+# Get username for the welcome message in Home Page
+
+
+@main.route("/user/info", methods=["GET"])
+@login_required
+def get_user_info():
+    user_info = {"username": current_user.username}
+    return jsonify(user_info)
+
+
+# Get user points for Home Page
+
+
+@main.route("/user/points", methods=["GET"])
+@login_required
+def get_user_points():
+    user_id = current_user.id
+    user = User.query.get(user_id)
+    if user:
+        points = {
+            "points_as_creator": user.points_as_creator,
+            "points_as_guesser": user.points_as_guesser,
+        }
+        return jsonify(points)
+    else:
+        return jsonify({"error": "User not found"}), HTTPStatus.NOT_FOUND
+
+
+# Get data for the leaderboard in Home Page
+@main.route("/leaderboard", methods=["GET"])
+@login_required
+def get_leaderboard():
+    # Get top 10 users based on total points
+    top_users = (
+        User.query.order_by((User.points_as_creator + User.points_as_guesser).desc())
+        .limit(10)
+        .all()
+    )
+
+    leaderboard = []
+    # Create a list of usernames and total points
+    for user in top_users:
+        leaderboard.append(
+            {
+                "username": user.username,
+                "total_points": user.points_as_creator + user.points_as_guesser,
+            }
+        )
+
+    # If less than 10 users, fill remaining with N/A
+    while len(leaderboard) < 10:
+        leaderboard.append({"username": "N/A", "total_points": "N/A"})
+
+    return jsonify(leaderboard)
+
+
+# Get the latest 4 "New" drawings for the Home Page
+@main.route("/latest-drawings", methods=["GET"])
+@login_required
+def get_latest_drawings():
+    latest_new_drawings = (
+        db.session.query(
+            Drawing.id.label("drawing_id"),
+            Drawing.created_at,
+            User.username,
+            Word.category,
+        )
+        .join(User, Drawing.creator_id == User.id)
+        .join(Word, Drawing.word_id == Word.id)
+        .outerjoin(
+            Guess,
+            (Drawing.id == Guess.drawing_id) & (Guess.guesser_id == current_user.id),
+        )
+        .filter(
+            (Drawing.creator_id != current_user.id)
+            & (Guess.id == None)
+            # Display by descending order of created_at timestamp
+        )
+        .order_by(Drawing.created_at.desc())
+        .limit(4)
+        .all()
+    )
+
+    # Add the drawing details to the list
+    drawings_data = [
+        {
+            "username": drawing.username,
+            "category": drawing.category,
+            "status": "New",
+            "created_at": drawing.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        for drawing in latest_new_drawings
+    ]
+
+    return jsonify(drawings_data)
+
+
 # Guessing Gallery Page
 @main.route("/gallery")
 @login_required
@@ -386,6 +487,8 @@ def get_gallery_data():
 
 
 # Create Drawing Page
+
+
 @main.route("/drawing")
 @login_required
 def drawing():
