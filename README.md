@@ -99,6 +99,12 @@ Enjoy!
 
 Unit tests are found in `test/unit/`
 
+Before running tests, ensure that your .flaskenv contains the following value for the `FLASK_APP` environment variable:
+
+```bash
+FLASK_APP="app:create_app('TestConfig')"
+```
+
 To run all tests, use the following command:  
 
 ```py
