@@ -6,7 +6,7 @@ class Word(db.Model):
     category = db.Column(db.Text)
     text = db.Column(db.Text, index=True, unique=True)
 
-    drawing = db.relationship('Drawing', back_populates='word')
+    drawing = db.relationship("Drawing", back_populates="word")
 
     def __repr__(self):
         return f'<Word "{self.text}">'

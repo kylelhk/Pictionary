@@ -56,7 +56,12 @@ def login_signup():
     # Render the login/signup page for GET requests
     login_form = LoginForm(prefix="login")
     signup_form = SignupForm(prefix="signup")
-    return render_template("login.html", login_form=login_form, signup_form=signup_form, title="Log In / Sign Up")
+    return render_template(
+        "login.html",
+        login_form=login_form,
+        signup_form=signup_form,
+        title="Log In / Sign Up",
+    )
 
 
 # Process login form inputs and submission
@@ -77,7 +82,20 @@ def handle_login_ajax(data):
             login_user(user, remember=remember_me)
             return jsonify({"error": False, "redirect": url_for("main.home")}), 200
         else:
-            return jsonify({"error": True, "errors": {"Password": "Invalid Username or Password"}}), 401 if user else jsonify({"error": True, "errors": {"User": "User not found"}}), 404
+            return (
+                jsonify(
+                    {
+                        "error": True,
+                        "errors": {"Password": "Invalid Username or Password"},
+                    }
+                ),
+                (
+                    401
+                    if user
+                    else jsonify({"error": True, "errors": {"User": "User not found"}})
+                ),
+                404,
+            )
 
     # Handle unexpected errors
     except Exception as e:
@@ -109,11 +127,12 @@ def handle_signup_ajax(data):
         db.session.rollback()
         return (
             jsonify({"error": True, "message": "Signup failed due to server error"}),
-            500
+            500,
         )
 
 
 # Server-side input validation for signup form
+
 
 # Validate username
 @main.route("/validate-username", methods=["POST"])
@@ -248,8 +267,7 @@ def get_gallery_data():
         .join(Word, Word.id == Drawing.word_id)
         .outerjoin(
             Guess,
-            (Guess.drawing_id == Drawing.id) & (
-                Guess.guesser_id == current_user.id),
+            (Guess.drawing_id == Drawing.id) & (Guess.guesser_id == current_user.id),
         )
         .all()
     )
@@ -372,7 +390,7 @@ def submit_drawing():
 def get_random_word():
     # Get category from request parameters
     category = request.args.get("category")
-    
+
     # If no category given, return an error
     if not category:
         return jsonify({"error": "Category is required"}), HTTPStatus.BAD_REQUEST
@@ -382,10 +400,9 @@ def get_random_word():
         random_word = Word.query.order_by(func.random()).first()
     else:
         random_word = (
-            Word.query.filter_by(category=category).order_by(
-                func.random()).first()
+            Word.query.filter_by(category=category).order_by(func.random()).first()
         )
-        
+
     # If no word found, return an error
     if not random_word:
         return (
