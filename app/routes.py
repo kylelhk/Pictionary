@@ -363,6 +363,39 @@ def get_latest_drawings():
     return jsonify(drawings_data)
 
 
+# Get the latest 4 guess attempts for the Home Page
+
+
+@main.route("/guess-history", methods=["GET"])
+@login_required
+def get_guess_history():
+    guess_history = (
+        db.session.query(
+            Guess.guessed_at, User.username, Word.category, Guess.is_correct
+        )
+        .join(Drawing, Guess.drawing_id == Drawing.id)
+        .join(User, Drawing.creator_id == User.id)
+        .join(Word, Drawing.word_id == Word.id)
+        .filter(Guess.guesser_id == current_user.id)
+        .order_by(Guess.guessed_at.desc())
+        .limit(4)
+        .all()
+    )
+
+    # Add the drawing details to the list
+    history_data = [
+        {
+            "guessed_at": guess.guessed_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "username": guess.username,
+            "category": guess.category,
+            "result": "Successful" if guess.is_correct else "Unsuccessful",
+        }
+        for guess in guess_history
+    ]
+
+    return jsonify(history_data)
+
+
 # Guessing Gallery Page
 @main.route("/gallery")
 @login_required
@@ -459,7 +492,7 @@ def drawing_detail(drawing_id):
             drawing_id=drawing_id,
             guesser_id=current_user.id,
             is_correct=is_correct,
-            guessed_at=datetime.utcnow(),
+            guessed_at=datetime.now(timezone),
             guessed_word=guessed_word,
         )
 
