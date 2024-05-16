@@ -162,8 +162,7 @@ def handle_signup_ajax(data):
         if User.query.filter_by(email=email).first():
             return (
                 jsonify(
-                    {"error": True, "errors": {
-                        "email": "This email is already in use"}}
+                    {"error": True, "errors": {"email": "This email is already in use"}}
                 ),
                 400,
             )
@@ -341,90 +340,100 @@ def check_authentication():
 def home():
     return render_template("home.html", title="Home")
 
+
 # Get username for the welcome message in Home Page
 
 
-@main.route('/user/info', methods=['GET'])
+@main.route("/user/info", methods=["GET"])
 @login_required
 def get_user_info():
-    user_info = {
-        'username': current_user.username
-    }
+    user_info = {"username": current_user.username}
     return jsonify(user_info)
 
 
 # Get user points for Home Page
 
 
-@main.route('/user/points', methods=['GET'])
+@main.route("/user/points", methods=["GET"])
 @login_required
 def get_user_points():
     user_id = current_user.id
     user = User.query.get(user_id)
     if user:
         points = {
-            'points_as_creator': user.points_as_creator,
-            'points_as_guesser': user.points_as_guesser
+            "points_as_creator": user.points_as_creator,
+            "points_as_guesser": user.points_as_guesser,
         }
         return jsonify(points)
     else:
-        return jsonify({'error': 'User not found'}), HTTPStatus.NOT_FOUND
+        return jsonify({"error": "User not found"}), HTTPStatus.NOT_FOUND
 
 
 # Get data for the leaderboard in Home Page
-@main.route('/leaderboard', methods=['GET'])
+@main.route("/leaderboard", methods=["GET"])
 @login_required
 def get_leaderboard():
     # Get top 10 users based on total points
-    top_users = User.query.order_by(
-        (User.points_as_creator + User.points_as_guesser).desc()
-    ).limit(10).all()
+    top_users = (
+        User.query.order_by((User.points_as_creator + User.points_as_guesser).desc())
+        .limit(10)
+        .all()
+    )
 
     leaderboard = []
     # Create a list of usernames and total points
     for user in top_users:
-        leaderboard.append({
-            'username': user.username,
-            'total_points': user.points_as_creator + user.points_as_guesser
-        })
+        leaderboard.append(
+            {
+                "username": user.username,
+                "total_points": user.points_as_creator + user.points_as_guesser,
+            }
+        )
 
     # If less than 10 users, fill remaining with N/A
     while len(leaderboard) < 10:
-        leaderboard.append({'username': 'N/A', 'total_points': 'N/A'})
+        leaderboard.append({"username": "N/A", "total_points": "N/A"})
 
     return jsonify(leaderboard)
 
 
-# Get the latest 4 drawings for the Home Page
-@main.route('/latest-drawings', methods=['GET'])
+# Get the latest 4 "New" drawings for the Home Page
+@main.route("/latest-drawings", methods=["GET"])
 @login_required
 def get_latest_drawings():
-    # Query to get the latest 4 drawings based on created_at
-    latest_drawings = db.session.query(
-        Drawing.id, Drawing.created_at, User.username, Word.category,
-        Guess.is_correct, Guess.guesser_id
-    ).join(User, Drawing.creator_id == User.id
-           ).join(Word, Drawing.word_id == Word.id
-                  ).outerjoin(Guess, Drawing.id == Guess.drawing_id
-                              ).order_by(Drawing.created_at.desc()
-                                         ).limit(4).all()
+    latest_new_drawings = (
+        db.session.query(
+            Drawing.id.label("drawing_id"),
+            Drawing.created_at,
+            User.username,
+            Word.category,
+        )
+        .join(User, Drawing.creator_id == User.id)
+        .join(Word, Drawing.word_id == Word.id)
+        .outerjoin(
+            Guess,
+            (Drawing.id == Guess.drawing_id) & (Guess.guesser_id == current_user.id),
+        )
+        .filter(
+            (Drawing.creator_id != current_user.id)
+            & (Guess.id == None)
+            # Display by descending order of created_at timestamp
+        )
+        .order_by(Drawing.created_at.desc())
+        .limit(4)
+        .all()
+    )
 
-    drawings_data = []
-    for drawing in latest_drawings:
-        # Determine the status of the drawing for the current user
-        if drawing.guesser_id == current_user.id:
-            if drawing.is_correct is not None:
-                status = "Successful" if drawing.is_correct else "Unsuccessful"
-        else:
-            status = "New"
-
-        # Add the drawing details to the list
-        drawings_data.append({
-            'username': drawing.username,
-            'category': drawing.category,
-            'status': status,
-            'created_at': drawing.created_at.strftime("%Y-%m-%d %H:%M:%S")
-        })
+    # Add the drawing details to the list
+    drawings_data = [
+        {
+            "username": drawing.username,
+            "category": drawing.category,
+            "status": "New",
+            "created_at": drawing.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        for drawing in latest_new_drawings
+    ]
 
     return jsonify(drawings_data)
 
@@ -458,8 +467,7 @@ def get_gallery_data():
         .join(Word, Word.id == Drawing.word_id)
         .outerjoin(
             Guess,
-            (Guess.drawing_id == Drawing.id) & (
-                Guess.guesser_id == current_user.id),
+            (Guess.drawing_id == Drawing.id) & (Guess.guesser_id == current_user.id),
         )
         .all()
     )
@@ -594,8 +602,7 @@ def get_random_word():
         random_word = Word.query.order_by(func.random()).first()
     else:
         random_word = (
-            Word.query.filter_by(category=category).order_by(
-                func.random()).first()
+            Word.query.filter_by(category=category).order_by(func.random()).first()
         )
 
     # If no word found, return an error
