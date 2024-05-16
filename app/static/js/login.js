@@ -1,39 +1,33 @@
 $(function () {
-    // Nav link control access via AJAX
-    function checkAuthentication(e) {
-        e.preventDefault(); // Prevent the default link navigation
-        const targetUrl = $(this).attr("href"); // Store the URL to navigate to
+  // Nav link control access via AJAX
+  function checkAuthentication(e) {
+    e.preventDefault(); // Prevent the default link navigation
+    const targetUrl = $(this).attr("href"); // Store the URL to navigate to
 
-        $.ajax({
-            url: "/check-authentication", // Flask route to check if user is logged in
-            method: "GET",
-            success: function (response) {
-                // Navigate to the link if authenticated
-                if (response.isAuthenticated) {
-                    window.location.href = targetUrl;
-                } else {
-                    // Show an error message if not authenticated
-                    displayAjaxMessage(
-                        "You must be logged in to access this page.",
-                        "error"
-                    );
-                }
-            },
+    $.ajax({
+      url: "/check-authentication", // Flask route to check if user is logged in
+      method: "GET",
+      success: function (response) {
+        // Navigate to the link if authenticated
+        if (response.isAuthenticated) {
+          window.location.href = targetUrl;
+        } else {
+          // Show an error message if not authenticated
+          displayAjaxMessage(
+            "You must be logged in to access this page.",
+            "error"
+          );
+        }
+      },
 
-            // Show an error message if the AJAX request fails
-            error: function () {
-                displayAjaxMessage("Error checking authentication status.", "error");
-            },
-        });
-    }
+      // Show an error message if the AJAX request fails
+      error: function () {
+        displayAjaxMessage("Error checking authentication status.", "error");
+      },
+    });
+  }
 
-    $(".nav-link").on("click", checkAuthentication);
-
-    // Function to display AJAX alert message (for nav link access control)
-    function displayAjaxMessage(message, category) {
-        const alertHtml = `<div class="alert alert-${category}">${message}</div>`;
-        $(".alert-container").html(alertHtml).show().delay(3000).fadeOut("slow");
-    }
+  $(".nav-link").on("click", checkAuthentication);
 
     // Function for dynamic typing effect
     function dynamicTypingEffect(element, speed = 30, callback = null) {
@@ -81,13 +75,13 @@ $(function () {
         const loginLink = document.querySelector(".login-link");
         const signupLink = document.querySelector(".signup-link");
 
-        signupLink?.addEventListener("click", () =>
-            loginSection.classList.add("active")
-        );
-        loginLink?.addEventListener("click", () =>
-            loginSection.classList.remove("active")
-        );
-    }
+    signupLink?.addEventListener("click", () =>
+      loginSection.classList.add("active")
+    );
+    loginLink?.addEventListener("click", () =>
+      loginSection.classList.remove("active")
+    );
+  }
 
     // Function to toggle password visibility
     function togglePasswordVisibility(toggleButtonId, inputFieldId) {
@@ -117,20 +111,20 @@ $(function () {
     togglePasswordVisibility("toggleSignupPassword", "signupPassword");
     togglePasswordVisibility("toggleConfirmPassword", "signupConfirmPassword");
 
-    // Set up CSRF token for AJAX requests
-    $.ajaxSetup({
-        beforeSend: function (xhr, settings) {
-            // Add CSRF token to non-GET requests
-            if (
-                !/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) &&
-                !this.crossDomain
-            ) {
-                // Get CSRF token value from meta tag and set it as request header
-                const csrfToken = $('input[name="csrf_token"]').val();
-                xhr.setRequestHeader("X-CSRFToken", csrfToken);
-            }
-        },
-    });
+  // Set up CSRF token for AJAX requests
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      // Add CSRF token to non-GET requests
+      if (
+        !/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) &&
+        !this.crossDomain
+      ) {
+        // Get CSRF token value from meta tag and set it as request header
+        const csrfToken = $('input[name="csrf_token"]').val();
+        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+      }
+    },
+  });
 
     // Client-side validation for login form
     function validateLoginField(fieldId, fieldValue) {
@@ -188,35 +182,41 @@ $(function () {
         return error === ""; // Returns true if no error, false otherwise
     }
 
-    // Helper function for validating password strength
-    function validatePassword(password) {
-        if (password.length < 8) {
-            return "Password must be at least 8 characters long.";
-        }
-        if (
-            !/[A-Z]/.test(password) ||
-            !/[a-z]/.test(password) ||
-            !/[0-9]/.test(password)
-        ) {
-            return "At least one uppercase, lowercase, and numeric character is required.";
-        }
-        return "";
+  // Helper function for validating password strength
+  function validatePassword(password) {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
     }
+    if (
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[0-9]/.test(password)
+    ) {
+      return "At least one uppercase, lowercase, and numeric character is required.";
+    }
+    return "";
+  }
 
     // Perform client-side validation for login form on blur
     $("#loginUsername, #loginPassword").blur(function () {
         validateLoginField(this.id, $(this).val());
     });
 
-    // Perform client-side validation for signup form on blur
-    $(
-        "#signupUsername, #signupEmail, #signupPassword, #signupConfirmPassword"
-    ).blur(function () {
-        let formData = {
-            "signup-password": $("#signupPassword").val(), // Needed for confirm password validation
-        };
-        validateSignupField(this.id, $(this).val(), formData);
-    });
+  // Perform client-side validation for signup form on blur
+  $(
+    "#signupUsername, #signupEmail, #signupPassword, #signupConfirmPassword"
+  ).blur(function () {
+    let formData = {
+      "signup-password": $("#signupPassword").val(), // Needed for confirm password validation
+    };
+    validateSignupField(this.id, $(this).val(), formData);
+  });
+
+    // Function to display AJAX alert message (for nav link access control)
+    function displayAjaxMessage(message, category) {
+        const alertHtml = `<div class="alert alert-${category}">${message}</div>`;
+        $(".alert-container").html(alertHtml).show().delay(3000).fadeOut("slow");
+    }
 
     // Handle login form submission via AJAX
     $("#loginForm").submit(function (e) {
@@ -233,8 +233,8 @@ $(function () {
 
         // Check client-side validation result for all fields
         const fieldsToValidate = [
-            {id: "loginUsername", value: formData["login-username"]},
-            {id: "loginPassword", value: formData["login-password"]},
+            { id: "loginUsername", value: formData["login-username"] },
+            { id: "loginPassword", value: formData["login-password"] },
         ];
 
         let allFieldsValid = true;
@@ -246,33 +246,33 @@ $(function () {
         }
 
         // Only submit the form via AJAX if client-side validation passes
-        // TODO: Add server-side validation before submitting login form
+        // The server-side validation is performed by handle_login_ajax() in routes.py before commiting the form data
         if (allFieldsValid) {
             submitFormViaAjax($(this), formData);
         } else {
-            displayFlashMessage("Please correct the errors before submitting.");
+            displayAjaxMessage("Please correct the errors before submitting.", "error");
         }
     });
 
-    // Handle signup form submission via AJAX
-    $("#signupForm").submit(async function (e) {
-        e.preventDefault(); // Prevent the default form submission
+  // Handle signup form submission via AJAX
+  $("#signupForm").submit(async function (e) {
+    e.preventDefault(); // Prevent the default form submission
 
-        // Extract form data
-        let formData = {
-            "signup-csrf_token": $(this).find('input[name="csrf_token"]').val(),
-            "signup-username": $("#signupUsername").val(),
-            "signup-email": $("#signupEmail").val(),
-            "signup-password": $("#signupPassword").val(),
-            "signup-confirm_password": $("#signupConfirmPassword").val(),
-            action: "Sign Up",
-        };
+    // Extract form data
+    let formData = {
+      "signup-csrf_token": $(this).find('input[name="csrf_token"]').val(),
+      "signup-username": $("#signupUsername").val(),
+      "signup-email": $("#signupEmail").val(),
+      "signup-password": $("#signupPassword").val(),
+      "signup-confirm_password": $("#signupConfirmPassword").val(),
+      action: "Sign Up",
+    };
 
         // Check client-side validation result for all fields
         const fieldsToValidate = [
-            {id: "signupUsername", value: formData["signup-username"]},
-            {id: "signupEmail", value: formData["signup-email"]},
-            {id: "signupPassword", value: formData["signup-password"]},
+            { id: "signupUsername", value: formData["signup-username"] },
+            { id: "signupEmail", value: formData["signup-email"] },
+            { id: "signupPassword", value: formData["signup-password"] },
             {
                 id: "signupConfirmPassword",
                 value: formData["signup-confirm_password"],
@@ -287,7 +287,7 @@ $(function () {
             }
         }
 
-        // Perform server-side validation if client-side validation passes
+        // Perform server-side validation (via four endpoints defined in routes.py) if client-side validation passes
         if (allFieldsValid) {
             const serverValidationPassed = await serverValidation(
                 "#signupUsername, #signupEmail, #signupPassword, #signupConfirmPassword"
@@ -296,19 +296,16 @@ $(function () {
             if (serverValidationPassed) {
                 submitFormViaAjax($(this), formData);
             } else {
-                displayFlashMessage(
-                    "Server-side validation failed. Please revise your inputs."
-                );
+                displayAjaxMessage("Server-side validation failed. Please revise your input(s).", "error");
             }
         } else {
-            displayFlashMessage(
-                "Please revise your inputs according to the error messages."
-            );
+            displayAjaxMessage("Please revise your input(s) according to the error message(s).", "error");
         }
     });
 
     // Function for AJAX form submission
     function submitFormViaAjax(form, formData) {
+        // 'form' parameter is the jQuery object of the form element and is needed for proper submission
         // Send the form data via AJAX
         $.ajax({
             url: "/login", // Flask route for both login and signup form submission
@@ -327,20 +324,9 @@ $(function () {
             },
 
             // Handle AJAX request errors
-            error: function (xhr, textStatus, errorThrown) {
-                console.error("AJAX request failed:", textStatus, errorThrown);
-                let errorMessage = "Server error occurred. Please try again later.";
-                let alertCategory = "danger"; // Bootstrap class for error messages
-                if (xhr.status === 0) {
-                    errorMessage = "Cannot connect. Please check your connection.";
-                } else if (xhr.status === 404) {
-                    errorMessage = "Requested page not found. [404]";
-                } else if (xhr.status === 500) {
-                    errorMessage = "Internal Server Error [500].";
-                }
-
-                // Use the function defined above to display the error message
-                displayAjaxMessage(errorMessage, alertCategory);
+            error: function () {
+                // Display the error message
+                displayAjaxMessage("Server-side validation failed. Please revise your input(s).", "error");
             },
         });
     }
@@ -364,14 +350,14 @@ $(function () {
         }
     }
 
-    // Function to trigger AJAX requests for server-side validation
+    // Function to trigger AJAX requests for server-side validation via four endpoints defined in routes.py
     async function serverValidation(selectors) {
         let promises = [];
 
         $(selectors).each(function () {
             let fieldId = $(this).attr("id");
             let actionUrl = `/validate-${fieldId.split("signup")[1].toLowerCase()}`; // Creates the endpoint URL dynamically based on field ID
-            let data = {value: $(this).val()};
+            let data = { value: $(this).val() };
 
             // Include password for confirm password validation
             if (fieldId === "signupConfirmPassword") {
@@ -394,12 +380,7 @@ $(function () {
     }
 
     // Function for sending data to the server via AJAX and handling the resulting response or error
-    function handleAjaxRequest(
-        actionUrl,
-        data,
-        feedbackSelector,
-        useAjax = true
-    ) {
+    function handleAjaxRequest(actionUrl, data, feedbackSelector, useAjax = true) {
         const inputBox = $(feedbackSelector).closest(".input-box");
 
         // Function to display or hide error message based on server response
@@ -407,7 +388,6 @@ $(function () {
             $(feedbackSelector).text(message).show();
             inputBox.css("border-bottom", "2px solid Red");
         }
-
         function clearError() {
             $(feedbackSelector).hide();
             inputBox.css("border-bottom", "2px solid White");
@@ -433,9 +413,7 @@ $(function () {
 
                 // Handle AJAX request errors
                 error: function (xhr) {
-                    displayError(
-                        convertErrorMessage(xhr.responseText) || "Error processing request"
-                    );
+                    displayError(convertErrorMessage(xhr.responseText) || "Error processing request");
                 },
             });
         } else {

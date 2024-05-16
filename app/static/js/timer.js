@@ -11,14 +11,10 @@ export class CountdownTimer {
         this.COLOR_CODES = {
             info: {
                 color: "green"
-            },
-            warning: {
-                color: "orange",
-                threshold: this.WARNING_THRESHOLD
-            },
-            alert: {
-                color: "red",
-                threshold: this.ALERT_THRESHOLD
+            }, warning: {
+                color: "orange", threshold: this.WARNING_THRESHOLD
+            }, alert: {
+                color: "red", threshold: this.ALERT_THRESHOLD
             }
         };
     }
@@ -47,7 +43,7 @@ export class CountdownTimer {
 
     // Change the colour of the remaining path based on the warning and alert thresholds
     setRemainingPathColor(timeLeft) {
-        const { alert, warning, info } = this.COLOR_CODES;
+        const {alert, warning, info} = this.COLOR_CODES;
         const remainingPath = $("#base-timer-path-remaining");
         remainingPath.removeClass(`${info.color} ${warning.color} ${alert.color}`);
         if (timeLeft <= alert.threshold) {

@@ -27,13 +27,10 @@ $(function () {
     // Function to fetch and display username
     function loadUsername() {
         $.ajax({
-            url: "/user/info",
-            method: "GET",
-            success: function (data) {
+            url: "/user/info", method: "GET", success: function (data) {
                 const welcomeMessageElement = $(".welcome-message");
                 welcomeMessageElement.text(`Welcome back, ${data.username}!`);
-            },
-            error: function (error) {
+            }, error: function (error) {
                 console.error("Failed to fetch user info:", error);
             },
         });
@@ -45,33 +42,23 @@ $(function () {
     // Function to fetch and display user points
     function loadUserPoints() {
         $.ajax({
-            url: "/user/points",
-            method: "GET",
-            success: function (data) {
+            url: "/user/points", method: "GET", success: function (data) {
                 if (data.points_as_creator !== undefined && data.points_as_guesser !== undefined) {
                     // Display the total points in the .points span
                     const totalPoints = data.points_as_creator + data.points_as_guesser;
                     $(".points").text(totalPoints);
 
                     // Prepare data for the pie chart below
-                    const pieData = [
-                        {
-                            value: data.points_as_guesser,
-                            name: "Guesser Points",
-                            itemStyle: { color: "Blue" },
-                        },
-                        {
-                            value: data.points_as_creator,
-                            name: "Drawer Points",
-                            itemStyle: { color: "Orange" },
-                        },
-                    ];
+                    const pieData = [{
+                        value: data.points_as_guesser, name: "Guesser Points", itemStyle: {color: "Blue"},
+                    }, {
+                        value: data.points_as_creator, name: "Drawer Points", itemStyle: {color: "Orange"},
+                    },];
 
                     // Initialise the pie chart
                     initPieChart(pieData);
                 }
-            },
-            error: function (error) {
+            }, error: function (error) {
                 console.error("Failed to fetch user points:", error);
             },
         });
@@ -86,38 +73,22 @@ $(function () {
             var pieChart = echarts.init(pieContainer);
             var pieOption = {
                 title: {
-                    text: "Points Distribution",
-                    left: "center",
-                },
-                tooltip: {
-                    trigger: "item",
-                    formatter: "{b} : {c} ({d}%)",
-                },
-                legend: {
-                    orient: "vertical",
-                    left: "right",
-                    top: "center",
-                    data: ["Guesser Points", "Drawer Points"],
-                },
-                series: [
-                    {
-                        name: "Points",
-                        type: "pie",
-                        radius: "75%", // Increase the radius to make the pie bigger
-                        center: ["35%", "54%"], // 35% from left, 54% from top
-                        data: pieData,
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: "rgba(0, 0, 0, 0.5)",
-                            },
+                    text: "Points Distribution", left: "center",
+                }, tooltip: {
+                    trigger: "item", formatter: "{b} : {c} ({d}%)",
+                }, legend: {
+                    orient: "vertical", left: "right", top: "center", data: ["Guesser Points", "Drawer Points"],
+                }, series: [{
+                    name: "Points", type: "pie", radius: "75%", // Increase the radius to make the pie bigger
+                    center: ["35%", "54%"], // 35% from left, 54% from top
+                    data: pieData, emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10, shadowOffsetX: 0, shadowColor: "rgba(0, 0, 0, 0.5)",
                         },
-                        label: {
-                            show: false,
-                        },
+                    }, label: {
+                        show: false,
                     },
-                ],
+                },],
             };
 
             // Function to adjust legend visibility based on screen size
@@ -163,9 +134,7 @@ $(function () {
     // Function to fetch and display leaderboard data
     function loadLeaderboard() {
         $.ajax({
-            url: "/leaderboard",
-            method: "GET",
-            success: function (data) {
+            url: "/leaderboard", method: "GET", success: function (data) {
                 // Update the leaderboard table with the fetched data
                 data.forEach((user, index) => {
                     const rankClass = `.rank-${index + 1}`;
@@ -175,8 +144,7 @@ $(function () {
                     usernameElement.text(user.username);
                     pointsElement.text(user.total_points);
                 });
-            },
-            error: function (error) {
+            }, error: function (error) {
                 console.error("Failed to fetch leaderboard:", error);
             },
         });
@@ -188,9 +156,7 @@ $(function () {
     // Function to fetch and display the latest 4 drawings
     function loadLatestDrawings() {
         $.ajax({
-            url: "/latest-drawings",
-            method: "GET",
-            success: function (data) {
+            url: "/latest-drawings", method: "GET", success: function (data) {
                 const tableBody = $("#content-item1-new tbody");
                 tableBody.empty(); // Clear existing rows
 
@@ -203,8 +169,7 @@ $(function () {
           </tr>`;
                     tableBody.append(row);
                 });
-            },
-            error: function (error) {
+            }, error: function (error) {
                 console.error("Failed to fetch latest drawings:", error);
             },
         });
