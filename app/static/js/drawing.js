@@ -2,6 +2,7 @@ import { CountdownTimer } from './timer.js'
 
 let isWordCatModalVisible = false;
 let wordCatModal;
+let confirmModal;
 
 // Fetch a random word from the chosen category
 function fetchWord(category) {
@@ -21,6 +22,8 @@ function fetchWord(category) {
 // Display modal to select the category of word to draw when window loads
 window.addEventListener('load', () => {
     wordCatModal = new bootstrap.Modal('#word-category-modal');
+    confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+
     wordCatModal.show();
     isWordCatModalVisible = true;
 
@@ -30,6 +33,12 @@ window.addEventListener('load', () => {
             fetchWord(category);
             isWordCatModalVisible = false;
         });
+    });
+
+    document.getElementById('word-category-modal').addEventListener('hidden.bs.modal', () => {
+        if (isWordCatModalVisible) {
+            confirmModal.show();
+        }
     });
 });
 
