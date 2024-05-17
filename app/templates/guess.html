@@ -21,13 +21,18 @@
 
     {#  GUESS SECTION #}
     <div class="guess-container">
-      {% if current_user_guess|length == 0 %}
-        <div id="timer">
-          <h4>Time remaining:</h4>
-          {% include 'timer.html' %}
-        </div>
-      {% endif %}
+      <div class="timer-container">
 
+        {% if current_user_guess|length == 0 %}
+          <div id="timer">
+            <h4>Time remaining:</h4>
+            {% include 'timer.html' %}
+          </div>
+          <button type="button" class="btn btn-danger btn-quit">Quit</button>
+        {% endif %}
+
+
+      </div>
       <div class="chat-box">
         <div class="header">
           TAKE A GUESS
@@ -37,19 +42,33 @@
           {% for guess in current_user_guess %}
             <div class="message message-right">
               <div class="bubble bubble-dark">
-                {{ guess.guessed_word }}
+                {% if not guess.guessed_word == "XXXXXX" %}
+                  {{ guess.guessed_word }}
+                {% endif %}
               </div>
             </div>
             <div class="message message-left">
               <div class="bubble {{ 'bubble-light' if  guess.is_correct else 'bubble-red' }}">
-                {% if guess.is_correct %}
+                {% if guess.guessed_word == 'XXXXXX' %}
+                  You did not guess
+                {% elif guess.is_correct %}
                   You guessed correctly
                 {% else %}
-                  Oops. Wrong guess or guessed already.
+                  Oops. Wrong guess
                 {% endif %}
               </div>
             </div>
+
+            {% if not guess.is_correct %}
+              <div class="message message-left correct-word-message">
+                <div class="bubble bubble-light animate-fade-in">
+                  The correct word was: {{ image.word.text }}
+                </div>
+              </div>
+            {% endif %}
+
           {% endfor %}
+
 
         </div>
 
@@ -61,12 +80,14 @@
             <button class="button-send">Guess</button>
           </div>
         {% endif %}
-      
+
       </div>
     </div>
   </div>
 
   <script type="module" src="{{ url_for('static', filename='js/timer.js') }}"></script>
   <script type="module" src="{{ url_for('static', filename='js/guess.js') }}"></script>
+  <script> var galleryUrl = "{{ url_for('main.gallery') }}"; </script>
+
 
 {% endblock %}
