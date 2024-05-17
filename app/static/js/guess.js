@@ -1,5 +1,7 @@
 import {CountdownTimer} from './timer.js'
 
+
+let guessMade = false; // Flag to track if a guess has been made
 function createBubble(text, className) {
     let bubble = document.createElement('div');
     bubble.className = "bubble " + className; // e.g., 'bubble-dark', 'bubble-light'
@@ -23,13 +25,24 @@ function postGuess(drawingId, guess) {
 }
 
 function handleGuessResponse(inputText, chatRoom, data) {
-    let guessedWord = inputText.value.trim() || "XXXXXX";
+    let guessedWord = inputText.value.trim();
+
 
     let userBubble = createBubble(guessedWord, "bubble-dark");
     let userMessage = createMessage(userBubble, "message-right");
     chatRoom.appendChild(userMessage);
 
-    let responseText = data.is_correct ? "You guessed correctly!" : "Oops! Wrong guess";
+
+    let responseText;
+    if (!guessedWord) {
+        responseText = "You did not guess";
+    } else if (data.is_correct) {
+        responseText = "You guessed correctly!";
+    } else {
+        responseText = "Oops! Wrong guess";
+    }
+
+    // let responseText = data.is_correct ? "You guessed correctly!" : "Oops! Wrong guess";
     let responseBubbleColor = data.is_correct ? "bubble-light" : "bubble-red";
     let responseBubble = createBubble(responseText, responseBubbleColor);
     let responseMessage = createMessage(responseBubble, "message-left");
@@ -43,10 +56,11 @@ function handleGuessResponse(inputText, chatRoom, data) {
 
     }
 
-    console.log(data)
 
     inputText.value = '';
     disableInputAndButton(inputText)
+
+    guessMade = true; // Set the flag to true after making a guess
 }
 
 function disableInputAndButton(inputText) {
@@ -59,11 +73,14 @@ function disableInputAndButton(inputText) {
 
 function submitGuess(inputText, chatRoom, drawingId) {
     // SUBMIT XXXXXX IF USER does not submit anything within the time
-    let guessedWord = inputText.value.trim() || 'XXXXXX';
+    // Only submit if no guess has been made
+    if (!guessMade) {
+        let guessedWord = inputText.value.trim() || 'XXXXXX';
 
-    postGuess(drawingId, guessedWord)
-        .then(data => handleGuessResponse(inputText, chatRoom, data))
-        .catch(error => console.error('Error:', error));
+        postGuess(drawingId, guessedWord)
+            .then(data => handleGuessResponse(inputText, chatRoom, data))
+            .catch(error => console.error('Error:', error));
+    }
 }
 
 
@@ -83,9 +100,9 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // Logic to submit the guess when the user abruptly leaves the page
     // TODO: ADD LOGIC TO HANDLE THE PAGE REFRESH AND TAB CLOSE
-    window.addEventListener('beforeunload', (event) => {
-        if (timer.timePassed > 2) {
-            submitGuess(inputText, chatRoom, drawingId);
-        }
-    });
+    // window.addEventListener('beforeunload', (event) => {
+    //     if (timer.timePassed > 2) {
+    //         submitGuess(inputText, chatRoom, drawingId);
+    //     }
+    // });
 });
