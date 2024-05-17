@@ -388,12 +388,12 @@ def get_guess_history():
             "guessed_at": guess.guessed_at.strftime("%Y-%m-%d %H:%M:%S"),
             "username": guess.username,
             "category": guess.category,
-            "result": "Successful" if guess.is_correct else "Unsuccessful",
+            "result": "Correct" if guess.is_correct else "Incorrect",
         }
         for guess in guess_history
     ]
 
-    return jsonify(history_data)
+    return jsonify(history_data), HTTPStatus.OK
 
 
 # Guessing Gallery Page

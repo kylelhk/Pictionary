@@ -231,10 +231,10 @@ $(function () {
 
         data.forEach((guess) => {
           const row = `<tr>
-          <td>${guess.guessed_at}</td>
           <td>${guess.username}</td>
           <td>${guess.category}</td>
           <td>${guess.result}</td>
+          <td>${guess.guessed_at}</td>
         </tr>`;
           tableBody.append(row);
         });
