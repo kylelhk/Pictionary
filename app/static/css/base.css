@@ -44,6 +44,7 @@ footer {
     padding: 0;
     background: linear-gradient(to right, #1e90ff, MediumSlateBlue);
     border-radius: 0.5em;
+    z-index: 1000;
 }
 
 .navbar-brand {
