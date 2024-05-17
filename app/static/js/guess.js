@@ -1,4 +1,6 @@
-import {CountdownTimer} from './timer.js'
+import {CountdownTimer} from './timer.js';
+
+let guessMade = false; // Flag to track if a guess has been made
 
 function createBubble(text, className) {
     let bubble = document.createElement('div');
@@ -23,20 +25,36 @@ function postGuess(drawingId, guess) {
 }
 
 function handleGuessResponse(inputText, chatRoom, data) {
-    let guessedWord = inputText.value.trim() || "XXXXXX";
+    let guessedWord = inputText.value.trim();
 
     let userBubble = createBubble(guessedWord, "bubble-dark");
     let userMessage = createMessage(userBubble, "message-right");
     chatRoom.appendChild(userMessage);
 
-    let responseText = data.is_correct ? "You guessed correctly!" : "Oops! Wrong guess or guessed already.";
+    let responseText;
+    if (!guessedWord) {
+        responseText = "You did not guess";
+    } else if (data.is_correct) {
+        responseText = "You guessed correctly!";
+    } else {
+        responseText = "Oops! Wrong guess";
+    }
+
     let responseBubbleColor = data.is_correct ? "bubble-light" : "bubble-red";
     let responseBubble = createBubble(responseText, responseBubbleColor);
     let responseMessage = createMessage(responseBubble, "message-left");
     chatRoom.appendChild(responseMessage);
 
+    if (!data.is_correct) {
+        let correctWordBubble = createBubble(`The correct word is: ${data.correct_word}`, "bubble-light animate-fade-in");
+        let correctWordMessage = createMessage(correctWordBubble, "message-left");
+        chatRoom.appendChild(correctWordMessage);
+    }
+
     inputText.value = '';
-    disableInputAndButton(inputText)
+    disableInputAndButton(inputText);
+
+    guessMade = true; // Set the flag to true after making a guess
 }
 
 function disableInputAndButton(inputText) {
@@ -46,20 +64,36 @@ function disableInputAndButton(inputText) {
     btnSend.style.backgroundColor = 'grey';
 }
 
-
 function submitGuess(inputText, chatRoom, drawingId) {
-    // SUBMIT XXXXXX IF USER does not submit anything within the time
-    let guessedWord = inputText.value.trim() || 'XXXXXX';
+    if (!guessMade) {
+        let guessedWord = inputText.value.trim() || 'XXXXXX';
 
-    postGuess(drawingId, guessedWord)
-        .then(data => handleGuessResponse(inputText, chatRoom, data))
-        .catch(error => console.error('Error:', error));
+        postGuess(drawingId, guessedWord)
+            .then(data => handleGuessResponse(inputText, chatRoom, data))
+            .catch(error => console.error('Error:', error));
+    }
 }
 
+function saveTimeToLocalStorage(drawingId, timeLeft) {
+    const userId = getUserId();
+    localStorage.setItem(`timer-${userId}-${drawingId}`, timeLeft);
+}
+
+function getTimeFromLocalStorage(drawingId) {
+    const userId = getUserId();
+    return parseInt(localStorage.getItem(`timer-${userId}-${drawingId}`)) || 30;
+}
+
+function getUserId() {
+    // This function should return the unique identifier for the logged-in user
+    // This can be retrieved from cookies, local storage, or any other method you use for user authentication
+    return localStorage.getItem('userId');
+}
 
 window.addEventListener("DOMContentLoaded", function () {
     const inputText = document.getElementById('inputText');
     const btnSend = document.querySelector('.button-send');
+    const btnQuit = document.querySelector('.btn-quit');
     const chatRoom = document.querySelector('.chat-room');
     const drawingId = document.querySelector('.guess-image').dataset.drawingId;
 
@@ -67,15 +101,21 @@ window.addEventListener("DOMContentLoaded", function () {
         submitGuess(inputText, chatRoom, drawingId);
     });
 
-    // Create a timer and start it
-    const timer = new CountdownTimer(30, 15, 10, () => submitGuess(inputText, chatRoom, drawingId));
+    btnQuit.addEventListener('click', function () {
+        window.location.href = galleryUrl;
+    });
+
+    const initialTime = getTimeFromLocalStorage(drawingId);
+
+    const timer = new CountdownTimer(initialTime, 15, 10, () => {
+        submitGuess(inputText, chatRoom, drawingId);
+        const userId = getUserId();
+        localStorage.removeItem(`timer-${userId}-${drawingId}`);
+    });
+
     timer.startTimer();
 
-    // Logic to submit the guess when the user abruptly leaves the page
-    // TODO: ADD LOGIC TO HANDLE THE PAGE REFRESH AND TAB CLOSE
-    window.addEventListener('beforeunload', (event) => {
-        if (timer.timePassed > 2) {
-            submitGuess(inputText, chatRoom, drawingId);
-        }
-    });
+    const timerInterval = setInterval(() => {
+        saveTimeToLocalStorage(drawingId, timer.timeLeft);
+    }, 1000);
 });

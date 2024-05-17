@@ -5,13 +5,15 @@ document.addEventListener('DOMContentLoaded', function () {
 let currentData = [];  // Store fetched data
 let displayedData = []; // Data currently displayed, could be filtered
 let currentPage = 1;
-const perPage = 20;  // Items per page
+const perPage = 9;  // Items per page
 
 function fetchAndDisplayGallery() {
     const apiUrl = `/get-gallery-data`;
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
+            // Sort data by date_created in descending order (newest first)
+            data.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
             currentData = data;  // Store data
             displayedData = data; // Initially displayed data is all data
             displayPage(currentPage);  // Display first page
