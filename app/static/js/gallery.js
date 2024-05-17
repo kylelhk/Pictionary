@@ -39,12 +39,12 @@ function updateGalleryTable(data) {
 }
 
 function createTableRow(item) {
-  return `<tr>
-                <td><button class="btn btn-primary btn-sm" onclick="openDrawing(${item.drawing_id})">Open</button></td>
+  return `<tr>  
                 <td>${item.creator}</td>
                 <td>${item.category}</td>
                 <td>${item.status}</td>
                 <td>${item.date_created}</td>
+                <td><button class="btn btn-light btn-sm" onclick="openDrawing(${item.drawing_id})">Open</button></td>
             </tr>`;
 }
 
@@ -52,6 +52,120 @@ function openDrawing(drawingId) {
   // Assuming the drawing detail page URL pattern is "/drawings/{id}"
   window.location.href = `/drawings/${drawingId}`;
 }
+
+/* Set dynamic background color and hover effect for gallery table buttons */
+$(document).ready(function () {
+  var colors = [
+    "#FF4500", // OrangeRed
+    "#FF7F00", // Orange
+    "#008000", // DarkGreen
+    "#0000FF", // Blue
+    "#8B00FF", // Violet
+  ];
+
+  $("#galleryTableBody").on("DOMSubtreeModified", function () {
+    $("#galleryTableBody tr").each(function (index) {
+      var button = $(this).find("button");
+      var originalColor = colors[index % colors.length];
+      var originalTextColor = "#fff";
+      button.css("background-color", originalColor);
+      button.css("color", originalTextColor);
+
+      button.hover(
+        function () {
+          // On mouse enter
+          $(this).css("background-color", originalTextColor);
+          $(this).css("color", originalColor);
+        },
+        function () {
+          // On mouse leave
+          $(this).css("background-color", originalColor);
+          $(this).css("color", originalTextColor);
+        }
+      );
+    });
+  });
+});
+
+// Add sorting function to the gallery table
+document.addEventListener("DOMContentLoaded", function () {
+  fetchAndDisplayGallery();
+
+  let currentSortColumn = null;
+  let currentSortDirection = 1; // 1 for ascending, -1 for descending
+
+  document.querySelectorAll(".sortable").forEach((header, index) => {
+    header.addEventListener("click", () => {
+      sortTable(index);
+      toggleSortIcon(header, index);
+    });
+  });
+
+  function sortTable(columnIndex) {
+    const rows = document.querySelectorAll("#galleryTableBody tr");
+
+    // If we click the column that's already being sorted, reverse the direction.
+    if (currentSortColumn === columnIndex) {
+      currentSortDirection *= -1;
+    } else {
+      currentSortDirection = 1;
+      currentSortColumn = columnIndex;
+    }
+
+    const sortedRows = Array.from(rows).sort((rowA, rowB) => {
+      let cellA = rowA.querySelectorAll("td")[columnIndex].textContent.trim();
+      let cellB = rowB.querySelectorAll("td")[columnIndex].textContent.trim();
+
+      // Detect if the column is the "Date Created" column
+      if (columnIndex === 3) {
+        // Parse dates
+        const dateA = Date.parse(cellA);
+        const dateB = Date.parse(cellB);
+
+        if (!isNaN(dateA) && !isNaN(dateB)) {
+          return (dateA - dateB) * currentSortDirection;
+        }
+      }
+
+      // Detect if the column contains numbers
+      const valueA = parseFloat(cellA);
+      const valueB = parseFloat(cellB);
+
+      if (!isNaN(valueA) && !isNaN(valueB)) {
+        // Compare numbers
+        return (valueA - valueB) * currentSortDirection;
+      } else {
+        // Compare strings
+        return cellA.localeCompare(cellB) * currentSortDirection;
+      }
+    });
+
+    // Clear out the current rows in the table body
+    const tbody = document.querySelector("#galleryTableBody");
+    tbody.innerHTML = "";
+
+    // Append the sorted rows
+    sortedRows.forEach((row) => {
+      tbody.appendChild(row);
+    });
+  }
+
+  function toggleSortIcon(header, columnIndex) {
+    document.querySelectorAll(".sort-icon").forEach((icon) => {
+      icon.classList.remove("bi-caret-up-fill", "bi-caret-down-fill");
+      icon.classList.add("bi-caret-down-fill");
+    });
+
+    const icon = header.querySelector(".sort-icon");
+    if (currentSortColumn === columnIndex && currentSortDirection === 1) {
+      icon.classList.remove("bi-caret-down-fill");
+      icon.classList.add("bi-caret-up-fill");
+    } else {
+      icon.classList.remove("bi-caret-up-fill");
+      icon.classList.add("bi-caret-down-fill");
+    }
+  }
+});
 
 function updatePagination(currentPage, totalPages) {
   const paginationContainer = document.querySelector(".pagination");
@@ -116,7 +230,7 @@ function filterGalleryData() {
 }
 
 // Adding an event listener to the search button
-document.getElementById("button-addon2").addEventListener("click", function () {
+document.getElementById("search-btn").addEventListener("click", function () {
   filterGalleryData();
   window.scrollTo(0, 0); // Scroll to the top of the page after filtering
 });
@@ -127,6 +241,15 @@ document
   .addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent the default form submission
-      document.getElementById("button-addon2").click(); // Trigger the button click
+      document.getElementById("search-btn").click(); // Trigger the button click
     }
   });
+
+// Adding an event listener to the reset button for search function
+document.getElementById("reset-btn").addEventListener("click", function () {
+  document.getElementById("search-input").value = ""; // Clear search input
+  displayedData = currentData; // Reset to all data
+  currentPage = 1;
+  displayPage(currentPage);
+  window.scrollTo(0, 0); // Scroll to the top of the page after resetting
+});
