@@ -1,4 +1,4 @@
-import { CountdownTimer } from './timer.js'
+import {CountdownTimer} from './timer.js'
 
 let isWordCatModalVisible = false;
 let wordCatModal;
@@ -64,17 +64,29 @@ canvas.height = 600;
 
 // Function to initiate drawing
 function startDrawing(event) {
+    event.preventDefault(); // Prevent default touch actions like scrolling
     isDrawing = true;
     draw(event);
 }
 
-// Function to handle the drawing as the mouse moves
+// Function to handle the drawing as the touch moves
 function draw(event) {
     if (!isDrawing) return;
+    event.preventDefault(); // Prevent default touch actions like scrolling
+
     let canvasBounds = canvas.getBoundingClientRect(); // get canvas size and position
-    // Calculate x and y coords by normalising and scaling them
-    let x = (event.pageX - canvasBounds.left - scrollX) / canvasBounds.width * canvas.width;
-    let y = (event.pageY - canvasBounds.top - scrollY) / canvasBounds.height * canvas.height;
+
+    let x, y;
+    if (event.touches) {
+        // Calculate x and y coords by normalizing and scaling them for touch
+        x = (event.touches[0].pageX - canvasBounds.left - scrollX) / canvasBounds.width * canvas.width;
+        y = (event.touches[0].pageY - canvasBounds.top - scrollY) / canvasBounds.height * canvas.height;
+    } else {
+        // Calculate x and y coords by normalizing and scaling them for mouse
+        x = (event.pageX - canvasBounds.left - scrollX) / canvasBounds.width * canvas.width;
+        y = (event.pageY - canvasBounds.top - scrollY) / canvasBounds.height * canvas.height;
+    }
+
     context.lineTo(x, y);
     context.stroke();
 }
@@ -91,6 +103,12 @@ canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
 
+// Event listeners to handle touch actions
+canvas.addEventListener("touchstart", startDrawing);
+canvas.addEventListener("touchmove", draw);
+canvas.addEventListener("touchend", stopDrawing);
+canvas.addEventListener("touchcancel", stopDrawing);
+
 // Change brush size upon selection
 function updateBrushSize() {
     context.lineWidth = document.querySelector('input[name="brush-size"]:checked').value;
@@ -103,7 +121,7 @@ brushSizes.forEach((size) => {
     size.addEventListener("change", updateBrushSize);
 });
 
-// Change brush colour upon selection
+// Change brush color upon selection
 function updateBrushColour() {
     context.strokeStyle = document.querySelector('input[name="brush-colour"]:checked').value;
 }
