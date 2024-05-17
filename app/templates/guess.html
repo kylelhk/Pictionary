@@ -21,13 +21,18 @@
 
     {#  GUESS SECTION #}
     <div class="guess-container">
-      {% if current_user_guess|length == 0 %}
-        <div id="timer">
-          <h4>Time remaining:</h4>
-          {% include 'timer.html' %}
-        </div>
-      {% endif %}
+      <div class="timer-container">
 
+        {% if current_user_guess|length == 0 %}
+          <div id="timer">
+            <h4>Time remaining:</h4>
+            {% include 'timer.html' %}
+          </div>
+          <button type="button" class="btn btn-danger btn-quit">Quit</button>
+        {% endif %}
+
+
+      </div>
       <div class="chat-box">
         <div class="header">
           TAKE A GUESS
@@ -82,5 +87,7 @@
 
   <script type="module" src="{{ url_for('static', filename='js/timer.js') }}"></script>
   <script type="module" src="{{ url_for('static', filename='js/guess.js') }}"></script>
+  <script> var galleryUrl = "{{ url_for('main.gallery') }}"; </script>
+
 
 {% endblock %}

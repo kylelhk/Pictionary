@@ -87,6 +87,7 @@ function submitGuess(inputText, chatRoom, drawingId) {
 window.addEventListener("DOMContentLoaded", function () {
     const inputText = document.getElementById('inputText');
     const btnSend = document.querySelector('.button-send');
+    const btnQuit = document.querySelector('.btn-quit');
     const chatRoom = document.querySelector('.chat-room');
     const drawingId = document.querySelector('.guess-image').dataset.drawingId;
 
@@ -94,15 +95,17 @@ window.addEventListener("DOMContentLoaded", function () {
         submitGuess(inputText, chatRoom, drawingId);
     });
 
+    btnQuit.addEventListener('click', function () {
+        submitGuess(inputText, chatRoom, drawingId);
+
+        window.location.href = galleryUrl;
+
+    });
+
+
     // Create a timer and start it
     const timer = new CountdownTimer(30, 15, 10, () => submitGuess(inputText, chatRoom, drawingId));
     timer.startTimer();
 
-    // Logic to submit the guess when the user abruptly leaves the page
-    // TODO: ADD LOGIC TO HANDLE THE PAGE REFRESH AND TAB CLOSE
-    // window.addEventListener('beforeunload', (event) => {
-    //     if (timer.timePassed > 2) {
-    //         submitGuess(inputText, chatRoom, drawingId);
-    //     }
-    // });
+
 });
