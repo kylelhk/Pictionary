@@ -1,13 +1,41 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+/* .container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+} */
+
 .search-bar {
-  margin-top: 20px;
-  position: fixed;
+  position: relative;
+  width: 25vw;
 }
 
-.input-group {
-  width: 250px; /* Adjust width as needed */
+.search-bar input:hover {
+  background: linear-gradient(90deg, White, #e0f0ff, White);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
 }
-  
-.pagination {
-  margin-top: 20px;
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.input-group button i {
+  font-size: 20px;
+}
+
+.input-group button:hover {
+  background-color: White;
+  color: #0d6efd;
+}
+
+.table-container {
+  min-height: 560px; /* For fixing the position of pagination container */
 }
