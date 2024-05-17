@@ -4,7 +4,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import Select
 from test.base_test import BaseTestCase
 
 localhost = "http://localhost:5000"
@@ -21,7 +20,7 @@ class SeleniumTests(BaseTestCase):
 
         # Define Chrome options
         self.chrome_options = Options()
-        # self.chrome_options.add_argument("--headless") # uncomme
+        # self.chrome_options.add_argument("--headless") # uncomment to prevent browser window opening
 
         # Set binary location and service
         self.chrome_options.binary_location = chrome_binary_path
