@@ -45,11 +45,21 @@
                 {% if guess.is_correct %}
                   You guessed correctly
                 {% else %}
-                  Oops. Wrong guess or guessed already.
+                  Oops. Wrong guess
                 {% endif %}
               </div>
             </div>
+
+            {% if not guess.is_correct %}
+              <div class="message message-left correct-word-message">
+                <div class="bubble bubble-light animate-fade-in">
+                  The correct word was: {{ image.word.text }}
+                </div>
+              </div>
+            {% endif %}
+
           {% endfor %}
+
 
         </div>
 
@@ -61,7 +71,7 @@
             <button class="button-send">Guess</button>
           </div>
         {% endif %}
-      
+
       </div>
     </div>
   </div>

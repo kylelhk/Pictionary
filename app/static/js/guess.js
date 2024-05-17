@@ -29,11 +29,21 @@ function handleGuessResponse(inputText, chatRoom, data) {
     let userMessage = createMessage(userBubble, "message-right");
     chatRoom.appendChild(userMessage);
 
-    let responseText = data.is_correct ? "You guessed correctly!" : "Oops! Wrong guess or guessed already.";
+    let responseText = data.is_correct ? "You guessed correctly!" : "Oops! Wrong guess";
     let responseBubbleColor = data.is_correct ? "bubble-light" : "bubble-red";
     let responseBubble = createBubble(responseText, responseBubbleColor);
     let responseMessage = createMessage(responseBubble, "message-left");
     chatRoom.appendChild(responseMessage);
+
+    if (!data.is_correct) {
+
+        let correctWordBubble = createBubble(`The correct word is: ${data.correct_word}`, "bubble-light animate-fade-in");
+        let correctWordMessage = createMessage(correctWordBubble, "message-left");
+        chatRoom.appendChild(correctWordMessage);
+
+    }
+
+    console.log(data)
 
     inputText.value = '';
     disableInputAndButton(inputText)

@@ -16,8 +16,6 @@ from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import case
 from sqlalchemy.sql.expression import func
 
-import re  # Regular expressions library for password validation
-
 from app import db
 from app.blueprints import main
 from app.forms import LoginForm, SignupForm
@@ -467,7 +465,13 @@ def drawing_detail(drawing_id):
         db.session.commit()
 
         return (
-            jsonify({"success": "Guess recorded", "is_correct": is_correct}),
+            jsonify(
+                {
+                    "success": "Guess recorded",
+                    "is_correct": is_correct,
+                    "correct_word": image.word.text,
+                }
+            ),
             HTTPStatus.CREATED,
         )
 
