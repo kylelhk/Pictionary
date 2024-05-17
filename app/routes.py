@@ -51,13 +51,19 @@ def login_signup():
         elif action == "Sign Up":
             return handle_signup_ajax(data)
         else:
-            return jsonify({"error": True, "message": "Unexpected action"}), 400
+            return (
+                jsonify({"error": True, "message": "Unexpected action"}),
+                HTTPStatus.BAD_REQUEST,
+            )
 
     # Handle non-AJAX POST requests
     elif request.method == "POST":
-        return jsonify({"error": True, "message": "Invalid request type"}), 400
+        return (
+            jsonify({"error": True, "message": "Invalid request type"}),
+            HTTPStatus.METHOD_NOT_ALLOWED,
+        )
 
-    # Handle GET requests
+    # Render the login/signup page for GET requests
     login_form = LoginForm(prefix="login")
     signup_form = SignupForm(prefix="signup")
     return render_template(
@@ -78,66 +84,39 @@ def handle_login_ajax(data):
         remember_me = data.get("remember_me", False)
         user = User.query.filter_by(username=username).first()
 
-        # TODO: Time-based locking and exponential backoff mechanism
-        """ # If user exists, check if they are in lockout period
-        if user:
-            lockout_time = user.get_lockout_time()
-            current_time = datetime.now(timezone)
-
-            # If user has failed login attempts and is still in lockout period
-            if user.last_failed_login and (current_time - user.last_failed_login).seconds < lockout_time:
-                wait_time = int(lockout_time - (current_time -
-                                user.last_failed_login).seconds)
-                return jsonify({'error': True, 'errors': {'Lockout': f"Please wait {wait_time} seconds before trying again."}}), 423
-
-            # If user exists and password is correct
-            if user.check_password(password):
-                user.failed_login_attempts = 0
-                user.last_failed_login = None
-                db.session.commit()
-                login_user(user, remember=remember_me)
-                # Redirect to the Home page
-                next_page = request.args.get("next") or url_for("main.home")
-                return jsonify({'error': False, 'redirect': url_for(next_page)})
-
-            # If user exists but password is incorrect
-            else:
-                user.failed_login_attempts += 1
-                user.last_failed_login = datetime.now(timezone)
-                db.session.commit()
-                return jsonify({'error': True, 'errors': {'Password': 'Invalid Username or Password'}}), 401
-
-        # If user does not exist
-        else:
-            return jsonify({'error': True, 'errors': {'User': 'Invalid Username or Password'}}), 404 """
-
-        # If user exists, check password and manage user session
-        if user:
-            if user.check_password(password):
-                user.last_login = datetime.now(timezone)
-                db.session.commit()
-                login_user(user, remember=remember_me)
-                return jsonify({"error": False, "redirect": url_for("main.home")})
-            else:
-                return (
-                    jsonify(
-                        {
-                            "error": True,
-                            "errors": {"Password": "Invalid Username or Password"},
-                        }
-                    ),
-                    401,
-                )
+        # Server-side input validation for login form
+        # If user exists and password is correct, commit the last login time and log in the user
+        if user and user.check_password(password):
+            user.last_login = datetime.now(timezone)
+            db.session.commit()
+            login_user(user, remember=remember_me)
+            return (
+                jsonify({"error": False, "redirect": url_for("main.home")}),
+                HTTPStatus.OK,
+            )
         else:
             return (
-                jsonify({"error": True, "errors": {"User": "User not found"}}),
-                HTTPStatus.NOT_FOUND,
+                jsonify(
+                    {
+                        "error": True,
+                        "errors": {"Password": "Invalid Username or Password"},
+                    }
+                ),
+                (
+                    HTTPStatus.UNAUTHORIZED
+                    if user
+                    else jsonify({"error": True, "errors": {"User": "User not found"}})
+                ),
+                HTTPStatus.UNAUTHORIZED,
             )
 
     # Handle unexpected errors
     except Exception as e:
         current_app.logger.error(f"Unexpected error: {str(e)}", exc_info=True)
-        return jsonify({"error": True, "message": "Internal server error"}), 500
+        return (
+            jsonify({"error": True, "message": "Internal server error"}),
+            HTTPStatus.INTERNAL_SERVER_ERROR,
+        )
 
 
 # Process signup form inputs and submission
@@ -148,75 +127,18 @@ def handle_signup_ajax(data):
         username = data.get("signup-username")
         email = data.get("signup-email")
         password = data.get("signup-password")
-        confirm_password = data.get("signup-confirm_password")
 
-        # Check if username and email are unique
-        if User.query.filter_by(username=username).first():
-            return (
-                jsonify(
-                    {"error": True, "errors": {"username": "Username already taken"}}
-                ),
-                400,
-            )
-
-        if User.query.filter_by(email=email).first():
-            return (
-                jsonify(
-                    {"error": True, "errors": {"email": "This email is already in use"}}
-                ),
-                400,
-            )
-
-        # Check password strength
-        if len(password) < 8:
-            return (
-                jsonify(
-                    {
-                        "error": True,
-                        "errors": {
-                            "password": "Password must be at least 8 characters"
-                        },
-                    }
-                ),
-                HTTPStatus.BAD_REQUEST,
-            )
-        if not (
-            re.search("[a-z]", password)
-            and re.search("[A-Z]", password)
-            and re.search("[0-9]", password)
-        ):
-            return (
-                jsonify(
-                    {
-                        "error": True,
-                        "errors": {
-                            "password": "Password must contain at least one uppercase, lowercase, and numeric character"
-                        },
-                    }
-                ),
-                400,
-            )
-
-        # Check if passwords match
-        if password != confirm_password:
-            return (
-                jsonify(
-                    {
-                        "error": True,
-                        "errors": {"confirm_password": "Passwords must match"},
-                    }
-                ),
-                400,
-            )
-
-        # Create new user and add to database
+        # Create new user in the database
         user = User(username=username, email=email)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
 
         flash("Congratulations, you are now a registered user!", "success")
-        return jsonify({"error": False, "redirect": url_for("main.login_signup")})
+        return (
+            jsonify({"error": False, "redirect": url_for("main.login_signup")}),
+            HTTPStatus.CREATED,
+        )
 
     # Handle unexpected errors
     except Exception as e:
@@ -224,34 +146,27 @@ def handle_signup_ajax(data):
         db.session.rollback()
         return (
             jsonify({"error": True, "message": "Signup failed due to server error"}),
-            500,
+            HTTPStatus.INTERNAL_SERVER_ERROR,
         )
 
 
-# Server-side validations for username, email, and password inputs before form submission
-# TODO: Check if any redundancy with the code above and forms.py
+# Server-side input validation for signup form
 
 
 # Validate username
 @main.route("/validate-username", methods=["POST"])
 def validate_username():
     username = request.json.get("value")
-    # Default to 'signup' if not specified
-    context = request.json.get("context", "signup")
 
     # Check if the username field is empty
     if not username.strip():  # Catch empty strings after stripping whitespace
-        return jsonify("No username provided."), 400
+        return jsonify("Username is required."), HTTPStatus.BAD_REQUEST
 
     user = User.query.filter_by(username=username).first()
-    if context == "signup":
-        if user:
-            return jsonify("This username is already taken."), 400
-    elif context == "login":
-        if not user:
-            return jsonify("This username does not exist."), 404
+    if user:
+        return jsonify("This username is already taken."), HTTPStatus.BAD_REQUEST
 
-    return jsonify({"error": False})
+    return jsonify({"error": False}), HTTPStatus.OK
 
 
 # Validate email
@@ -263,18 +178,18 @@ def validate_email():
 
     # Check if the email field is empty
     if not email.strip():  # Catch empty strings after stripping whitespace
-        return jsonify("No email provided."), 400
+        return jsonify("Email is required."), HTTPStatus.BAD_REQUEST
 
     # Check if email is already in use
     if User.query.filter_by(email=email).first():
-        return jsonify("This email is already in use."), 400
+        return jsonify("This email is already in use."), HTTPStatus.BAD_REQUEST
 
     # Validate email format using regex (generated by ChatGPT)
     email_regex = r"^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,6}$"
     if not re.match(email_regex, email.strip()):
-        return jsonify("Invalid email format."), 400
+        return jsonify("Invalid email format."), HTTPStatus.BAD_REQUEST
 
-    return jsonify({"error": False}), 200
+    return jsonify({"error": False}), HTTPStatus.OK
 
 
 # Validate password
@@ -284,20 +199,27 @@ def validate_email():
 def validate_password():
     password = request.json.get("value")
 
-    if not password:  # Ensure password is actually provided
-        return jsonify("No password provided."), 400
+    # Ensure password is actually provided
+    if not password:
+        return jsonify("Password is required."), HTTPStatus.BAD_REQUEST
 
     if len(password) < 8:
-        return jsonify("Password must be at least 8 characters."), 400
+        return (
+            jsonify("Password must be at least 8 characters."),
+            HTTPStatus.BAD_REQUEST,
+        )
 
     if not (
         re.search("[a-z]", password)
         and re.search("[A-Z]", password)
         and re.search("[0-9]", password)
     ):
-        return jsonify("At least one uppercase, lowercase, and numeric character."), 400
+        return (
+            jsonify("At least one uppercase, lowercase, and numeric character."),
+            HTTPStatus.BAD_REQUEST,
+        )
 
-    return jsonify({"error": False}), 200
+    return jsonify({"error": False}), HTTPStatus.OK
 
 
 # Confirm password match
@@ -309,12 +231,15 @@ def validate_confirm_password():
     confirm_password = request.json.get("value")
 
     if not password or not confirm_password:
-        return jsonify("Password and confirm password must not be empty."), 400
+        return (
+            jsonify("Password and confirm password must not be empty."),
+            HTTPStatus.BAD_REQUEST,
+        )
 
     if password != confirm_password:
-        return jsonify("Passwords must match."), 400
+        return jsonify("Passwords do not match."), HTTPStatus.BAD_REQUEST
 
-    return jsonify({"error": False}), 200
+    return jsonify({"error": False}), HTTPStatus.OK
 
 
 # Logout route
@@ -438,6 +363,39 @@ def get_latest_drawings():
     return jsonify(drawings_data)
 
 
+# Get the latest 4 guess attempts for the Home Page
+
+
+@main.route("/guess-history", methods=["GET"])
+@login_required
+def get_guess_history():
+    guess_history = (
+        db.session.query(
+            Guess.guessed_at, User.username, Word.category, Guess.is_correct
+        )
+        .join(Drawing, Guess.drawing_id == Drawing.id)
+        .join(User, Drawing.creator_id == User.id)
+        .join(Word, Drawing.word_id == Word.id)
+        .filter(Guess.guesser_id == current_user.id)
+        .order_by(Guess.guessed_at.desc())
+        .limit(4)
+        .all()
+    )
+
+    # Add the drawing details to the list
+    history_data = [
+        {
+            "guessed_at": guess.guessed_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "username": guess.username,
+            "category": guess.category,
+            "result": "Correct" if guess.is_correct else "Incorrect",
+        }
+        for guess in guess_history
+    ]
+
+    return jsonify(history_data), HTTPStatus.OK
+
+
 # Guessing Gallery Page
 @main.route("/gallery")
 @login_required
@@ -534,7 +492,7 @@ def drawing_detail(drawing_id):
             drawing_id=drawing_id,
             guesser_id=current_user.id,
             is_correct=is_correct,
-            guessed_at=datetime.utcnow(),
+            guessed_at=datetime.now(timezone),
             guessed_word=guessed_word,
         )
 

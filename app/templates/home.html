@@ -34,42 +34,15 @@ styles%} {{ super() }}
       <div class="feed-container" id="item1">
         <div class="feed-title">Activity Feed</div>
 
-        <!-- Tabs for switching between Games In Progress and New Games -->
+        <!-- Tabs for switching between New Games and Guess History -->
         <div class="tabs">
-          <button class="tab active" data-tab="progress">
-            Games In Progress
-          </button>
-          <button class="tab" data-tab="new">New Games</button>
+          <button class="tab active" data-tab="new">New Games</button>
+          <button class="tab" data-tab="history">Guess History</button>
         </div>
 
-        <!-- Table for displaying the latest 4 Games In Progress -->
-        <!-- TODO / to skip - pending the implementation of in_progress if time allows -->
         <div class="feed-table">
-          <div class="content" id="content-item1-progress">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Creator</th>
-                  <th>Category</th>
-                  <th>Date Created</th>
-                  <th>Date Attempted</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for i in range(1, 5) %}
-                <tr>
-                  <td>Username {{ i }}</td>
-                  <td>Category {{ i }}</td>
-                  <td>Date and Time</td>
-                  <td>Date and Time</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Table for displaying the latest 4 New Games -->
-          <div class="content hidden" id="content-item1-new">
+          <!-- Table for displaying the latest 4 new games -->
+          <div class="content" id="content-item1-new">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -77,6 +50,23 @@ styles%} {{ super() }}
                   <th>Category</th>
                   <th>Status</th>
                   <th>Date Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dynamic content loading -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table for displaying the latest 4 guess attempts  -->
+          <div class="content hidden" id="content-item1-history">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Creator</th>
+                  <th>Category</th>
+                  <th>Result</th>
+                  <th>Date Attempted</th>
                 </tr>
               </thead>
               <tbody>
