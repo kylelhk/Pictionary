@@ -217,8 +217,8 @@ $(function () {
 
         // Check client-side validation result for all fields
         const fieldsToValidate = [
-            { id: "loginUsername", value: formData["login-username"] },
-            { id: "loginPassword", value: formData["login-password"] },
+            {id: "loginUsername", value: formData["login-username"]},
+            {id: "loginPassword", value: formData["login-password"]},
         ];
 
         let allFieldsValid = true;
@@ -254,9 +254,9 @@ $(function () {
 
         // Check client-side validation result for all fields
         const fieldsToValidate = [
-            { id: "signupUsername", value: formData["signup-username"] },
-            { id: "signupEmail", value: formData["signup-email"] },
-            { id: "signupPassword", value: formData["signup-password"] },
+            {id: "signupUsername", value: formData["signup-username"]},
+            {id: "signupEmail", value: formData["signup-email"]},
+            {id: "signupPassword", value: formData["signup-password"]},
             {
                 id: "signupConfirmPassword",
                 value: formData["signup-confirm_password"],
@@ -301,6 +301,8 @@ $(function () {
             // Handle AJAX request success
             success: function (response) {
                 if (!response.error && response.redirect) {
+                    // Save the user ID to local storage
+                    localStorage.setItem("userId", response.userId);
                     window.location.href = response.redirect; // Redirect if no errors
                 } else if (response.errors) {
                     displayErrors(response.errors); // Display form-level error messages
@@ -341,7 +343,7 @@ $(function () {
         $(selectors).each(function () {
             let fieldId = $(this).attr("id");
             let actionUrl = `/validate-${fieldId.split("signup")[1].toLowerCase()}`; // Creates the endpoint URL dynamically based on field ID
-            let data = { value: $(this).val() };
+            let data = {value: $(this).val()};
 
             // Include password for confirm password validation
             if (fieldId === "signupConfirmPassword") {
@@ -372,6 +374,7 @@ $(function () {
             $(feedbackSelector).text(message).show();
             inputBox.css("border-bottom", "2px solid Red");
         }
+
         function clearError() {
             $(feedbackSelector).hide();
             inputBox.css("border-bottom", "2px solid White");

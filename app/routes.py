@@ -89,7 +89,13 @@ def handle_login_ajax(data):
             db.session.commit()
             login_user(user, remember=remember_me)
             return (
-                jsonify({"error": False, "redirect": url_for("main.home")}),
+                jsonify(
+                    {
+                        "error": False,
+                        "redirect": url_for("main.home"),
+                        "userId": user.id,  # Include the user ID in the response
+                    }
+                ),
                 HTTPStatus.OK,
             )
         else:
