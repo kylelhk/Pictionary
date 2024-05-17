@@ -36,14 +36,15 @@ footer {
 
 /* Horizontal navbar */
 .navbar {
-  position: fixed;
-  width: 99%;
-  display: flex;
-  justify-content: space-between;
-  height: 80px;
-  padding: 0;
-  background: linear-gradient(to right, #1e90ff, MediumSlateBlue);
-  border-radius: 0.5em;
+    position: fixed;
+    width: 99%;
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0;
+    background: linear-gradient(to right, #1e90ff, MediumSlateBlue);
+    border-radius: 0.5em;
+    z-index: 1000;
 }
 
 .navbar-brand {
