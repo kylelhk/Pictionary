@@ -1,9 +1,24 @@
-/* Search bar */
-.search-bar {
-  position: relative;
-  width: 25vw;
+/* Gallery preamble */
+.gallery-preamble {
+  font-family: "Komika Axis", sans-serif;
+  font-size: 3vw;
+  background: linear-gradient(
+    20deg,
+    Tomato,
+    DarkOrange,
+    Gold,
+    Green,
+    Blue,
+    Indigo,
+    Violet
+  );
+  -webkit-background-clip: text; /* For Chrome, Safari, Edge */
+  -webkit-text-fill-color: transparent; /* For Chrome, Safari, Edge */
+  background-clip: text; /* For Firefox */
+  color: transparent; /* For Firefox */
 }
 
+/* Search bar */
 .search-bar input:hover {
   background: linear-gradient(90deg, White, #e0f0ff, White);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
@@ -27,21 +42,28 @@
 }
 
 /* Gallery table */
-.table-container {
-  min-height: 535px; /* For fixing the position of pagination container */
+.table-responsive {
+  min-height: 560px; /* For fixing the position of pagination container */
 }
 
-.table-container table th:nth-child(-n + 4),
-.table-container table td:nth-child(-n + 4) {
+@media (max-width: 767px) {
+  .table-responsive table th,
+  .table-responsive table td {
+    white-space: nowrap; /* Prevent text wrapping on mobile */
+  }
+}
+
+.table-responsive table th:nth-child(-n + 4),
+.table-responsive table td:nth-child(-n + 4) {
   width: 23%;
 }
 
-.table-container table th:nth-child(5),
-.table-container table td:nth-child(5) {
+.table-responsive table th:nth-child(5),
+.table-responsive table td:nth-child(5) {
   width: 8%;
 }
 
-.table-container button {
+.table-responsive button {
   font-weight: bold;
 }
 
@@ -51,4 +73,15 @@
 
 .sort-icon {
   margin-left: 5px;
+}
+
+/* Pagination */
+.page-link {
+  min-width: 80px;
+  text-align: center;
+}
+
+.page-link:hover {
+  background-color: #0d6efd;
+  color: White;
 }

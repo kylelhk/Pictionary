@@ -8,36 +8,49 @@ block styles %} {{ super() }}
   rel="stylesheet"
   href="{{ url_for('static', filename='css/gallery.css') }}"
 />
+<!-- Font style for preamble -->
+<!-- Reference: https://www.cdnfonts.com/komika-axis.font -->
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/komika-axis" />
 {% endblock %} {% block content %}
 
 <div class="container mt-4">
+  <div class="gallery-preamble mb-4 text-center">
+    Pick a drawing and challenge yourself!
+  </div>
   <!-- Search / filter function -->
-  <div class="d-flex mb-4">
-    <div class="search-bar">
+  <div class="row mb-4">
+    <div class="search-bar col-12 col-md-8 mb-2 mb-md-0">
       <div class="input-group">
         <!-- Input field -->
         <input
           type="text"
           class="form-control"
           placeholder="Search"
-          aria-label="Search"
           id="search-input"
         />
+
         <!-- Search button for manual trigger -->
         <button class="btn btn-primary" type="button" id="search-btn">
           <i class="bi bi-search"></i>
         </button>
       </div>
     </div>
+
     <!-- Reset button -->
-    <button class="btn btn-outline-danger ms-3" type="button" id="reset-btn">
-      Reset
-    </button>
+    <div class="col-12 col-md-4 text-md-end">
+      <button
+        class="btn btn-outline-danger w-100 w-md-auto"
+        type="button"
+        id="reset-btn"
+      >
+        Reset
+      </button>
+    </div>
   </div>
 
   <!-- Gallery table -->
-  <div class="table-container">
-    <table class="table table-striped mt-3" id="galleryTable">
+  <div class="table-responsive mt-2">
+    <table class="table table-striped" id="galleryTable">
       <thead>
         <tr>
           <th class="sortable">
@@ -62,7 +75,7 @@ block styles %} {{ super() }}
   </div>
 
   <!-- Pagination -->
-  <div class="d-flex justify-content-end mt-4">
+  <div class="d-flex justify-content-end mt-2">
     <nav id="pagination-container">
       <ul class="pagination">
         <li class="page-item disabled">
