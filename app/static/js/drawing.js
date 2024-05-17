@@ -1,4 +1,4 @@
-import { CountdownTimer } from './timer.js'
+import {CountdownTimer} from './timer.js'
 
 let isWordCatModalVisible = false;
 let wordCatModal;
@@ -149,7 +149,6 @@ function saveDrawing() {
     })
         .then(response => response.json())
         .then(data => {
-            alert('Success: ' + data.message)
             window.location.href = homeUrl;
         })
         .catch((error) => console.error('Error:', error));
