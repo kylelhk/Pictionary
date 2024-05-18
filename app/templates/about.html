@@ -1,17 +1,75 @@
-{% extends "base.html" %} {% block title %} About {% endblock %} {% block
-styles%} {{ super() }}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/about.css') }}"
-/>
-{% endblock %} {% block content %}
-<div>
-  <div>Contributor</div>
-  <div>License</div>
-  <div>GitHub Link</div>
-  <div>Reference</div>
+{% extends "base.html" %}
 
-  <!-- JS file -->
-  <!-- <script src="{{ url_for('static', filename='js/about.js') }}"></script> -->
-  {% endblock %}
+{% block title %}
+About
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>About - Guess That Drawing</h1>
+    <p>Welcome to the "Guess That Drawing" project! This project is designed to create an interactive web application that allows users to create, share, and guess drawings based on given words. Below are the references and resources that were instrumental in developing this project.</p>
+
+    <h2>Contributor</h2>
+    <ul>
+        <li>
+            <h3>Pritam Suwal Shrestha (23771397)</h3>
+        </li>
+        <li>
+            <h3>Trieu Huynh (23728208)</h3>
+        </li>
+        <li>
+            <h3>Weiqiao Xu (23464412)</h3>
+        </li>
+        <li>
+            <h3>Kyle Leung (23601964)</h3>
+        </li>
+    </ul>
+    
+    <h2>License</h2>
+    <p>This project is licensed under the MIT License.</p>
+    <p><a href="https://opensource.org/licenses/MIT">MIT License</a></p>
+
+    <h2>GitHub Link</h2>
+    <p>You can find the source code and contribute to the project on GitHub.</p>
+    <p><a href="https://github.com/kylelhk/Pictionary">GitHub Repository</a></p>
+
+    <h2>References</h2>
+    <ul>
+        <li>
+            <h3>Home Page</h3>
+        </li>
+        <li>
+            <h3>Drawing Page</h3>
+            <p><a href="https://blog.openreplay.com/building-a-drawing-application-with-html5-canvas/">Building a Drawing Application with HTML5 Canvas</a></p>
+            <p><a href="https://www.youtube.com/watch?v=mRDo-QXVUv8&ab_channel=JavaScriptAcademy">JavaScript Academy - Drawing Application</a></p>
+            <p><a href="https://www.flaticon.com/free-icon/eraser_2015014?term=eraser&page=1&position=7&origin=search&related_id=2015014">Flaticon - Eraser Icon</a></p>
+        </li>
+        <li>
+            <h3>Guessing Page</h3>
+        </li>
+        <li>
+            <h3>Gallery Page</h3>
+            <p><a href="https://www.taniarascia.com/front-end-tables-sort-filter-paginate/">Front-End Tables: Sort, Filter, Paginate - Tania Rascia</a></p>
+            <p><a href="https://www.youtube.com/watch?v=rCQH5ygcyE0">YouTube - Sorting Arrays in JavaScript</a></p>
+            <p><a href="https://stackoverflow.com/questions/60040170/how-to-sort-an-array-using-a-searched-text-in-javascript">Stack Overflow - Sort an Array Using a Searched Text in JavaScript</a></p>
+            <p><a href="https://stackoverflow.com/questions/21996288/join-multiple-tables-in-sqlalchemy-flask">Stack Overflow - Join Multiple Tables in SQLAlchemy Flask</a></p>
+            <p><a href="https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_core_using_multiple_tables.htm">TutorialsPoint - Using Multiple Tables in SQLAlchemy</a></p>
+        </li>
+        <li>
+            <h3>Testing</h3>
+            <p><a href="https://techbeamers.com/selenium-webdriver-python-tutorial/">Selenium WebDriver Python Tutorial - TechBeamers</a></p>
+            <p><a href="https://medium.com/@donadviser/running-selenium-and-chrome-on-wsl2-cfabe7db4bbb">Running Selenium and Chrome on WSL2 - Medium</a></p>
+        </li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>This project has been a culmination of learning and implementing various web development technologies and practices. The references mentioned above have been invaluable in guiding the development process and ensuring the application meets its objectives. We extend our gratitude to the open-source community and the authors of the referenced materials for their contributions.</p>
+    <p>For any further details or queries regarding the project, please refer to the project documentation or contact the development team.</p>
+    <p>Thank you for visiting the "Guess That Drawing" application!</p>
 </div>
+{% endblock %}
