@@ -65,76 +65,25 @@
           <a
             class="nav-link home-link {% if request.path == '/home' %}active{% endif %}"
             href="/home"
-            >Home
-            <!-- Line drawing -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 10"
-              width="100"
-              height="10"
-              class="wavy-line"
-            >
-              <polyline
-                class="draw"
-                points="0,8 12,4 23,7 29,6 37,4 46,3 55,7 68,4 80,7 90,5 100,2"
-              />
-            </svg>
-          </a>
+            >Home</a
+          >
           <a
             class="nav-link gallery-link {% if request.path == '/gallery' %}active{% endif %}"
             href="/gallery"
-            >Guessing Gallery
-            <!-- Line drawing -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 10"
-              width="100"
-              height="10"
-              class="wavy-line"
-            >
-              <polyline
-                class="draw"
-                points="0,8 12,4 23,7 29,6 37,4 46,3 55,7 68,4 80,7 90,5 100,2"
-              />
-            </svg>
-          </a>
+            >Guessing Gallery</a
+          >
           <a
             class="nav-link drawing-link {% if request.path == '/drawing' %}active{% endif %}"
             href="/drawing"
-            >Create Drawing
-            <!-- Line drawing -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 10"
-              width="100"
-              height="10"
-              class="wavy-line"
-            >
-              <polyline
-                class="draw"
-                points="0,8 12,4 23,7 29,6 37,4 46,3 55,7 68,4 80,7 90,5 100,2"
-              />
-            </svg>
-          </a>
+            >Create Drawing</a
+          >
           <a
             class="nav-link about-link {% if request.path == '/about' %}active{% endif %}"
             href="/about"
-            >About
-            <!-- Line drawing -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 10"
-              width="100"
-              height="10"
-              class="wavy-line"
-            >
-              <polyline
-                class="draw"
-                points="0,8 12,4 23,7 29,6 37,4 46,3 55,7 68,4 80,7 90,5 100,2"
-              />
-            </svg>
-          </a>
+            >About</a
+          >
         </div>
+      </div>
 
         <!-- Logout button for horizontal navbar -->
         {% if current_user.is_authenticated %}
