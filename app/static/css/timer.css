@@ -5,15 +5,6 @@
   width: 100px;
 }
 
-/*@media (min-width: 768px) {*/
-/*  .base-timer {*/
-
-/*    height: 150px;*/
-/*    width: 150px;*/
-/*  }*/
-
-/*}*/
-
 /* Flips the SVG  and makes the animation to move left-to-right */
 .base-timer__svg {
   transform: scaleX(-1);
@@ -64,17 +55,7 @@
 
 }
 
-/*@media (min-width: 768px) {*/
-/*  .base-timer__label {*/
-
-/*    font-size: 42px;*/
-/*    width: 150px; !* matches size of parent container *!*/
-/*    height: 150px; !* matrches size of parent container *!*/
-/*  }*/
-/*}*/
-
 .word-container {
-  border: 1px solid red;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -84,18 +65,8 @@
 #timer {
   display: flex;
   justify-content: center;
-  border: 1px solid blue;
 }
 
 #word-to-draw {
   margin: 0;
 }
-
-
-/*.base-timer, .base-timer__label {*/
-/*  width: 100px;*/
-/*  height: 100px;*/
-/*}*/
-/*.base-timer__label {*/
-
-/*}*/

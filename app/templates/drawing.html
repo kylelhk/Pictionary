@@ -50,8 +50,8 @@
 
   <!-- Main page -->
   <div class="container-fluid" id="drawing-container">
-    <div class="row">
-      <div class="col-md-2 d-flex flex-column justify-content-center align-items-center" id="drawing-controls">
+    <div class="drawing-wrapper">
+      <div id="drawing-controls">
 
         <div class="word-container">
 
@@ -117,13 +117,9 @@
             </fieldset>
           </div>
         </div>
-        {#        <button type="submit" id="submit-drawing">SUBMIT</button>#}
       </div>
       <!-- Drawing area -->
-      <div class="col-md-10 canvas-container" id="drawing-area">
-        {#        <div class="text-end">#}
-        {#          <button type="button" id="quit-drawing">QUIT</button>#}
-        {#        </div>#}
+      <div class="canvas-container" id="drawing-area">
         <canvas id="drawing-canvas"></canvas>
         <div class="button-container">
           <button type="button" id="quit-drawing">QUIT</button>
