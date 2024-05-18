@@ -576,3 +576,12 @@ def get_random_word():
         )
 
     return jsonify({"word_id": random_word.id, "word": random_word.text}), HTTPStatus.OK
+
+
+# About Page
+
+
+@main.route("/about")
+@login_required
+def about():
+    return render_template("about.html", title="About")

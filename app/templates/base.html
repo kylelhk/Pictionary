@@ -18,14 +18,14 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave&display=swap"
     />
+    <!-- Reference: https://www.cdnfonts.com/komika-axis.font -->
     <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/komika-axis" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     {% endblock %}
   </head>
 
   <!-- Dynamic classes for active page nav link effect -->
   <body
-    class="{% if request.path == '/home' %}page-home{% elif request.path == '/gallery' %}page-gallery{% elif request.path == '/drawing' %}page-drawing{% endif %}"
+    class="{% if request.path == '/home' %}page-home{% elif request.path == '/gallery' %}page-gallery{% elif request.path == '/drawing' %}page-drawing{% elif request.path == '/about' %}page-about{% endif %}"
   >
     <!-- Horizontal navbar (for screen width >= 768px) -->
     <nav class="navbar navbar-expand-lg">
@@ -215,5 +215,7 @@
 
     <!-- JS file -->
     <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+    <!-- jQuery library-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </body>
 </html>

@@ -23,7 +23,7 @@ footer {
   width: 100%;
   text-align: center;
   display: none; /* Hidden by default */
-  z-index: 721;
+  z-index: 1002;
 }
 
 .alert {
@@ -40,7 +40,7 @@ footer {
   width: 100%;
   text-align: center;
   display: none; /* Hidden by default */
-  z-index: 721;
+  z-index: 1002;
 }
 
 .flash-message-success {
@@ -222,7 +222,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10vw;
+  margin-right: 2vw;
   gap: 0.5vw; /* Spacing between the links */
 }
 
@@ -232,31 +232,96 @@ footer {
   justify-content: flex-end;
   align-items: center;
   height: 100%;
-  margin-right: 0.6vw;
+  margin-right: 0.4vw;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   #game-name {
     width: 285px;
   }
-
   .main-nav {
-    margin-right: 0.6vw;
+    margin-right: 1vw;
     gap: 0;
   }
-
   .horizontal-nav .nav-link {
     font-size: 19.5px;
   }
 }
 
-@media (max-width: 955px) {
-  .horizontal-nav .nav-link {
-    font-size: 15.5px;
+@media (max-width: 1300px) {
+  .main-nav {
+    margin-right: 0.2vw;
   }
+  .horizontal-nav .nav-link {
+    font-size: 18.5px;
+  }
+}
 
-  .logout-btn {
-    display: none;
+@media (max-width: 1240px) {
+  #game-name {
+    width: 240px;
+    font-size: 1.8em;
+  }
+  .main-nav {
+    margin-right: 0;
+  }
+  .horizontal-nav .nav-link {
+    font-size: 17.5px;
+  }
+}
+
+@media (max-width: 1130px) {
+  .horizontal-nav .nav-link {
+    font-size: 16.5px;
+  }
+}
+
+@media (max-width: 1080px) {
+  #game-name {
+    width: 220px;
+    font-size: 1.6em;
+  }
+  .horizontal-nav .nav-link {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1030px) {
+  .horizontal-nav .nav-link {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 960px) {
+  #game-name {
+    width: 200px;
+    font-size: 1.4em;
+  }
+  .horizontal-nav .nav-link {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 900px) {
+  #game-name {
+    width: 180px;
+    font-size: 1.2em;
+  }
+  .horizontal-nav .nav-link {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 830px) {
+  .horizontal-nav .nav-link {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 767px) {
+  #game-name {
+    width: 285px;
+    font-size: 2.1em;
   }
 }
 
@@ -327,6 +392,10 @@ footer {
 
 .page-drawing .active {
   color: Orange !important;
+}
+
+.page-about .active {
+  color: LightSlateGray !important;
 }
 
 /* Hamburger Button */
@@ -404,7 +473,7 @@ footer {
 }
 
 .sidebar-nav-link {
-  font-size: 22px;
+  font-size: 19.5px;
   display: flex;
   align-items: center;
   height: 46px;

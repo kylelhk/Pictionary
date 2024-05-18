@@ -11,6 +11,20 @@
   text-align: center;
   font: bold 42px "Komika Axis", sans-serif;
   margin: 10px 0;
+  background: linear-gradient(
+    20deg,
+    Tomato,
+    DarkOrange,
+    Gold,
+    Green,
+    Blue,
+    Indigo,
+    Violet
+  );
+  -webkit-background-clip: text; /* For Chrome, Safari, Edge */
+  -webkit-text-fill-color: transparent; /* For Chrome, Safari, Edge */
+  background-clip: text; /* For Firefox */
+  color: transparent; /* For Firefox */
 }
 
 /* Main panel */
