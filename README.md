@@ -1,4 +1,4 @@
-# Pictionary
+# Guess That Drawing
 
 CITS5505 Agile Web Development - Group Project
 
@@ -7,7 +7,7 @@ CITS5505 Agile Web Development - Group Project
 - Purpose
 - Architecture
 - Launch
-- Unit tests
+- Unit Tests
 - System Tests
 - License
 - Contributors
@@ -72,9 +72,6 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 ```
-
-Note: Whenever a new package is used, they should be added into the requirements.txt file for the markers to download
-all the packages required for running this app.
 
 5. Initialise the database
 
