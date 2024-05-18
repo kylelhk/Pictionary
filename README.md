@@ -97,13 +97,16 @@ Enjoy!
 
 ## Unit Tests
 
-Unit tests are found in `test/unit/`
+Unit tests are located in the `test/unit/` directory.
 
-Before running tests, ensure that your .flaskenv contains the following value for the `FLASK_APP` environment variable:
+### Setup
+
+Before running the tests, ensure your `.flaskenv` file contains the following value for the `FLASK_APP` environment variable:
 
 ```bash
 FLASK_APP="app:create_app('TestConfig')"
 ```
+### Running tests
 
 To run all tests, use the following command:  
 
@@ -111,13 +114,13 @@ To run all tests, use the following command:
 python -m unittest
 ```  
 
-Or for a more detailed output:
+For a more detailed output:
 
 ```py
 python -m unittest -v
 ```
 
-If you would like to run a specific unit test class file, use the command:
+To run a specific test class file, use the command:
 
 ```py
 python -m unittest test.unit.<filename without .py extension>
@@ -125,7 +128,23 @@ python -m unittest test.unit.<filename without .py extension>
 
 ## System Tests
 
-[ ]
+System tests are located in the `test/system/` directory.
+
+### Setup:
+
+1. Download ChromeDriver, ensuring that you download the version that matches your installed Chrome version.  
+2. Set Chrome and ChromeDriver paths:
+    * Change the path to Chrome and ChromeDriver in `test/system/test_selenium.py` to match your environment.  
+3. Ensure the `FLASK_APP` environment variable is set to the test configuration, as described in the unit tests above.  
+4. Ensure the Flask application is running by running the command, `flask run`.  
+
+### Running tests
+
+To run the system test, use the following command:
+
+```py
+python -m unittest test.system.test_selenium
+```
 
 ## License
 

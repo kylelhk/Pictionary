@@ -8,7 +8,7 @@ class LoginTests(BaseTestCase):
     def test_password_hashing(self):
         user = User.query.filter_by(username="user1").first()
         self.assertIsNotNone(user)
-        self.assertTrue(user.check_password("password"))
+        self.assertTrue(user.check_password("Password1"))
         self.assertFalse(user.check_password("incorrect"))
 
     def test_login_correct_credentials(self):
@@ -17,7 +17,7 @@ class LoginTests(BaseTestCase):
             json={
                 "action": "Login",
                 "login-username": "user1",
-                "login-password": "password",
+                "login-password": "Password1",
                 "remember_me": False,
             },
             headers={"X-Requested-With": "XMLHttpRequest"},

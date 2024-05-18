@@ -25,7 +25,7 @@ class BaseTestCase(TestCase):
     def add_test_data_to_db(self):
         with self.app_context:
             user1 = User(username="user1", email="user1@email.com")
-            user1.set_password("password")
+            user1.set_password("Password1")
             user2 = User(username="user2", email="user2@email.com")
             user2.set_password("password")
             db.session.add_all([user1, user2])
@@ -73,7 +73,7 @@ class BaseTestCase(TestCase):
             json={
                 "action": "Login",
                 "login-username": "user1",
-                "login-password": "password",
+                "login-password": "Password1",
                 "remember_me": False,
             },
             headers={"X-Requested-With": "XMLHttpRequest"},
