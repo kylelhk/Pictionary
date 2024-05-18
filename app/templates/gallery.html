@@ -1,51 +1,93 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %} Guessing Gallery {% endblock %} {%
+block styles %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/gallery.css') }}"
+/>
+<!-- Font style for preamble -->
+<!-- Reference: https://www.cdnfonts.com/komika-axis.font -->
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/komika-axis" />
+{% endblock %} {% block content %}
 
-{% block title %}
-  Guessing Gallery
-{% endblock %}
-
-{% block styles %}
-  {{ super() }}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
-{% endblock %}
-
-{% block content %}
-  <div class="container mt-3">
-    <div class="search-bar mb-4">
+<div class="container mt-4">
+  <div class="gallery-preamble mb-4 text-center">
+    Pick a drawing and challenge yourself!
+  </div>
+  <!-- Search / filter function -->
+  <div class="row mb-4">
+    <div class="search-bar col-12 col-md-8 mb-2 mb-md-0">
       <div class="input-group">
-        <!-- Use input event for real-time search or keep button for manual trigger -->
-        <input type="text" class="form-control" placeholder="Search" aria-label="Search" id="search-input">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-          <i class="bi bi-search"></i> <!-- Bootstrap 5 search icon -->
+        <!-- Input field -->
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search"
+          id="search-input"
+        />
+
+        <!-- Search button for manual trigger -->
+        <button class="btn btn-primary" type="button" id="search-btn">
+          <i class="bi bi-search"></i>
         </button>
       </div>
     </div>
 
+    <!-- Reset button -->
+    <div class="col-12 col-md-4 text-md-end">
+      <button
+        class="btn btn-outline-danger w-100 w-md-auto"
+        type="button"
+        id="reset-btn"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Gallery table -->
+  <div class="table-responsive mt-2">
     <table class="table table-striped" id="galleryTable">
       <thead>
         <tr>
+          <th class="sortable">
+            Creator <i class="sort-icon bi bi-caret-down-fill"></i>
+          </th>
+          <th class="sortable">
+            Category <i class="sort-icon bi bi-caret-down-fill"></i>
+          </th>
+          <th class="sortable">
+            Status <i class="sort-icon bi bi-caret-down-fill"></i>
+          </th>
+          <th class="sortable">
+            Date Created <i class="sort-icon bi bi-caret-down-fill"></i>
+          </th>
           <th></th>
-          <th>Creator</th>
-          <th>Category</th>
-          <th>Status</th>
-          <th>Date Created</th>
         </tr>
       </thead>
       <tbody id="galleryTableBody">
         <!-- Content filled from gallery.js -->
       </tbody>
     </table>
-
-    <div class="d-flex justify-content-end">
-      <nav aria-label="Page navigation example" id="pagination-container">
-        <ul class="pagination">
-          <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-          <!-- Pagination dynamically filled from gallery.js -->
-          <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav>
-    </div>
   </div>
-  <script src="{{ url_for('static', filename='js/gallery.js') }}"></script>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-end mt-2">
+    <nav id="pagination-container">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Previous</a>
+        </li>
+        <!-- Pagination dynamically filled from gallery.js -->
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/gallery.js') }}"></script>
 {% endblock %}
