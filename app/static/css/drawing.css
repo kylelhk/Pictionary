@@ -1,7 +1,15 @@
 #drawing-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
+}
+
+@media (min-width: 768px) {
+
+  #drawing-container {
+
+    margin: 50px auto;
+  }
 }
 
 /* Modal Styles */
@@ -222,7 +230,7 @@ legend {
 }
 
 #quit-drawing {
-  margin: 20px 0;
+  /*margin: 20px 0;*/
 }
 
 #submit-drawing:hover {
@@ -249,5 +257,17 @@ legend {
   width: 100%;
   height: 100%;
   border: 2px solid #868686;
+  min-height: 300px;
   border-radius: 10px;
+}
+
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
