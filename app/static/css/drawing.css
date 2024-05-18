@@ -1,7 +1,13 @@
 #drawing-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
+}
+
+@media (min-width: 768px) {
+  #drawing-container {
+    margin: 50px auto;
+  }
 }
 
 /* Modal Styles */
@@ -13,8 +19,8 @@
 
 .modal-body {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -24,28 +30,28 @@ button {
 }
 
 #all-play-btn {
-  background-color: #8503D5;
   border-color: #8503D5;
+  background-color: #8503D5;
 }
 
 #difficult-btn {
-  background-color: #5BC209;
   border-color: #5BC209;
+  background-color: #5BC209;
 }
 
 #action-btn {
-  background-color: #E98607;
   border-color: #E98607;
+  background-color: #E98607;
 }
 
 #person-btn {
-  background-color: #0CB1F2;
   border-color: #0CB1F2;
+  background-color: #0CB1F2;
 }
 
 #object-btn {
-  background-color: #f7c200;
   border-color: #f7c200;
+  background-color: #f7c200;
 }
 
 /* Word to Draw Styles */
@@ -56,22 +62,34 @@ button {
 
 #word-to-draw-section p {
   font-weight: bold;
-  border: 1px solid #0E6D95;
-  border-radius: 10px;
-  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 60px;
+  border: 1px solid #0E6D95;
+  border-radius: 10px;
 }
 
 /* Tool Container Styles */
 #tools {
-  background-color: #e0e0e0;
-  margin: 10px;
-  width: 200px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
+  width: 100%;
+  margin: 10px 0;
   padding: 20px;
+
   border: none;
   border-radius: 10px;
+  background-color: #e0e0e0;
+}
+
+
+@media (min-width: 768px) {
+  #tools {
+    min-width: 300px;
+  }
 }
 
 legend {
@@ -79,7 +97,6 @@ legend {
 }
 
 /* Brush Size and Colour Label Styles */
-
 /* Hide default radio buttons for brush tools so styling can apply to their labels */
 .hidden-radio,
 .hidden-checkbox {
@@ -101,9 +118,9 @@ legend {
 }
 
 .brush-colour-label {
+  width: 30px;
+  height: 30px;
   margin: 8px;
-  width: 20px;
-  height: 20px;
 }
 
 /* Specific brush size modifiers */
@@ -163,18 +180,18 @@ legend {
 
 /* Eraser Styles */
 .eraser-label {
-  background: none;
-  border: none;
   padding: 0;
   cursor: pointer;
+  border: none;
+  background: none;
 }
 
 .eraser-img {
   display: block;
   width: 35px;
   height: auto;
-  background-color: #e0e0e0;
   margin: 0 10px;
+  background-color: #e0e0e0;
 }
 
 .hidden-checkbox:checked + .eraser-label {
@@ -184,60 +201,75 @@ legend {
 
 /* Button Styles*/
 #clear-all {
-  background-color: white;
-  border-color: #f86767;
   width: 90px;
   margin: 10px;
+  border-color: #f86767;
+  background-color: white;
 }
 
 #clear-all:hover {
-  background-color: #f86767;
-  border-color: #f86767;
   color: white;
+  border-color: #f86767;
+  background-color: #f86767;
 }
 
 #submit-drawing {
-  background-color: #0E6D95;
+  width: 130px;
   color: white;
   border-color: #0E6D95;
-  width: 130px;
+  background-color: #0E6D95;
 }
 
 #quit-drawing,
 #exit-modal {
-  background-color: #F22E2E;
+  width: 130px;
   color: white;
   border-color: #F22E2E;
-  width: 130px;
-}
-
-#quit-drawing {
-  margin: 20px 0;
+  background-color: #F22E2E;
 }
 
 #submit-drawing:hover {
-  background-color: #0a4964;
   border-color: #0a4964;
+  background-color: #0a4964;
 }
 
 #quit-drawing:hover,
 #exit-modal:hover {
-  background-color: #c72a2a;
   border-color: #c72a2a;
+  background-color: #c72a2a;
 }
 
-/* Drawing Area Styles */
-#drawing-area {
-  max-width: 1000px;
-}
 
 /* TODO: Make the canvas size adaptable depending on screen size? */
 #drawing-canvas {
-  touch-action: none;
-  max-width: 1000px;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
   max-height: 600px;
-  width: 75vw;
-  height: 75vh;
   border: 2px solid #868686;
   border-radius: 10px;
+  touch-action: none;
+}
+
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.drawing-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .drawing-wrapper {
+    flex-direction: row;
+    column-gap: 40px;
+  }
 }
