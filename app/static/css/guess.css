@@ -1,12 +1,13 @@
-.container {
+.guess-page-container {
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin: 50px auto;
+  padding: 10px;
+  max-width: 1320px;
 }
 
 @media (min-width: 769px) {
-  .container {
+  .guess-page-container {
     flex-direction: row;
   }
 }
@@ -21,6 +22,12 @@
 
 @media (min-width: 769px) {
   .image-container {
+    margin: 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .image-container {
     margin: 50px;
   }
 }
@@ -33,6 +40,13 @@
 }
 
 @media (min-width: 769px) {
+  .guess-container {
+    margin: 20px;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 1200px) {
   .guess-container {
     margin: 50px;
     border-radius: 20px;
@@ -141,7 +155,7 @@ button {
   font-weight: bold;
   width: 80px;
   color: #0B508C;
-  border-radius: 0 0 20px 0;
+  border-radius: 0 0 18px 0;
   background-color: #fff;
 }
 
@@ -152,14 +166,7 @@ button {
 
 .chat-box {
   border: 2px solid #0B508C;
-  border-radius: 5px;
-}
-
-
-@media (min-width: 769px) {
-  .chat-box {
-    border-radius: 20px;
-  }
+  border-radius: 20px;
 }
 
 #timer {
