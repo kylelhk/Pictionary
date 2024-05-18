@@ -106,11 +106,6 @@ def handle_login_ajax(data):
                         "errors": {"Password": "Invalid Username or Password"},
                     }
                 ),
-                (
-                    HTTPStatus.UNAUTHORIZED
-                    if user
-                    else jsonify({"error": True, "errors": {"User": "User not found"}})
-                ),
                 HTTPStatus.UNAUTHORIZED,
             )
 
@@ -445,7 +440,7 @@ def get_gallery_data():
         for data in gallery_query
     ]
 
-    return jsonify(results)
+    return jsonify(results), HTTPStatus.OK
 
 
 # Create Drawing Page

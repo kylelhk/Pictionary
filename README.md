@@ -97,7 +97,31 @@ Enjoy!
 
 ## Unit Tests
 
-[ ]
+Unit tests are found in `test/unit/`
+
+Before running tests, ensure that your .flaskenv contains the following value for the `FLASK_APP` environment variable:
+
+```bash
+FLASK_APP="app:create_app('TestConfig')"
+```
+
+To run all tests, use the following command:  
+
+```py
+python -m unittest
+```  
+
+Or for a more detailed output:
+
+```py
+python -m unittest -v
+```
+
+If you would like to run a specific unit test class file, use the command:
+
+```py
+python -m unittest test.unit.<filename without .py extension>
+```
 
 ## System Tests
 

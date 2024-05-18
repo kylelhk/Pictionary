@@ -92,7 +92,7 @@ def load_data():
             "Eagle",
             "Mailman",
             "Superman",
-            "Justin Beiber",
+            "Justin Bieber",
             "Cowboy",
             "Alexander Hamilton",
             "Robin Hood",
