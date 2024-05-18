@@ -1,295 +1,295 @@
 /* Preamble */
 .preamble {
-    position: absolute;
-    top: 16%;
-    left: 53%;
-    width: 1120px;
-    transform: translate(-50%, -50%);
-    text-align: left;
+  position: absolute;
+  top: 16%;
+  left: 53%;
+  width: 1120px;
+  transform: translate(-50%, -50%);
+  text-align: left;
 }
 
 .preamble-1 {
-    font-family: Sedgwick Ave;
-    font-size: 2.8vh;
+  font-family: "Komika Axis", sans-serif;
+  font-size: 2.5vh;
+  margin-bottom: 5px;
 }
 
 .guess {
-    color: Green;
+  color: Green;
 }
 
 .that {
-    color: Blue;
+  color: Blue;
 }
 
 .drawing {
-    color: Orange;
+  color: Orange;
 }
 
 .preamble-2 {
-    font-size: 2vh;
+  font-size: 2vh;
 }
 
 /* Dynamic typing effect */
 /* .typing-cursor used in login.js - dynamicTypingEffect() function */
 .typing-cursor {
-    opacity: 1;
-    animation: blink-cursor 0.8s infinite;
+  opacity: 1;
+  animation: blink-cursor 0.8s infinite;
 }
 
 @keyframes blink-cursor {
-    50% {
-        opacity: 0;
-    }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Hide part of the preamble for line-by-line typing effect */
 .hidden {
-    display: none;
+  display: none;
 }
 
 /* Preamble responsiveness */
 @media (max-width: 1120px) {
-    .preamble {
-        width: 800px;
-    }
+  .preamble {
+    width: 800px;
+  }
 
-    .preamble-1 {
-        font-size: 22px;
-    }
+  .preamble-1 {
+    font-size: 22px;
+  }
 
-    .preamble-2 {
-        font-size: 18px;
-    }
+  .preamble-2 {
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 830px) {
-    .preamble {
-        width: 700px;
-    }
+  .preamble {
+    width: 700px;
+  }
 
-    .preamble-1 {
-        font-size: 21px;
-    }
+  .preamble-1 {
+    font-size: 21px;
+  }
 
-    .preamble-2 {
-        font-size: 17px;
-    }
+  .preamble-2 {
+    font-size: 17px;
+  }
 }
 
 @media (max-width: 767px) {
-    .preamble {
-        width: 600px;
-    }
+  .preamble {
+    width: 600px;
+  }
 
-    .preamble-1 {
-        font-size: 18px;
-    }
+  .preamble-1 {
+    font-size: 18px;
+  }
 
-    .preamble-2 {
-        font-size: 16px;
-    }
+  .preamble-2 {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 622px) {
-    .preamble {
-        width: 500px;
-    }
+  .preamble {
+    width: 500px;
+  }
 
-    .preamble-1 {
-        font-size: 15px;
-    }
+  .preamble-1 {
+    font-size: 15px;
+  }
 
-    .preamble-2 {
-        font-size: 13px;
-    }
+  .preamble-2 {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 525px) {
-    .preamble-2 {
-        display: none;
-    }
+  .preamble-2 {
+    display: none;
+  }
 }
 
 @media (max-height: 885px) {
-    .preamble-2 {
-        display: none;
-    }
+  .preamble-2 {
+    display: none;
+  }
 }
 
 @media (max-height: 800px) {
-    .preamble {
-        display: none;
-    }
+  .preamble {
+    display: none;
+  }
 }
 
 /* AJAX alert message for unauthorised access */
 .alert-error {
-    color: White;
-    background-color: Red;
+  color: White;
+  background-color: Red;
 }
-
 
 /* Login and signup form container */
 .container {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%); /* Center the container */
-    width: 977px; /* = width of the video background */
-    height: 550px; /* = height of the video background */
-    border-radius: 20px;
-    margin-top: 20px;
-    overflow: hidden; /* Hide the signup form */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* Center the container */
+  width: 977px; /* = width of the video background */
+  height: 550px; /* = height of the video background */
+  border-radius: 20px;
+  margin-top: 20px;
+  overflow: hidden; /* Hide the signup form */
 }
 
 .video-background {
-    position: absolute;
-    left: 0;
-    height: 100%;
-    object-fit: cover;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* GitHub icon */
 .github-icon {
-    position: absolute;
-    bottom: 0.1px;
-    left: 18px;
-    z-index: 616;
+  position: absolute;
+  bottom: 0.1px;
+  left: 18px;
+  z-index: 616;
 }
 
 .github-icon i {
-    color: Black;
-    font-size: 50px;
-    transition: 0.5s ease;
+  color: Black;
+  font-size: 50px;
+  transition: 0.5s ease;
 }
 
 .github-icon:hover i {
-    color: #1e90ff;
+  color: #1e90ff;
 }
 
 /* Login and signup forms */
 .form {
-    position: absolute;
-    top: 13%;
-    right: 2vw;
-    width: 42%;
-    height: 74%;
-    color: White;
-    backdrop-filter: blur(10px);
-    background-color: rgba(0, 0, 139, 0.3); /* MidnightBlue with 30% opacity */
-    border-radius: 10px;
+  position: absolute;
+  top: 13%;
+  right: 2vw;
+  width: 42%;
+  height: 74%;
+  color: White;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 139, 0.3); /* MidnightBlue with 30% opacity */
+  border-radius: 10px;
 }
 
 /* Container and form responsiveness */
 @media (max-width: 991px) {
-    .form {
-        width: 52%;
-    }
+  .form {
+    width: 52%;
+  }
 }
 
 @media (max-width: 767px) {
-    .form {
-        width: 68%;
-    }
+  .form {
+    width: 68%;
+  }
 }
 
 @media (max-width: 575px) {
-    .container {
-        width: 90%;
-    }
+  .container {
+    width: 90%;
+  }
 
-    .form {
-        width: 84%;
-    }
+  .form {
+    width: 84%;
+  }
 }
 
 @media (max-height: 680px) {
-    .video-background {
-        display: none;
-    }
+  .video-background {
+    display: none;
+  }
 }
 
 .form .form-box {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .form-title {
-    font-weight: bold;
-    text-align: left;
-    font-size: 28px;
-    margin-left: 2px;
-    margin-bottom: -8px;
+  font-weight: bold;
+  text-align: left;
+  font-size: 28px;
+  margin-left: 2px;
+  margin-bottom: -8px;
 }
 
 /* Input field styling */
 .input-box {
-    width: 340px;
-    height: 50px;
-    border-bottom: 2px solid White;
-    margin: 17px 0;
-    position: relative;
-    transition: 0.5s ease;
+  width: 340px;
+  height: 50px;
+  border-bottom: 2px solid White;
+  margin: 17px 0;
+  position: relative;
+  transition: 0.5s ease;
 }
 
 .login-signup-input {
-    padding: 8px 28px 8px 8px;
-    margin: 10px 0;
-    color: White;
-    width: 90%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 16px;
+  padding: 8px 28px 8px 8px;
+  margin: 10px 0;
+  color: White;
+  width: 90%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
 }
 
 .input-box label {
-    position: absolute;
-    top: 30%;
-    left: 1%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    transition: 0.4s ease;
+  position: absolute;
+  top: 30%;
+  left: 1%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  transition: 0.4s ease;
 }
 
 .input-box input:hover ~ label {
-    top: 17%;
+  top: 17%;
 }
 
 .input-box .icon {
-    position: absolute;
-    top: 13px;
-    right: 0;
-    font-size: 19px;
+  position: absolute;
+  top: 13px;
+  right: 0;
+  font-size: 19px;
 }
 
 /* Placeholder styling */
 .login-signup-input::placeholder {
-    font-style: italic;
+  font-style: italic;
 }
 
 .login .login-signup-input::placeholder {
-    color: LightSkyBlue;
+  color: LightSkyBlue;
 }
 
 .signup .login-signup-input::placeholder {
-    color: Aquamarine;
+  color: Aquamarine;
 }
 
 /* Error message for invalid form inputs */
 .invalid-feedback {
-    display: none; /* Hidden by default, shown via login.js */
-    color: Red;
-    position: absolute;
-    top: 100%;
-    margin-top: 2px;
-    font-size: 12px;
-    z-index: 831;
+  display: none; /* Hidden by default, shown via login.js */
+  color: Red;
+  position: absolute;
+  top: 100%;
+  margin-top: 2px;
+  font-size: 12px;
+  z-index: 831;
 }
 
 /* Override styles for the autofill background in Chrome, Safari, Firefox, and Opera */
@@ -297,116 +297,116 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
-    box-shadow: 0 0 0px 1000px transparent inset; /* Customize background color */
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px transparent inset; /* Customize background color */
 }
 
 input:-moz-ui-invalid {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 input:-moz-ui-valid {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 /* Login and signup buttons */
 .btn-container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .login-signup-btn {
-    width: 40%;
-    height: 40px;
-    margin-bottom: -15px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    background-color: #1e90ff;
-    color: white;
-    font-size: 20px;
-    animation: pulse 2.8s infinite;
+  width: 40%;
+  height: 40px;
+  margin-bottom: -15px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #1e90ff;
+  color: white;
+  font-size: 20px;
+  animation: pulse 2.8s infinite;
 }
 
 @keyframes pulse {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.6;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .login-signup-btn:hover {
-    background-color: White;
-    color: #1e90ff;
-    font-weight: bold;
+  background-color: White;
+  color: #1e90ff;
+  font-weight: bold;
 }
 
 /* Visibility toggle for password field */
 .visibility-toggle {
-    background: none;
-    color: White;
-    border: none;
-    position: absolute;
-    top: 53%;
-    right: 18px;
-    transform: translateY(-50%);
-    font-size: 20px;
+  background: none;
+  color: White;
+  border: none;
+  position: absolute;
+  top: 53%;
+  right: 18px;
+  transform: translateY(-50%);
+  font-size: 20px;
 }
 
 /* Remember me checkbox */
 .remember-me {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 16px;
-    margin: -12px 0 15px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 16px;
+  margin: -12px 0 15px;
 }
 
 .remember-me-tickbox {
-    margin-right: 3px;
+  margin-right: 3px;
 }
 
 /* Login and signup links */
 .create-account {
-    font-size: 15px;
-    text-align: center;
-    margin: 25px;
+  font-size: 15px;
+  text-align: center;
+  margin: 25px;
 }
 
 .create-account a {
-    color: White;
-    text-decoration: underline;
+  color: White;
+  text-decoration: underline;
 }
 
 .create-account a:hover {
-    color: #1e90ff;
+  color: #1e90ff;
 }
 
 /* Form toggle effects */
 .form .form-box.login {
-    transform: translateX(0px);
-    transition: transform 0.6s ease;
-    transition-delay: 0.7s;
+  transform: translateX(0px);
+  transition: transform 0.6s ease;
+  transition-delay: 0.7s;
 }
 
 .form.active .form-box.login {
-    transform: translateX(430px);
-    transition-delay: 0s;
+  transform: translateX(430px);
+  transition-delay: 0s;
 }
 
 .form .form-box.signup {
-    top: 10px;
-    transform: translateX(430px);
-    transition: transform 0.6s ease;
-    transition-delay: 0s;
-    visibility: hidden;
+  top: 10px;
+  transform: translateX(430px);
+  transition: transform 0.6s ease;
+  transition-delay: 0s;
+  visibility: hidden;
 }
 
 .form.active .form-box.signup {
-    transform: translateX(0px);
-    transition-delay: 0.7s;
-    visibility: visible;
+  transform: translateX(0px);
+  transition-delay: 0.7s;
+  visibility: visible;
 }
