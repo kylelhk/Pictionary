@@ -12,7 +12,7 @@
 
 {% block content %}
 
-  <div class="container">
+  <div class="guess-page-container">
 
     {#  IMAGE SHOWING DRAWING #}
     <div class="image-container">
@@ -25,7 +25,6 @@
 
         {% if current_user_guess|length == 0 %}
           <div id="timer">
-            <h4>Time remaining:</h4>
             {% include 'timer.html' %}
           </div>
           <button type="button" class="btn btn-danger btn-quit">Quit</button>
