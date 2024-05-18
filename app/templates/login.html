@@ -1,220 +1,223 @@
-{% extends "base.html" %} {% block title %} Login / Sign Up {% endblock %} {% block styles %} {{ super() }}
-  <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/login.css') }}"
-  />
-  <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-  />
-  <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
-  />
+{% extends "base.html" %} {% block title %} Login / Sign Up {% endblock %} {%
+block styles %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/login.css') }}"
+/>
+<link
+  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+/>
 {% endblock %} {% block content %}
-  <!-- Preamble -->
-  <div class="preamble">
-    <div class="preamble-1">
-      Join the <span class="guess">Guess</span> <span class="that">That</span>
-      <span class="drawing">Drawing</span> community - where your sketches come to
-      life!
+<!-- Preamble -->
+<div class="preamble">
+  <div class="preamble-1">
+    Join the <span class="guess">Guess</span> <span class="that">That</span>
+    <span class="drawing">Drawing</span> community - where your sketches come to
+    life!
+  </div>
+  <!-- Dynamic typing effect for preamble -->
+  <div class="preamble-2">
+    <div class="typing first-line">
+      Unleash your creativity when you are given a drawing prompt, and challenge
+      others to guess what you've drawn.
     </div>
-    <!-- Dynamic typing effect for preamble -->
-    <div class="preamble-2">
-      <div class="typing first-line">
-        Unleash your creativity when you are given a drawing prompt, and challenge
-        others to guess what you've drawn.
-      </div>
-      <div class="typing second-line hidden">
-        Grab your friends and start guessing today!
-      </div>
+    <div class="typing second-line hidden">
+      Grab your friends and start guessing today!
     </div>
   </div>
-  
+</div>
 
-  <!-- Login and Signup container -->
-  <div class="container">
-    <!-- Video background created using ChatGPT and VEED.IO: https://www.veed.io/view/7049d95a-5424-4639-861c-7791fe504bf3?panel=share -->
-    <video class="video-background" autoplay muted>
-      <source
-          src="https://github.com/kylelhk/video/raw/main/GuessThatDrawing.mp4"
-          type="video/mp4"
-      />
-      Your browser does not support the video tag.
-    </video>
+<!-- Login and Signup container -->
+<div class="container">
+  <!-- Video background created using ChatGPT and VEED.IO: https://www.veed.io/view/7049d95a-5424-4639-861c-7791fe504bf3?panel=share -->
+  <video class="video-background" autoplay muted>
+    <source
+      src="https://github.com/kylelhk/video/raw/main/GuessThatDrawing.mp4"
+      type="video/mp4"
+    />
+    Your browser does not support the video tag.
+  </video>
 
-    <!-- GitHub icon -->
-    <div class="github-icon">
-      <a
-          href="https://github.com/kylelhk/Pictionary"
-          class="btn-outline-primary"
-          target="_blank"
-          rel="noopener noreferrer"
+  <!-- GitHub icon -->
+  <div class="github-icon">
+    <a
+      href="https://github.com/kylelhk/Pictionary"
+      class="btn-outline-primary"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <i class="bi bi-github"></i>
+    </a>
+  </div>
+
+  <!-- Flask WTF - Reference: https://flask-wtf.readthedocs.io/en/1.2.x/ -->
+  <div class="form">
+    <!-- Login form -->
+    <div class="form-box login">
+      <form
+        id="loginForm"
+        method="post"
+        action="{{ url_for('main.login_signup') }}"
       >
-        <i class="bi bi-github"></i>
-      </a>
-    </div>
-
-    <!-- Flask WTF - Reference: https://flask-wtf.readthedocs.io/en/1.2.x/ -->
-    <div class="form">
-      <!-- Login form -->
-      <div class="form-box login">
-        <form id="loginForm" method="post" action="{{ url_for('main.login_signup') }}">
-          <!-- A hidden Cross-Site Request Forgery (CSRF) token for preventing CSRF attacks -->
-          <!-- This token is required for every POST request to ensure that the request is coming from the designated form and not from an external source. -->
-          {{ login_form.csrf_token }}
-          <div class="form-title">Login</div>
-          <div class="input-box">
-            <!-- Username input field -->
-            <span class="icon"><i class="bx bxs-user"></i></span>
-            {{ login_form.username(size=20, class_='login-signup-input',
+        <!-- A hidden Cross-Site Request Forgery (CSRF) token for preventing CSRF attacks -->
+        <!-- This token is required for every POST request to ensure that the request is coming from the designated form and not from an external source. -->
+        {{ login_form.csrf_token }}
+        <div class="form-title">Login</div>
+        <div class="input-box">
+          <!-- Username input field -->
+          <span class="icon"><i class="bx bxs-user"></i></span>
+          {{ login_form.username(size=20, class_='login-signup-input',
           id='loginUsername', placeholder='Enter your username...',
           required=True) }}
-            <label for="loginUsername">Username</label>
-            <!-- Error message for invalid form input -->
-            <div id="loginUsernameFeedback" class="invalid-feedback"></div>
-          </div>
+          <label for="loginUsername">Username</label>
+          <!-- Error message for invalid form input -->
+          <div id="loginUsernameFeedback" class="invalid-feedback"></div>
+        </div>
 
-          <!-- Password input field -->
-          <div class="input-box">
-            <!-- Password visibility toggle -->
-            <button
-                type="button"
-                id="togglePassword"
-                class="visibility-toggle"
-                tabindex="-1"
-            >
-              <i class="bi bi-eye"></i>
-            </button>
-            <span class="icon"><i class="bx bxs-lock-alt"></i></span>
-            {{ login_form.password(size=20, class_='login-signup-input',
+        <!-- Password input field -->
+        <div class="input-box">
+          <!-- Password visibility toggle -->
+          <button
+            type="button"
+            id="togglePassword"
+            class="visibility-toggle"
+            tabindex="-1"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+          <span class="icon"><i class="bx bxs-lock-alt"></i></span>
+          {{ login_form.password(size=20, class_='login-signup-input',
           id='loginPassword', placeholder='Enter your password...',
           required=True) }}
-            <label for="loginPassword">Password</label>
-            <!-- Error message for invalid form input -->
-            <div id="loginPasswordFeedback" class="invalid-feedback"></div>
-          </div>
-          <div class="remember-me">
-            {{ login_form.remember_me(class='remember-me-tickbox',
-          id='rememberMe') }} {{ login_form.remember_me.label(for='rememberMe') }}
-          </div>
+          <label for="loginPassword">Password</label>
+          <!-- Error message for invalid form input -->
+          <div id="loginPasswordFeedback" class="invalid-feedback"></div>
+        </div>
+        <div class="remember-me">
+          {{ login_form.remember_me(class='remember-me-tickbox',
+          id='rememberMe') }} {{ login_form.remember_me.label(for='rememberMe')
+          }}
+        </div>
 
-          <!-- Login button -->
-          <!-- <button class="btn" type="submit">Login In</button> -->
+        <!-- Login button -->
+        <div class="btn-container">
+          <input
+            type="submit"
+            name="action"
+            value="Login"
+            class="login-signup-btn"
+          />
+        </div>
 
-          <div class="btn-container">
-            <input
-                type="submit"
-                name="action"
-                value="Login"
-                class="login-signup-btn"
-            />
-          </div>
+        <!-- Form toggle -->
+        <div class="create-account">
+          Haven't got an account?
+          <a href="#" class="signup-link">Sign Up</a>
+        </div>
+      </form>
+    </div>
 
-          <!-- Form toggle -->
-          <div class="create-account">
-            Haven't got an account?
-            <a href="#" class="signup-link">Sign Up</a>
-          </div>
-        </form>
-      </div>
+    <!-- Signup form -->
+    <div class="form-box signup">
+      <form
+        id="signupForm"
+        method="post"
+        action="{{ url_for('main.login_signup') }}"
+      >
+        <!-- A hidden CSRF token for preventing CSRF attacks -->
+        {{ signup_form.csrf_token }}
+        <div class="form-title">Sign Up</div>
 
-      <!-- Signup form -->
-      <div class="form-box signup">
-        <form
-            id="signupForm"
-            method="post"
-            action="{{ url_for('main.login_signup') }}"
-        >
-          <!-- A hidden CSRF token for preventing CSRF attacks -->
-          {{ signup_form.csrf_token }}
-          <div class="form-title">Sign Up</div>
-
-          <!-- Username input field -->
-          <div class="input-box">
-            <span class="icon"><i class="bx bxs-user"></i></span>
-            {{ signup_form.username(size=20, class_='login-signup-input',
+        <!-- Username input field -->
+        <div class="input-box">
+          <span class="icon"><i class="bx bxs-user"></i></span>
+          {{ signup_form.username(size=20, class_='login-signup-input',
           id='signupUsername', placeholder='Choose a username...',
           required=True) }}
-            <label for="signupUsername">Username</label>
-            <!-- Error message for invalid form input -->
-            <div id="signupUsernameFeedback" class="invalid-feedback"></div>
-          </div>
+          <label for="signupUsername">Username</label>
+          <!-- Error message for invalid form input -->
+          <div id="signupUsernameFeedback" class="invalid-feedback"></div>
+        </div>
 
-          <!-- Email input field -->
-          <div class="input-box">
-            <span class="icon"><i class="bx bxs-envelope"></i></span>
-            {{ signup_form.email(size=20, class_='login-signup-input',
+        <!-- Email input field -->
+        <div class="input-box">
+          <span class="icon"><i class="bx bxs-envelope"></i></span>
+          {{ signup_form.email(size=20, class_='login-signup-input',
           id='signupEmail', placeholder='Enter your email...', required=True) }}
-            <label for="signupEmail">Email</label>
-            <!-- Error message for invalid form input -->
-            <div id="signupEmailFeedback" class="invalid-feedback"></div>
-          </div>
+          <label for="signupEmail">Email</label>
+          <!-- Error message for invalid form input -->
+          <div id="signupEmailFeedback" class="invalid-feedback"></div>
+        </div>
 
-          <!-- Password input field -->
-          <div class="input-box">
-            <!-- Password visibility toggle -->
-            <button
-                type="button"
-                id="toggleSignupPassword"
-                class="visibility-toggle"
-                tabindex="-1"
-            >
-              <i class="bi bi-eye"></i>
-            </button>
-            <span class="icon"><i class="bx bxs-lock-alt"></i></span>
-            {{ signup_form.password(size=20, class_='login-signup-input',
+        <!-- Password input field -->
+        <div class="input-box">
+          <!-- Password visibility toggle -->
+          <button
+            type="button"
+            id="toggleSignupPassword"
+            class="visibility-toggle"
+            tabindex="-1"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+          <span class="icon"><i class="bx bxs-lock-alt"></i></span>
+          {{ signup_form.password(size=20, class_='login-signup-input',
           id='signupPassword', placeholder='Create a password...',
           required=True) }}
-            <label for="signupPassword">Password</label>
-            <!-- Error message for invalid form input -->
-            <div id="signupPasswordFeedback" class="invalid-feedback"></div>
-          </div>
+          <label for="signupPassword">Password</label>
+          <!-- Error message for invalid form input -->
+          <div id="signupPasswordFeedback" class="invalid-feedback"></div>
+        </div>
 
-          <!-- Confirm password field -->
-          <div class="input-box">
-            <!-- Password visibility toggle -->
-            <button
-                type="button"
-                id="toggleConfirmPassword"
-                class="visibility-toggle"
-                tabindex="-1"
-            >
-              <i class="bi bi-eye"></i>
-            </button>
-            <span class="icon"><i class="bx bxs-lock-alt"></i></span>
-            {{ signup_form.confirm_password(size=20, class_='login-signup-input',
+        <!-- Confirm password field -->
+        <div class="input-box">
+          <!-- Password visibility toggle -->
+          <button
+            type="button"
+            id="toggleConfirmPassword"
+            class="visibility-toggle"
+            tabindex="-1"
+          >
+            <i class="bi bi-eye"></i>
+          </button>
+          <span class="icon"><i class="bx bxs-lock-alt"></i></span>
+          {{ signup_form.confirm_password(size=20, class_='login-signup-input',
           id='signupConfirmPassword', placeholder='Confirm your password...',
           required=True) }}
-            <label for="signupConfirmPassword">Confirm Password</label>
-            <!-- Error message for invalid form input -->
-            <div
-                id="signupConfirmPasswordFeedback"
-                class="invalid-feedback"
-            ></div>
-          </div>
+          <label for="signupConfirmPassword">Confirm Password</label>
+          <!-- Error message for invalid form input -->
+          <div
+            id="signupConfirmPasswordFeedback"
+            class="invalid-feedback"
+          ></div>
+        </div>
 
-          <!-- Sign up button -->
-          <div class="btn-container">
-            <input
-                type="submit"
-                name="action"
-                value="Sign Up"
-                class="login-signup-btn"
-            />
-          </div>
+        <!-- Sign up button -->
+        <div class="btn-container">
+          <input
+            type="submit"
+            name="action"
+            value="Sign Up"
+            class="login-signup-btn"
+          />
+        </div>
 
-          <!-- Form toggle -->
-          <div class="create-account">
-            Already got an account? <a href="#" class="login-link">Log In</a>
-          </div>
-        </form>
-      </div>
+        <!-- Form toggle -->
+        <div class="create-account">
+          Already got an account? <a href="#" class="login-link">Log In</a>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
-  <!-- jQuery dependency -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- JS file -->
-  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+<!-- jQuery dependency -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- JS file -->
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}
