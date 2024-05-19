@@ -12,10 +12,10 @@ styles%} {{ super() }}
   <!-- Main panel -->
   <div class="row panel">
     <!-- Left panel (Points & Activity Feed) -->
-    <div class="col-md-8">
+    <div class="col-md-8 col-sm-12">
       <div class="row points-container">
         <!-- Points -->
-        <div class="col-md-4">
+        <div class="point-container col-md-4">
           <div class="points-title">Your Points</div>
           <div class="points-bg">
             <span class="points"><!-- Dynamic content loading --></span>
@@ -79,7 +79,7 @@ styles%} {{ super() }}
     </div>
 
     <!-- Right panel (Leaderboard) -->
-    <div class="col-md-4 board">
+    <div class="col-md-4 col-sm-12 board">
       <div class="board-title">Leaderboard</div>
       <div class="board-table">
         {% for i in range(1, 11) %}

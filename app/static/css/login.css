@@ -384,7 +384,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
-  box-shadow: 0 0 0px 1000px transparent inset; /* Customize background color */
+  box-shadow: 0 0 0px 1000px transparent inset;
 }
 
 input:-moz-ui-invalid {
