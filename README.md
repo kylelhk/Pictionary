@@ -47,6 +47,8 @@ CITS5505 Agile Web Development - Group Project
   zero-configuration database system. It's embedded directly into the application, providing robust data storage
   capabilities.
 
+- **Test database**: A small database `app.db` was set up for testing purpose. Usernames can be found in the User model and all passwords were set as "Test5505".
+
 ## Launch
 
 1. Clone the repository
