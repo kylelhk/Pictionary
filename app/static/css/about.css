@@ -1,43 +1,76 @@
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #f4acd6, rgb(80, 66, 164));
-    padding: 20px;
+  background: linear-gradient(to right, AliceBlue, LightSkyBlue);
 }
+
 .container {
-    background: rgba(255, 255, 255, 0.9);
-    color: black;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    max-width: 1000px;
-    margin: auto;
+  background: rgba(255, 255, 255, 0.9);
+  color: black;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 15px 40px;
+  max-width: 1000px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
-h1, h2, h3 {
-    margin-top: 20px;
-}
-h1 {
-    text-align: center;
-    font-size: 2.5em;
-    color: #ffdf00;
-}
-h2 {
-    font-size: 1.8em;
-    color: #ff8c00;
-}
+
+h1,
+h2,
 h3 {
-    font-size: 1.5em;
-    color: #ff4500;
+  margin-top: 20px;
 }
+
+h1 {
+  text-align: center;
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: DarkBlue;
+}
+
+h3,
+.text {
+  font-size: 1.2em;
+}
+
 ul {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
+
 li {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
+
 a {
-    color: #1e90ff;
+  color: #1e90ff;
 }
+
+h1,
 a:hover {
-    color: #ffa500;
+  background: linear-gradient(
+    20deg,
+    Tomato,
+    DarkOrange,
+    Gold,
+    Green,
+    Blue,
+    Indigo,
+    Violet
+  );
+  -webkit-background-clip: text; /* For Chrome, Safari, Edge */
+  -webkit-text-fill-color: transparent; /* For Chrome, Safari, Edge */
+  background-clip: text; /* For Firefox */
+  color: transparent; /* For Firefox */
+}
+
+.ending {
+  font-size: 27px;
+  font-weight: bold;
+  text-align: center;
+  margin: 25px 0;
 }
