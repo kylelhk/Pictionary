@@ -1,238 +1,237 @@
-{% extends "base.html" %} {% block title %} About {% endblock %} {% block styles
-%} {{ super() }}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/about.css') }}"
-/>
+{% extends "base.html" %} {% block title %} About {% endblock %} {% block styles %} {{ super() }}
+  <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/about.css') }}"
+  >
 {% endblock %} {% block content %}
-<div class="container">
-  <h1>About Guess That Drawing</h1>
-  <p class="text">
-    Welcome to the "Guess That Drawing" community! This project is designed to
-    create an interactive web application that allows users to create, share,
-    and guess drawings based on given words. Below are the references and
-    resources that were instrumental in developing this project.
-  </p>
+  <div class="container">
+    <h1>About Guess That Drawing</h1>
+    <p class="text">
+      Welcome to the "Guess That Drawing" community! This project is designed to
+      create an interactive web application that allows users to create, share,
+      and guess drawings based on given words. Below are the references and
+      resources that were instrumental in developing this project.
+    </p>
 
-  <h2>Contributor</h2>
-  <ul>
-    <li>
-      <p class="text">Pritam Suwal Shrestha (23771397)</p>
-    </li>
-    <li>
-      <p class="text">Trieu Huynh (23728208)</p>
-    </li>
-    <li>
-      <p class="text">Weiqiao Xu (23464412)</p>
-    </li>
-    <li>
-      <p class="text">Kyle Leung (23601964)</p>
-    </li>
-  </ul>
+    <h2>Contributor</h2>
+    <ul>
+      <li>
+        <p class="text">Pritam Suwal Shrestha (23771397)</p>
+      </li>
+      <li>
+        <p class="text">Trieu Huynh (23728208)</p>
+      </li>
+      <li>
+        <p class="text">Weiqiao Xu (23464412)</p>
+      </li>
+      <li>
+        <p class="text">Kyle Leung (23601964)</p>
+      </li>
+    </ul>
 
-  <h2>License</h2>
-  <p class="text">This project is licensed under the MIT License.</p>
-  <p><a href="https://opensource.org/licenses/MIT">MIT License</a></p>
+    <h2>License</h2>
+    <p class="text">This project is licensed under the MIT License.</p>
+    <p><a href="https://opensource.org/licenses/MIT">MIT License</a></p>
 
-  <h2>GitHub</h2>
-  <p class="text">
-    You can find the source code and contribute to the project on GitHub.
-  </p>
-  <p><a href="https://github.com/kylelhk/Pictionary">GitHub Repository</a></p>
+    <h2>GitHub</h2>
+    <p class="text">
+      You can find the source code and contribute to the project on GitHub.
+    </p>
+    <p><a href="https://github.com/kylelhk/Pictionary">GitHub Repository</a></p>
 
-  <h2>References</h2>
-  <ul>
-    <li>
-      <h3>Navigation Bar</h3>
-      <p>
-        <a
-          href="https://fonts.google.com/specimen/Sedgwick+Ave"
-          target="_blank"
-          rel="noopener noreferrer"
+    <h2>References</h2>
+    <ul>
+      <li>
+        <h3>Navigation Bar</h3>
+        <p>
+          <a
+              href="https://fonts.google.com/specimen/Sedgwick+Ave"
+              target="_blank"
+              rel="noopener noreferrer"
           >Google Fonts - Sedgwick Ave font family</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.cdnfonts.com/komika-axis.font"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.cdnfonts.com/komika-axis.font"
+              target="_blank"
+              rel="noopener noreferrer"
           >CDN Fonts - Komika Axis font family</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.istockphoto.com/vector/pencil-vector-icon-back-to-school-vector-illustration-gm1072508470-287016128"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.istockphoto.com/vector/pencil-vector-icon-back-to-school-vector-illustration-gm1072508470-287016128"
+              target="_blank"
+              rel="noopener noreferrer"
           >iStock - Game logo</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.w3.org/2000/svg"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.w3.org/2000/svg"
+              target="_blank"
+              rel="noopener noreferrer"
           >W3C - Line drawing for nav link hover effect and hamburger icon for
-          navbar toggle</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.pngwing.com/en/free-png-dhrne"
-          target="_blank"
-          rel="noopener noreferrer"
+            navbar toggle</a
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.pngwing.com/en/free-png-dhrne"
+              target="_blank"
+              rel="noopener noreferrer"
           >PNGWing - White brush image for nav link active page effect</a
-        >
-      </p>
-    </li>
-    <li>
-      <h3>Login Page</h3>
-      <p>
-        <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+          >
+        </p>
+      </li>
+      <li>
+        <h3>Login Page</h3>
+        <p>
+          <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
           >ChatGPT - Regular expressions for email validation</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.veed.io/view/7049d95a-5424-4639-861c-7791fe504bf3?panel=share"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.veed.io/view/7049d95a-5424-4639-861c-7791fe504bf3?panel=share"
+              target="_blank"
+              rel="noopener noreferrer"
           >VEED.io - Video background for login and signup form container</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://flask-wtf.readthedocs.io/en/1.2.x/"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://flask-wtf.readthedocs.io/en/1.2.x/"
+              target="_blank"
+              rel="noopener noreferrer"
           >Flask WTForms - Login and signup forms</a
-        >
-      </p>
-    </li>
-    <li>
-      <h3>Home Page</h3>
-      <p>
-        <a
-          href="https://echarts.apache.org/handbook/en/how-to/chart-types/pie/basic-pie/"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+      </li>
+      <li>
+        <h3>Home Page</h3>
+        <p>
+          <a
+              href="https://echarts.apache.org/handbook/en/how-to/chart-types/pie/basic-pie/"
+              target="_blank"
+              rel="noopener noreferrer"
           >ECharts - Pie chart for point summary</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.vecteezy.com/vector-art/4999753-gold-silver-bronze-trophy-cups-game-winner-prize-cups-goblet-prize-icons-vector-illustration"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.vecteezy.com/vector-art/4999753-gold-silver-bronze-trophy-cups-game-winner-prize-cups-goblet-prize-icons-vector-illustration"
+              target="_blank"
+              rel="noopener noreferrer"
           >Vecteezy - Trophy cups for leaderboard</a
-        >
-      </p>
-    </li>
-    <li>
-      <h3>Drawing Page</h3>
-      <p>
-        <a
-          href="https://blog.openreplay.com/building-a-drawing-application-with-html5-canvas/"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+      </li>
+      <li>
+        <h3>Drawing Page</h3>
+        <p>
+          <a
+              href="https://blog.openreplay.com/building-a-drawing-application-with-html5-canvas/"
+              target="_blank"
+              rel="noopener noreferrer"
           >Building a Drawing Application with HTML5 Canvas</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.youtube.com/watch?v=mRDo-QXVUv8&ab_channel=JavaScriptAcademy"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.youtube.com/watch?v=mRDo-QXVUv8&ab_channel=JavaScriptAcademy"
+              target="_blank"
+              rel="noopener noreferrer"
           >JavaScript Academy - Drawing Application</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.flaticon.com/free-icon/eraser_2015014?term=eraser&page=1&position=7&origin=search&related_id=2015014"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.flaticon.com/free-icon/eraser_2015014?term=eraser&page=1&position=7&origin=search&related_id=2015014"
+              target="_blank"
+              rel="noopener noreferrer"
           >Flaticon - Eraser Icon</a
-        >
-      </p>
-    </li>
-    <li>
-      <h3>Gallery Page</h3>
-      <p>
-        <a
-          href="https://www.taniarascia.com/front-end-tables-sort-filter-paginate/"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+      </li>
+      <li>
+        <h3>Gallery Page</h3>
+        <p>
+          <a
+              href="https://www.taniarascia.com/front-end-tables-sort-filter-paginate/"
+              target="_blank"
+              rel="noopener noreferrer"
           >Front-End Tables: Sort, Filter, Paginate - Tania Rascia</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.youtube.com/watch?v=rCQH5ygcyE0"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.youtube.com/watch?v=rCQH5ygcyE0"
+              target="_blank"
+              rel="noopener noreferrer"
           >YouTube - Sorting Arrays in JavaScript</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://stackoverflow.com/questions/60040170/how-to-sort-an-array-using-a-searched-text-in-javascript"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://stackoverflow.com/questions/60040170/how-to-sort-an-array-using-a-searched-text-in-javascript"
+              target="_blank"
+              rel="noopener noreferrer"
           >Stack Overflow - Sort an Array Using a Searched Text in JavaScript</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://stackoverflow.com/questions/21996288/join-multiple-tables-in-sqlalchemy-flask"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://stackoverflow.com/questions/21996288/join-multiple-tables-in-sqlalchemy-flask"
+              target="_blank"
+              rel="noopener noreferrer"
           >Stack Overflow - Join Multiple Tables in SQLAlchemy Flask</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_core_using_multiple_tables.htm"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_core_using_multiple_tables.htm"
+              target="_blank"
+              rel="noopener noreferrer"
           >TutorialsPoint - Using Multiple Tables in SQLAlchemy</a
-        >
-      </p>
-    </li>
-    <li>
-      <h3>Testing</h3>
-      <p>
-        <a
-          href="https://techbeamers.com/selenium-webdriver-python-tutorial/"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+      </li>
+      <li>
+        <h3>Testing</h3>
+        <p>
+          <a
+              href="https://techbeamers.com/selenium-webdriver-python-tutorial/"
+              target="_blank"
+              rel="noopener noreferrer"
           >Selenium WebDriver Python Tutorial - TechBeamers</a
-        >
-      </p>
-      <p>
-        <a
-          href="https://medium.com/@donadviser/running-selenium-and-chrome-on-wsl2-cfabe7db4bbb"
-          target="_blank"
-          rel="noopener noreferrer"
+          >
+        </p>
+        <p>
+          <a
+              href="https://medium.com/@donadviser/running-selenium-and-chrome-on-wsl2-cfabe7db4bbb"
+              target="_blank"
+              rel="noopener noreferrer"
           >Running Selenium and Chrome on WSL2 - Medium</a
-        >
-      </p>
-    </li>
-  </ul>
+          >
+        </p>
+      </li>
+    </ul>
 
-  <h2>Epilogue</h2>
-  <p class="text">
-    The references mentioned above have been invaluable in guiding the
-    development process and ensuring the application meets its objectives. We
-    extend our gratitude to the open-source community and the authors of the
-    referenced materials for their contributions.
-  </p>
-  <p class="text">
-    For any further details or queries regarding the project, please refer to
-    the project documentation on GitHub or contact the development team.
-  </p>
-  <p class="ending">
-    Thank you for joining the "Guess That Drawing" community!
-  </p>
-</div>
+    <h2>Epilogue</h2>
+    <p class="text">
+      The references mentioned above have been invaluable in guiding the
+      development process and ensuring the application meets its objectives. We
+      extend our gratitude to the open-source community and the authors of the
+      referenced materials for their contributions.
+    </p>
+    <p class="text">
+      For any further details or queries regarding the project, please refer to
+      the project documentation on GitHub or contact the development team.
+    </p>
+    <p class="ending">
+      Thank you for joining the "Guess That Drawing" community!
+    </p>
+  </div>
 {% endblock %}
