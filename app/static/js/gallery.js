@@ -222,21 +222,16 @@ function navigatePage(page) {
 
 // Function to filter data based on search query (case insensitive)
 function filterGalleryData() {
-  const searchTerm = document
-    .querySelector(".search-bar input")
-    .value.toLowerCase();
+  const searchTerm = document.querySelector(".search-bar input").value.toLowerCase();
   if (!searchTerm) {
     displayedData = currentData; // Reset to all data if search term is empty
   } else {
-    const terms = searchTerm.split(" "); // Split search term into individual words
+    const terms = searchTerm.split(" ").filter(term => term);
     displayedData = currentData.filter((item) =>
-      terms.some(
-        (term) =>
-          item.creator.toLowerCase().includes(term) ||
-          item.category.toLowerCase().includes(term) ||
-          item.status.toLowerCase().includes(term) ||
-          item.date_created.includes(term)
-      )
+      terms.every(term => new RegExp(term, "i").test(item.creator) ||
+        new RegExp(term, "i").test(item.category) ||
+        new RegExp(term, "i").test(item.status) ||
+        new RegExp(term, "i").test(item.date_created))
     );
   }
   currentPage = 1; // Reset to first page after filtering
@@ -250,14 +245,12 @@ document.getElementById("search-btn").addEventListener("click", function () {
 });
 
 // Adding an event listener for the Enter key to trigger the search button click
-document
-  .getElementById("search-input")
-  .addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Prevent the default form submission
-      document.getElementById("search-btn").click(); // Trigger the button click
-    }
-  });
+document.getElementById("search-input").addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault(); // Prevent the default form submission
+    document.getElementById("search-btn").click(); // Trigger the button click
+  }
+});
 
 // Adding an event listener to the reset button for search function
 document.getElementById("reset-btn").addEventListener("click", function () {
